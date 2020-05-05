@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright(c) Live2D Inc. All rights reserved.
  *
  * Use of this source code is governed by the Live2D Open Software license
@@ -131,7 +131,7 @@ namespace Live2D
                      * @brief   添字演算子[csmInt32]
                      *
                      */
-                    virtual Value &operator[](csmInt32 index)
+                    virtual Value &operator[](csmInt32)
                     {
                         return *(ErrorValue->SetErrorNotForClientCall(CSM_JSON_ERROR_TYPE_MISMATCH));
                     }
@@ -140,7 +140,7 @@ namespace Live2D
                      * @brief   添字演算子[csmString]
                      *
                      */
-                    virtual Value &operator[](const csmString &string)
+                    virtual Value &operator[](const csmString &)
                     {
                         return *(NullValue->SetErrorNotForClientCall(CSM_JSON_ERROR_TYPE_MISMATCH));
                     }
@@ -149,7 +149,7 @@ namespace Live2D
                      * @brief   添字演算子[csmChar*]
                      *
                      */
-                    virtual Value &operator[](const csmChar *s)
+                    virtual Value &operator[](const csmChar *)
                     {
                         return *(NullValue->SetErrorNotForClientCall(CSM_JSON_ERROR_TYPE_MISMATCH));
                     }
@@ -223,7 +223,7 @@ namespace Live2D
                     /**
                      *@brief 引数の値と等しければtrue。
                      */
-                    virtual csmBool Equals(const csmString &value)
+                    virtual csmBool Equals(const csmString &)
                     {
                         return false;
                     }
@@ -231,7 +231,7 @@ namespace Live2D
                     /**
                      *@brief 引数の値と等しければtrue。
                      */
-                    virtual csmBool Equals(const csmChar *value)
+                    virtual csmBool Equals(const csmChar *)
                     {
                         return false;
                     }
@@ -239,7 +239,7 @@ namespace Live2D
                     /**
                      *@brief 引数の値と等しければtrue。
                      */
-                    virtual csmBool Equals(csmInt32 value)
+                    virtual csmBool Equals(csmInt32)
                     {
                         return false;
                     }
@@ -247,7 +247,7 @@ namespace Live2D
                     /**
                      *@brief 引数の値と等しければtrue。
                      */
-                    virtual csmBool Equals(csmFloat32 value)
+                    virtual csmBool Equals(csmFloat32)
                     {
                         return false;
                     }
@@ -255,7 +255,7 @@ namespace Live2D
                     /**
                      *@brief 引数の値と等しければtrue。
                      */
-                    virtual csmBool Equals(csmBool value)
+                    virtual csmBool Equals(csmBool)
                     {
                         return false;
                     }
@@ -271,7 +271,7 @@ namespace Live2D
                     /**
                      *@brief Valueにエラー値をセットする
                      */
-                    virtual Value *SetErrorNotForClientCall(const csmChar *errorStr)
+                    virtual Value *SetErrorNotForClientCall(const csmChar *)
                     {
                         return ErrorValue;
                     }
@@ -461,7 +461,7 @@ namespace Live2D
                      * @brief   要素を文字列で返す(csmString型)
                      *
                      */
-                    virtual const csmString &GetString(const csmString &defaultValue = "", const csmString &indent = "")
+                    virtual const csmString &GetString(const csmString & = "", const csmString & = "")
                     {
 #if defined(CSM_TARGET_WIN_GL) || defined(_MSC_VER)
                         csmChar strbuf[32] = { '\0' };
@@ -480,7 +480,7 @@ namespace Live2D
                     /**
                      * @brief   要素を数値型で返す(csmInt32)
                      */
-                    virtual csmInt32 ToInt(csmInt32 defaultValue = 0)
+                    virtual csmInt32 ToInt(csmInt32 = 0)
                     {
                         return static_cast<csmInt32>(this->_value);
                     }
@@ -488,7 +488,7 @@ namespace Live2D
                     /**
                      * @brief   要素を数値型で返す(csmFloat32)
                      */
-                    virtual csmFloat32 ToFloat(csmFloat32 defaultValue = 0)
+                    virtual csmFloat32 ToFloat(csmFloat32 = 0)
                     {
                         return this->_value;
                     }
@@ -504,7 +504,7 @@ namespace Live2D
                     /**
                      *@brief 引数の値と等しければtrue。
                      */
-                    virtual csmBool Equals(const csmString &v)
+                    virtual csmBool Equals(const csmString &)
                     {
                         return false;
                     }
@@ -512,7 +512,7 @@ namespace Live2D
                     /**
                      *@brief 引数の値と等しければtrue。
                      */
-                    virtual csmBool Equals(const csmChar *v)
+                    virtual csmBool Equals(const csmChar *)
                     {
                         return false;
                     }
@@ -520,7 +520,7 @@ namespace Live2D
                     /**
                      *@brief 引数の値と等しければtrue。
                      */
-                    virtual csmBool Equals(csmInt32 v)
+                    virtual csmBool Equals(csmInt32)
                     {
                         return false;
                     }
@@ -528,7 +528,7 @@ namespace Live2D
                     /**
                      *@brief 引数の値と等しければtrue。
                      */
-                    virtual csmBool Equals(csmBool v)
+                    virtual csmBool Equals(csmBool)
                     {
                         return false;
                     }
@@ -568,7 +568,7 @@ namespace Live2D
                     /**
                      * @brief   要素を真偽値で返す(csmBool)
                      */
-                    virtual csmBool ToBoolean(csmBool defaultValue = false)
+                    virtual csmBool ToBoolean(csmBool = false)
                     {
                         return _boolValue;
                     }
@@ -576,7 +576,7 @@ namespace Live2D
                     /**
                      * @brief   要素を文字列で返す(csmString型)
                      */
-                    virtual const csmString &GetString(const csmString &defaultValue = "", const csmString &indent = "")
+                    virtual const csmString &GetString(const csmString & = "", const csmString & = "")
                     {
                         _stringBuffer = csmString(_boolValue ? "true" : "false");
                         return _stringBuffer;
@@ -593,7 +593,7 @@ namespace Live2D
                     /**
                      *@brief 引数の値と等しければtrue。
                      */
-                    virtual csmBool Equals(const csmString &v)
+                    virtual csmBool Equals(const csmString &)
                     {
                         return false;
                     }
@@ -601,7 +601,7 @@ namespace Live2D
                     /**
                      *@brief 引数の値と等しければtrue。
                      */
-                    virtual csmBool Equals(const csmChar *v)
+                    virtual csmBool Equals(const csmChar *)
                     {
                         return false;
                     }
@@ -609,7 +609,7 @@ namespace Live2D
                     /**
                      *@brief 引数の値と等しければtrue。
                      */
-                    virtual csmBool Equals(csmInt32 v)
+                    virtual csmBool Equals(csmInt32)
                     {
                         return false;
                     }
@@ -617,7 +617,7 @@ namespace Live2D
                     /**
                      *@brief 引数の値と等しければtrue。
                      */
-                    virtual csmBool Equals(csmFloat32 v)
+                    virtual csmBool Equals(csmFloat32)
                     {
                         return false;
                     }
@@ -682,7 +682,7 @@ namespace Live2D
                     /**
                      * @brief   要素を文字列で返す(csmString型)
                      */
-                    virtual const csmString &GetString(const csmString &defaultValue = "", const csmString &indent = "")
+                    virtual const csmString &GetString(const csmString & = "", const csmString & = "")
                     {
                         return _stringBuffer;
                     }
@@ -706,7 +706,7 @@ namespace Live2D
                     /**
                      *@brief 引数の値と等しければtrue。
                      */
-                    virtual csmBool Equals(csmInt32 v)
+                    virtual csmBool Equals(csmInt32)
                     {
                         return false;
                     }
@@ -714,7 +714,7 @@ namespace Live2D
                     /**
                      *@brief 引数の値と等しければtrue。
                      */
-                    virtual csmBool Equals(csmFloat32 v)
+                    virtual csmBool Equals(csmFloat32)
                     {
                         return false;
                     }
@@ -722,7 +722,7 @@ namespace Live2D
                     /**
                      *@brief 引数の値と等しければtrue。
                      */
-                    virtual csmBool Equals(csmBool v)
+                    virtual csmBool Equals(csmBool)
                     {
                         return false;
                     }
@@ -809,7 +809,7 @@ namespace Live2D
                     /**
                      * @brief   要素を文字列で返す(csmString型)
                      */
-                    virtual const csmString &GetString(const csmString &defaultValue = "", const csmString &indent = "")
+                    virtual const csmString &GetString(const csmString & = "", const csmString & = "")
                     {
                         return _stringBuffer;
                     }
@@ -878,7 +878,7 @@ namespace Live2D
                      * @brief   添字演算子[csmString]
                      *
                      */
-                    virtual Value &operator[](const csmString &string)
+                    virtual Value &operator[](const csmString &)
                     {
                         return *(ErrorValue->SetErrorNotForClientCall(CSM_JSON_ERROR_TYPE_MISMATCH));
                     }
@@ -887,7 +887,7 @@ namespace Live2D
                      * @brief   添字演算子[csmChar*]
                      *
                      */
-                    virtual Value &operator[](const csmChar *s)
+                    virtual Value &operator[](const csmChar *)
                     {
                         return *(ErrorValue->SetErrorNotForClientCall(CSM_JSON_ERROR_TYPE_MISMATCH));
                     }
@@ -896,7 +896,7 @@ namespace Live2D
                      * @brief   要素を文字列で返す(csmString型)
                      *
                      */
-                    virtual const csmString &GetString(const csmString &defaultValue = "", const csmString &indent = "")
+                    virtual const csmString &GetString(const csmString & = "", const csmString &indent = "")
                     {
                         _stringBuffer = indent + "[\n";
                         csmVector<Value *>::iterator ite = _array.Begin();
@@ -922,7 +922,7 @@ namespace Live2D
                      * @brief   要素をコンテナで返す(csmVector<Value*>)
                      *
                      */
-                    virtual csmVector<Value *> *GetVector(csmVector<Value *> *defaultValue = NULL)
+                    virtual csmVector<Value *> *GetVector(csmVector<Value *> * = NULL)
                     {
                         return &_array;
                     }
@@ -1004,12 +1004,12 @@ namespace Live2D
                     /**
                      * @brief    添字演算子[csmInt32]
                      */
-                    virtual Value &operator[](csmInt32 index)
+                    virtual Value &operator[](csmInt32)
                     {
                         return *(ErrorValue->SetErrorNotForClientCall(CSM_JSON_ERROR_TYPE_MISMATCH));
                     }
 
-                    virtual const csmString &GetString(const csmString &defaultValue = "", const csmString &indent = "")
+                    virtual const csmString &GetString(const csmString & = "", const csmString &indent = "")
                     {
                         _stringBuffer = indent + "{\n";
                         csmMap<csmString, Value *>::const_iterator ite = _map.Begin();
@@ -1028,7 +1028,7 @@ namespace Live2D
                     /**
                      * @brief    要素をMap型で返す
                      */
-                    virtual csmMap<csmString, Value *> *GetMap(csmMap<csmString, Value *> *defaultValue = NULL)
+                    virtual csmMap<csmString, Value *> *GetMap(csmMap<csmString, Value *> * = NULL)
                     {
                         return &_map;
                     }

@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright(c) Live2D Inc. All rights reserved.
  *
  * Use of this source code is governed by the Live2D Open Software license
@@ -376,23 +376,23 @@ void operator delete(void *address, Live2D::Cubism::Framework::CubismAllocationA
 
 #else
 
-void *operator new(Live2D::Cubism::Framework::csmSizeType size, Live2D::Cubism::Framework::CubismAllocationTag tag)
+void *operator new(Live2D::Cubism::Framework::csmSizeType size, Live2D::Cubism::Framework::CubismAllocationTag)
 {
     return Live2D::Cubism::Framework::CubismFramework::Allocate(size);
 }
 
 void *operator new(Live2D::Cubism::Framework::csmSizeType size, Live2D::Cubism::Framework::csmUint32 alignment,
-                   Live2D::Cubism::Framework::CubismAllocationAlignedTag tag)
+                   Live2D::Cubism::Framework::CubismAllocationAlignedTag)
 {
     return Live2D::Cubism::Framework::CubismFramework::AllocateAligned(size, alignment);
 }
 
-void operator delete(void *address, Live2D::Cubism::Framework::CubismAllocationTag tag)
+void operator delete(void *address, Live2D::Cubism::Framework::CubismAllocationTag)
 {
     Live2D::Cubism::Framework::CubismFramework::Deallocate(address);
 }
 
-void operator delete(void *address, Live2D::Cubism::Framework::CubismAllocationAlignedTag tag)
+void operator delete(void *address, Live2D::Cubism::Framework::CubismAllocationAlignedTag)
 {
     Live2D::Cubism::Framework::CubismFramework::DeallocateAligned(address);
 }

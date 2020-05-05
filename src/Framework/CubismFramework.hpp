@@ -44,8 +44,8 @@ namespace Live2D
             {
             };
 
-            static CubismAllocationTag GlobalTag;
-            static CubismAllocationAlignedTag GloabalAlignedTag;
+            inline CubismAllocationTag GlobalTag;
+            inline CubismAllocationAlignedTag GloabalAlignedTag;
 
         } // namespace Framework
     }     // namespace Cubism

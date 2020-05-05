@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright(c) Live2D Inc. All rights reserved.
  *
  * Use of this source code is governed by the Live2D Open Software license
@@ -96,8 +96,7 @@ namespace Live2D
                 return expression;
             }
 
-            void CubismExpressionMotion::DoUpdateParameters(CubismModel *model, csmFloat32 userTimeSeconds, csmFloat32 weight,
-                                                            CubismMotionQueueEntry *motionQueueEntry)
+            void CubismExpressionMotion::DoUpdateParameters(CubismModel *model, csmFloat32, csmFloat32 weight, CubismMotionQueueEntry *)
             {
                 for (csmUint32 i = 0; i < _parameters.GetSize(); ++i)
                 {

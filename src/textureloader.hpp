@@ -1,4 +1,4 @@
-﻿#ifndef TEXTURELOADER_H
+#ifndef TEXTURELOADER_H
 #define TEXTURELOADER_H
 #include <QOpenGLFunctions>
 #include <QString>

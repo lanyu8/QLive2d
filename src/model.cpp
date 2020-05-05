@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright(c) Live2D Inc. All rights reserved.
  *
  * Use of this source code is governed by the Live2D Open Software license
@@ -53,7 +53,7 @@ Model::~Model()
 void Model::LoadAssets(const csmChar *dir, const csmChar *fileName)
 {
     _modelHomeDir = dir;
-    csmSizeInt size;
+    // csmSizeInt size;
     const csmString path = csmString(dir) + fileName;
     AppUtils::FileContent buffer;
     AppUtils::readFileContent(path.GetRawString(), buffer);
@@ -196,7 +196,7 @@ void Model::PreloadMotionGroup(const csmChar *group)
         path = _modelHomeDir + path;
 
         AppUtils::FileContent buffer;
-        csmSizeInt size;
+        // csmSizeInt size;
 
         AppUtils::readFileContent(path.GetRawString(), buffer);
         CubismMotion *tmpMotion =
@@ -357,7 +357,7 @@ CubismMotionQueueEntryHandle Model::StartMotion(const csmChar *group, csmInt32 n
         path = _modelHomeDir + path;
 
         AppUtils::FileContent buffer;
-        csmSizeInt size;
+        // csmSizeInt size;
         AppUtils::readFileContent(path.GetRawString(), buffer);
         motion = static_cast<CubismMotion *>(
             LoadMotion(reinterpret_cast<Csm::csmByte *>(buffer.data()), buffer.size(), NULL, onFinishedMotionHandler));

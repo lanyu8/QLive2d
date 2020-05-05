@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright(c) Live2D Inc. All rights reserved.
  *
  * Use of this source code is governed by the Live2D Open Software license
@@ -77,11 +77,13 @@ namespace Live2D
 
                 csmFloat32 SteppedEvaluate(const CubismMotionPoint *points, const csmFloat32 time)
                 {
+                    Q_UNUSED(time)
                     return points[0].Value;
                 }
 
                 csmFloat32 InverseSteppedEvaluate(const CubismMotionPoint *points, const csmFloat32 time)
                 {
+                    Q_UNUSED(time)
                     return points[1].Value;
                 }
 

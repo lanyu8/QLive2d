@@ -54,19 +54,19 @@ void MenuItem::alterimage(bool on)
     else
         this->setPixmap(pix1);
 }
-void MenuItem::enterEvent(QEvent *e)
+void MenuItem::enterEvent(QEvent *)
 {
     if (!this->isEnabled())
         return;
     this->setWindowOpacity(qreal(opacity2));
 }
-void MenuItem::leaveEvent(QEvent *e)
+void MenuItem::leaveEvent(QEvent *)
 {
     if (!this->isEnabled())
         return;
     this->setWindowOpacity(qreal(opacity1));
 }
-void MenuItem::mousePressEvent(QMouseEvent *ev)
+void MenuItem::mousePressEvent(QMouseEvent *)
 {
     if (!this->isEnabled())
         return;

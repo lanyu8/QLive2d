@@ -75,7 +75,7 @@ void GLWidget::initializeGL()
 {
     OpenGLHelper::get()->initializeOpenGLFunctions();
 }
-void GLWidget::resizeGL(int width, int height)
+void GLWidget::resizeGL(int, int)
 {
 }
 void GLWidget::testMouse()
@@ -121,7 +121,7 @@ void GLWidget::mousePressEvent(QMouseEvent *e)
         oldy = e->y();
     }
 }
-void GLWidget::mouseReleaseEvent(QMouseEvent *e)
+void GLWidget::mouseReleaseEvent(QMouseEvent *)
 {
     is_dragging = false;
 }

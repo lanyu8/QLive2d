@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright(c) Live2D Inc. All rights reserved.
  *
  * Use of this source code is governed by the Live2D Open Software license
@@ -88,7 +88,7 @@ namespace Live2D
                     }
                 }
 
-                void CubismClippingManager_OpenGLES2::Initialize(CubismModel &model, csmInt32 drawableCount, const csmInt32 **drawableMasks,
+                void CubismClippingManager_OpenGLES2::Initialize(CubismModel &, csmInt32 drawableCount, const csmInt32 **drawableMasks,
                                                                  const csmInt32 *drawableMaskCounts)
                 {
                     //クリッピングマスクを使う描画オブジェクトを全て登録する
@@ -1459,6 +1459,8 @@ namespace Live2D
                                                                 CubismRenderer::CubismTextureColor baseColor, csmBool isPremultipliedAlpha,
                                                                 CubismMatrix44 matrix4x4, csmBool invertedMask)
                 {
+                    Q_UNUSED(vertexCount)
+                    Q_UNUSED(opacity)
                     if (_shaderSets.GetSize() == 0)
                     {
                         GenerateShaders();

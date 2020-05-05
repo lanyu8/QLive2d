@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright(c) Live2D Inc. All rights reserved.
  *
  * Use of this source code is governed by the Live2D Open Software license
@@ -32,7 +32,7 @@ namespace Live2D
 #endif
 
                 // JSON keys
-                const csmChar *Version = "Version";
+                // const csmChar *Version = "Version";
                 const csmChar *FileReferences = "FileReferences";
                 const csmChar *Groups = "Groups";
                 const csmChar *Layout = "Layout";
@@ -50,35 +50,35 @@ namespace Live2D
                 const csmChar *FilePath = "File";
                 const csmChar *Id = "Id";
                 const csmChar *Ids = "Ids";
-                const csmChar *Target = "Target";
+                // const csmChar *Target = "Target";
 
                 // Motions
-                const csmChar *Idle = "Idle";
-                const csmChar *TapBody = "TapBody";
-                const csmChar *PinchIn = "PinchIn";
-                const csmChar *PinchOut = "PinchOut";
-                const csmChar *Shake = "Shake";
-                const csmChar *FlickHead = "FlickHead";
-                const csmChar *Parameter = "Parameter";
+                // const csmChar *Idle = "Idle";
+                // const csmChar *TapBody = "TapBody";
+                // const csmChar *PinchIn = "PinchIn";
+                // const csmChar *PinchOut = "PinchOut";
+                // const csmChar *Shake = "Shake";
+                // const csmChar *FlickHead = "FlickHead";
+                // const csmChar *Parameter = "Parameter";
 
                 const csmChar *SoundPath = "Sound";
                 const csmChar *FadeInTime = "FadeInTime";
                 const csmChar *FadeOutTime = "FadeOutTime";
 
                 // Layout
-                const csmChar *CenterX = "CenterX";
-                const csmChar *CenterY = "CenterY";
-                const csmChar *X = "X";
-                const csmChar *Y = "Y";
-                const csmChar *Width = "Width";
-                const csmChar *Height = "Height";
+                // const csmChar *CenterX = "CenterX";
+                // const csmChar *CenterY = "CenterY";
+                // const csmChar *X = "X";
+                // const csmChar *Y = "Y";
+                // const csmChar *Width = "Width";
+                // const csmChar *Height = "Height";
 
                 const csmChar *LipSync = "LipSync";
                 const csmChar *EyeBlink = "EyeBlink";
 
-                const csmChar *InitParameter = "init_param";
-                const csmChar *InitPartsVisible = "init_parts_visible";
-                const csmChar *Val = "val";
+                // const csmChar *InitParameter = "init_param";
+                // const csmChar *InitPartsVisible = "init_parts_visible";
+                // const csmChar *Val = "val";
 
 #if defined(__clang__)
     #pragma clang diagnostic pop

@@ -1,4 +1,4 @@
-﻿#define STBI_NO_STDIO
+#define STBI_NO_STDIO
 #define STBI_ONLY_PNG
 #define STB_IMAGE_IMPLEMENTATION
 #include "textureloader.hpp"

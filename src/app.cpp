@@ -1,4 +1,4 @@
-﻿#include "app.hpp"
+#include "app.hpp"
 
 #include "apputils.hpp"
 #include "config.hpp"

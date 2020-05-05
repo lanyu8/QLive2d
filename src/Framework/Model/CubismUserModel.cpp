@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright(c) Live2D Inc. All rights reserved.
  *
  * Use of this source code is governed by the Live2D Open Software license
@@ -74,7 +74,7 @@ namespace Live2D
                 _modelMatrix = CSM_NEW CubismModelMatrix(_model->GetCanvasWidth(), _model->GetCanvasHeight());
             }
 
-            ACubismMotion *CubismUserModel::LoadExpression(const csmByte *buffer, csmSizeInt size, const csmChar *name)
+            ACubismMotion *CubismUserModel::LoadExpression(const csmByte *buffer, csmSizeInt size, const csmChar *)
             {
                 return CubismExpressionMotion::Create(buffer, size);
             }
@@ -142,7 +142,7 @@ namespace Live2D
                 return ((left <= tx) && (tx <= right) && (top <= ty) && (ty <= bottom));
             }
 
-            ACubismMotion *CubismUserModel::LoadMotion(const csmByte *buffer, csmSizeInt size, const csmChar *name,
+            ACubismMotion *CubismUserModel::LoadMotion(const csmByte *buffer, csmSizeInt size, const csmChar *,
                                                        ACubismMotion::FinishedMotionCallback onFinishedMotionHandler)
             {
                 return CubismMotion::Create(buffer, size, onFinishedMotionHandler);
@@ -214,7 +214,7 @@ namespace Live2D
                 }
             }
 
-            void CubismUserModel::CubismDefaultMotionEventCallback(const CubismMotionQueueManager *caller, const csmString &eventValue,
+            void CubismUserModel::CubismDefaultMotionEventCallback(const CubismMotionQueueManager *, const csmString &eventValue,
                                                                    void *customData)
             {
                 CubismUserModel *model = reinterpret_cast<CubismUserModel *>(customData);

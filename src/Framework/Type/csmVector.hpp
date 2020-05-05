@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright(c) Live2D Inc. All rights reserved.
  *
  * Use of this source code is governed by the Live2D Open Software license
@@ -266,8 +266,7 @@ namespace Live2D
                      */
                     iterator operator++(csmInt32)
                     {
-                        iterator iteold(this->_vector, this->_index++); // 古い値を保存
-                        return iteold;                                  // 古い値を返す
+                        return iterator(this->_vector, this->_index++); // 古い値を保存, 古い値を返す
                     }
 
                     /**
@@ -420,8 +419,7 @@ namespace Live2D
                  */
                 const iterator Begin()
                 {
-                    iterator ite(this, 0);
-                    return ite;
+                    return iterator(this, 0);
                 }
 
                 /**
@@ -430,9 +428,7 @@ namespace Live2D
                  */
                 const iterator End()
                 {
-                    iterator ite(this, _size); // 終了
-
-                    return ite;
+                    return iterator(this, _size); // 終了
                 }
 
                 /**
@@ -441,18 +437,15 @@ namespace Live2D
                  */
                 const const_iterator Begin() const
                 {
-                    const_iterator ite(this, 0);
-                    return ite;
+                    return const_iterator(this, 0);
                 }
 
                 /**
                  * @bief    コンテナの終端要素を返す
-                 *
                  */
                 const const_iterator End() const
                 {
-                    const_iterator ite(this, _size); // 終了
-                    return ite;
+                    return const_iterator(this, _size); // 終了
                 }
 
                 /**
@@ -472,8 +465,7 @@ namespace Live2D
                         memmove(&(_ptr[index]), &(_ptr[index + 1]), sizeof(T) * (_size - index - 1));
                     --_size;
 
-                    iterator ite2(this, index); // 終了
-                    return ite2;
+                    return iterator(this, index); // 終了
                 }
 
                 /**

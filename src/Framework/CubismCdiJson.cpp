@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright(c) Live2D Inc. All rights reserved.
  *
  * Use of this source code is governed by the Live2D Open Software license
@@ -18,7 +18,7 @@ namespace Live2D
             namespace
             {
                 // JSON keys
-                const csmChar *Version = "Version";
+                // const csmChar *Version = "Version";
                 const csmChar *Parameters = "Parameters";
                 const csmChar *ParameterGroups = "ParameterGroups";
                 const csmChar *Parts = "Parts";

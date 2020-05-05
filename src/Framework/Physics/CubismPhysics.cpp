@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright(c) Live2D Inc. All rights reserved.
  *
  * Use of this source code is governed by the Live2D Open Software license
@@ -78,6 +78,7 @@ namespace Live2D
                                                    csmFloat32 parameterDefault, csmFloat32 normalizedMinimum, csmFloat32 normalizedMaximum,
                                                    csmFloat32 normalizedDefault, csmInt32 isInverted)
                 {
+                    Q_UNUSED(parameterDefault)
                     csmFloat32 result = 0.0f;
 
                     const csmFloat32 maxValue = CubismMath::Max(parameterMaximum, parameterMinimum);
@@ -142,12 +143,11 @@ namespace Live2D
                     return (isInverted) ? result : (result * -1.0f);
                 }
 
-                void GetInputTranslationXFromNormalizedParameterValue(CubismVector2 *targetTranslation, csmFloat32 *targetAngle,
-                                                                      csmFloat32 value, csmFloat32 parameterMinimumValue,
-                                                                      csmFloat32 parameterMaximumValue, csmFloat32 parameterDefaultValue,
+                void GetInputTranslationXFromNormalizedParameterValue(CubismVector2 *targetTranslation, csmFloat32 *, csmFloat32 value,
+                                                                      csmFloat32 parameterMinimumValue, csmFloat32 parameterMaximumValue,
+                                                                      csmFloat32 parameterDefaultValue,
                                                                       CubismPhysicsNormalization *normalizationPosition,
-                                                                      CubismPhysicsNormalization *normalizationAngle, csmInt32 isInverted,
-                                                                      csmFloat32 weight)
+                                                                      CubismPhysicsNormalization *, csmInt32 isInverted, csmFloat32 weight)
                 {
                     targetTranslation->X += NormalizeParameterValue(value, parameterMinimumValue, parameterMaximumValue, parameterDefaultValue,
                                                                     normalizationPosition->Minimum, normalizationPosition->Maximum,
@@ -155,12 +155,11 @@ namespace Live2D
                                             weight;
                 }
 
-                void GetInputTranslationYFromNormalizedParameterValue(CubismVector2 *targetTranslation, csmFloat32 *targetAngle,
-                                                                      csmFloat32 value, csmFloat32 parameterMinimumValue,
-                                                                      csmFloat32 parameterMaximumValue, csmFloat32 parameterDefaultValue,
+                void GetInputTranslationYFromNormalizedParameterValue(CubismVector2 *targetTranslation, csmFloat32 *, csmFloat32 value,
+                                                                      csmFloat32 parameterMinimumValue, csmFloat32 parameterMaximumValue,
+                                                                      csmFloat32 parameterDefaultValue,
                                                                       CubismPhysicsNormalization *normalizationPosition,
-                                                                      CubismPhysicsNormalization *normalizationAngle, csmInt32 isInverted,
-                                                                      csmFloat32 weight)
+                                                                      CubismPhysicsNormalization *, csmInt32 isInverted, csmFloat32 weight)
                 {
                     targetTranslation->Y += NormalizeParameterValue(value, parameterMinimumValue, parameterMaximumValue, parameterDefaultValue,
                                                                     normalizationPosition->Minimum, normalizationPosition->Maximum,
@@ -168,10 +167,9 @@ namespace Live2D
                                             weight;
                 }
 
-                void GetInputAngleFromNormalizedParameterValue(CubismVector2 *targetTranslation, csmFloat32 *targetAngle, csmFloat32 value,
+                void GetInputAngleFromNormalizedParameterValue(CubismVector2 *, csmFloat32 *targetAngle, csmFloat32 value,
                                                                csmFloat32 parameterMinimumValue, csmFloat32 parameterMaximumValue,
-                                                               csmFloat32 parameterDefaultValue,
-                                                               CubismPhysicsNormalization *normalizationPosition,
+                                                               csmFloat32 parameterDefaultValue, CubismPhysicsNormalization *,
                                                                CubismPhysicsNormalization *normalizationAngle, csmInt32 isInverted,
                                                                csmFloat32 weight)
                 {
@@ -181,9 +179,10 @@ namespace Live2D
                                     weight;
                 }
 
-                csmFloat32 GetOutputTranslationX(CubismVector2 translation, CubismPhysicsParticle *particles, csmInt32 particleIndex,
-                                                 csmInt32 isInverted, CubismVector2 parentGravity)
+                csmFloat32 GetOutputTranslationX(CubismVector2 translation, CubismPhysicsParticle *, csmInt32 particleIndex, csmInt32 isInverted,
+                                                 CubismVector2)
                 {
+                    Q_UNUSED(particleIndex)
                     csmFloat32 outputValue = translation.X;
 
                     if (isInverted)
@@ -194,8 +193,8 @@ namespace Live2D
                     return outputValue;
                 }
 
-                csmFloat32 GetOutputTranslationY(CubismVector2 translation, CubismPhysicsParticle *particles, csmInt32 particleIndex,
-                                                 csmInt32 isInverted, CubismVector2 parentGravity)
+                csmFloat32 GetOutputTranslationY(CubismVector2 translation, CubismPhysicsParticle *, csmInt32, csmInt32 isInverted,
+                                                 CubismVector2)
                 {
                     csmFloat32 outputValue = translation.Y;
 
@@ -231,17 +230,17 @@ namespace Live2D
                     return outputValue;
                 }
 
-                csmFloat32 GetOutputScaleTranslationX(CubismVector2 translationScale, csmFloat32 angleScale)
+                csmFloat32 GetOutputScaleTranslationX(CubismVector2 translationScale, csmFloat32)
                 {
                     return translationScale.X;
                 }
 
-                csmFloat32 GetOutputScaleTranslationY(CubismVector2 translationScale, csmFloat32 angleScale)
+                csmFloat32 GetOutputScaleTranslationY(CubismVector2 translationScale, csmFloat32)
                 {
                     return translationScale.Y;
                 }
 
-                csmFloat32 GetOutputScaleAngle(CubismVector2 translationScale, csmFloat32 angleScale)
+                csmFloat32 GetOutputScaleAngle(CubismVector2, csmFloat32 angleScale)
                 {
                     return angleScale;
                 }

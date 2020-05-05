@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright(c) Live2D Inc. All rights reserved.
  *
  * Use of this source code is governed by the Live2D Open Software license
@@ -401,8 +401,9 @@ namespace Live2D
                     const_iterator operator++(csmInt32)
                     {
                         // intは後置のためのダミー引数
-                        const_iterator iteold(this->_map, this->_index++); // 古い値を保存
-                        return iteold;                                     // 古い値を返す
+                        // 古い値を保存
+                        // 古い値を返す
+                        return const_iterator(this->_map, this->_index++);
                     }
 
                     /**
@@ -454,8 +455,7 @@ namespace Live2D
                  */
                 const const_iterator Begin() const
                 {
-                    const_iterator ite(this, 0);
-                    return ite;
+                    return const_iterator(this, 0);
                 }
 
                 /**
@@ -464,8 +464,7 @@ namespace Live2D
                  */
                 const const_iterator End() const
                 {
-                    const_iterator ite(this, _size); // 終了
-                    return ite;
+                    return const_iterator(this, _size); // 終了
                 }
 
                 /**

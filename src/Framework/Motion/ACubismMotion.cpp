@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright(c) Live2D Inc. All rights reserved.
  *
  * Use of this source code is governed by the Live2D Open Software license
@@ -135,6 +135,8 @@ namespace Live2D
 
             const csmVector<const csmString *> &ACubismMotion::GetFiredEvent(csmFloat32 beforeCheckTimeSeconds, csmFloat32 motionTimeSeconds)
             {
+                Q_UNUSED(beforeCheckTimeSeconds)
+                Q_UNUSED(motionTimeSeconds)
                 return _firedEventValues;
             }
 

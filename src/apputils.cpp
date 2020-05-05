@@ -1,4 +1,4 @@
-﻿#include "apputils.hpp"
+#include "apputils.hpp"
 
 #include <QFile>
 
