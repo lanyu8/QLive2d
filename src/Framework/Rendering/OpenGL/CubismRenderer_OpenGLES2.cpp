@@ -9,7 +9,6 @@
 
 #include "Math/CubismMatrix44.hpp"
 #include "Model/CubismModel.hpp"
-#include "Type/csmVector.hpp"
 #include "openglhelper.hpp"
 
 #include <float.h>
@@ -33,7 +32,7 @@ namespace Live2D
                 ///< ファイルスコープの変数宣言
                 namespace
                 {
-                    const csmInt32 ColorChannelCount = 4; ///< 実験時に1チャンネルの場合は1、RGBだけの場合は3、アルファも含める場合は4
+                    const int ColorChannelCount = 4; ///< 実験時に1チャンネルの場合は1、RGBだけの場合は3、アルファも含める場合は4
                 }
 
                 CubismClippingManager_OpenGLES2::CubismClippingManager_OpenGLES2() : _currentFrameNo(0), _clippingMaskBufferSize(256)
@@ -44,30 +43,30 @@ namespace Live2D
                     tmp->G = 0.0f;
                     tmp->B = 0.0f;
                     tmp->A = 0.0f;
-                    _channelColors.PushBack(tmp);
+                    _channelColors.append(tmp);
                     tmp = CSM_NEW CubismRenderer::CubismTextureColor();
                     tmp->R = 0.0f;
                     tmp->G = 1.0f;
                     tmp->B = 0.0f;
                     tmp->A = 0.0f;
-                    _channelColors.PushBack(tmp);
+                    _channelColors.append(tmp);
                     tmp = CSM_NEW CubismRenderer::CubismTextureColor();
                     tmp->R = 0.0f;
                     tmp->G = 0.0f;
                     tmp->B = 1.0f;
                     tmp->A = 0.0f;
-                    _channelColors.PushBack(tmp);
+                    _channelColors.append(tmp);
                     tmp = CSM_NEW CubismRenderer::CubismTextureColor();
                     tmp->R = 0.0f;
                     tmp->G = 0.0f;
                     tmp->B = 0.0f;
                     tmp->A = 1.0f;
-                    _channelColors.PushBack(tmp);
+                    _channelColors.append(tmp);
                 }
 
                 CubismClippingManager_OpenGLES2::~CubismClippingManager_OpenGLES2()
                 {
-                    for (csmUint32 i = 0; i < _clippingContextListForMask.GetSize(); i++)
+                    for (auto i = 0; i < _clippingContextListForMask.size(); i++)
                     {
                         if (_clippingContextListForMask[i])
                             CSM_DELETE_SELF(CubismClippingContext, _clippingContextListForMask[i]);
@@ -75,12 +74,12 @@ namespace Live2D
                     }
 
                     // _clippingContextListForDrawは_clippingContextListForMaskにあるインスタンスを指している。上記の処理により要素ごとのDELETEは不要。
-                    for (csmUint32 i = 0; i < _clippingContextListForDraw.GetSize(); i++)
+                    for (auto i = 0; i < _clippingContextListForDraw.size(); i++)
                     {
                         _clippingContextListForDraw[i] = NULL;
                     }
 
-                    for (csmUint32 i = 0; i < _channelColors.GetSize(); i++)
+                    for (auto i = 0; i < _channelColors.size(); i++)
                     {
                         if (_channelColors[i])
                             CSM_DELETE(_channelColors[i]);
@@ -88,17 +87,17 @@ namespace Live2D
                     }
                 }
 
-                void CubismClippingManager_OpenGLES2::Initialize(CubismModel &, csmInt32 drawableCount, const csmInt32 **drawableMasks,
-                                                                 const csmInt32 *drawableMaskCounts)
+                void CubismClippingManager_OpenGLES2::Initialize(CubismModel &, int drawableCount, const int **drawableMasks,
+                                                                 const int *drawableMaskCounts)
                 {
                     //クリッピングマスクを使う描画オブジェクトを全て登録する
                     //クリッピングマスクは、通常数個程度に限定して使うものとする
-                    for (csmInt32 i = 0; i < drawableCount; i++)
+                    for (int i = 0; i < drawableCount; i++)
                     {
                         if (drawableMaskCounts[i] <= 0)
                         {
                             //クリッピングマスクが使用されていないアートメッシュ（多くの場合使用しない）
-                            _clippingContextListForDraw.PushBack(NULL);
+                            _clippingContextListForDraw.append(NULL);
                             continue;
                         }
 
@@ -108,32 +107,31 @@ namespace Live2D
                         {
                             // 同一のマスクが存在していない場合は生成する
                             cc = CSM_NEW CubismClippingContext(this, drawableMasks[i], drawableMaskCounts[i]);
-                            _clippingContextListForMask.PushBack(cc);
+                            _clippingContextListForMask.append(cc);
                         }
 
                         cc->AddClippedDrawable(i);
 
-                        _clippingContextListForDraw.PushBack(cc);
+                        _clippingContextListForDraw.append(cc);
                     }
                 }
 
-                CubismClippingContext *CubismClippingManager_OpenGLES2::FindSameClip(const csmInt32 *drawableMasks,
-                                                                                     csmInt32 drawableMaskCounts) const
+                CubismClippingContext *CubismClippingManager_OpenGLES2::FindSameClip(const int *drawableMasks, int drawableMaskCounts) const
                 {
                     // 作成済みClippingContextと一致するか確認
-                    for (csmUint32 i = 0; i < _clippingContextListForMask.GetSize(); i++)
+                    for (auto i = 0; i < _clippingContextListForMask.size(); i++)
                     {
                         CubismClippingContext *cc = _clippingContextListForMask[i];
-                        const csmInt32 count = cc->_clippingIdCount;
+                        const int count = cc->_clippingIdCount;
                         if (count != drawableMaskCounts)
                             continue; //個数が違う場合は別物
-                        csmInt32 samecount = 0;
+                        int samecount = 0;
 
                         // 同じIDを持つか確認。配列の数が同じなので、一致した個数が同じなら同じ物を持つとする。
-                        for (csmInt32 j = 0; j < count; j++)
+                        for (int j = 0; j < count; j++)
                         {
-                            const csmInt32 clipId = cc->_clippingIdList[j];
-                            for (csmInt32 k = 0; k < count; k++)
+                            const int clipId = cc->_clippingIdList[j];
+                            for (int k = 0; k < count; k++)
                             {
                                 if (drawableMasks[k] == clipId)
                                 {
@@ -157,8 +155,8 @@ namespace Live2D
 
                     // 全てのクリッピングを用意する
                     // 同じクリップ（複数の場合はまとめて１つのクリップ）を使う場合は１度だけ設定する
-                    csmInt32 usingClipCount = 0;
-                    for (csmUint32 clipIndex = 0; clipIndex < _clippingContextListForMask.GetSize(); clipIndex++)
+                    int usingClipCount = 0;
+                    for (auto clipIndex = 0; clipIndex < _clippingContextListForMask.size(); clipIndex++)
                     {
                         // １つのクリッピングマスクに関して
                         CubismClippingContext *cc = _clippingContextListForMask[clipIndex];
@@ -199,7 +197,7 @@ namespace Live2D
 
                         // 実際にマスクを生成する
                         // 全てのマスクをどの様にレイアウトして描くかを決定し、ClipContext , ClippedDrawContext に記憶する
-                        for (csmUint32 clipIndex = 0; clipIndex < _clippingContextListForMask.GetSize(); clipIndex++)
+                        for (auto clipIndex = 0; clipIndex < _clippingContextListForMask.size(); clipIndex++)
                         {
                             // --- 実際に１つのマスクを描く ---
                             CubismClippingContext *clipContext = _clippingContextListForMask[clipIndex];
@@ -259,10 +257,10 @@ namespace Live2D
 
                             if (!renderer->IsUsingHighPrecisionMask())
                             {
-                                const csmInt32 clipDrawCount = clipContext->_clippingIdCount;
-                                for (csmInt32 i = 0; i < clipDrawCount; i++)
+                                const int clipDrawCount = clipContext->_clippingIdCount;
+                                for (int i = 0; i < clipDrawCount; i++)
                                 {
-                                    const csmInt32 clipDrawIndex = clipContext->_clippingIdList[i];
+                                    const int clipDrawIndex = clipContext->_clippingIdList[i];
 
                                     // 頂点情報が更新されておらず、信頼性がない場合は描画をパスする
                                     if (!model.GetDrawableDynamicFlagVertexPositionsDidChange(clipDrawIndex))
@@ -309,20 +307,20 @@ namespace Live2D
                     // このマスクが実際に必要か判定する
                     // このクリッピングを利用する「描画オブジェクト」がひとつでも使用可能であればマスクを生成する必要がある
 
-                    const csmInt32 clippedDrawCount = clippingContext->_clippedDrawableIndexList->GetSize();
-                    for (csmInt32 clippedDrawableIndex = 0; clippedDrawableIndex < clippedDrawCount; clippedDrawableIndex++)
+                    const int clippedDrawCount = clippingContext->_clippedDrawableIndexList->size();
+                    for (int clippedDrawableIndex = 0; clippedDrawableIndex < clippedDrawCount; clippedDrawableIndex++)
                     {
                         // マスクを使用する描画オブジェクトの描画される矩形を求める
-                        const csmInt32 drawableIndex = (*clippingContext->_clippedDrawableIndexList)[clippedDrawableIndex];
+                        const int drawableIndex = (*clippingContext->_clippedDrawableIndexList)[clippedDrawableIndex];
 
-                        const csmInt32 drawableVertexCount = model.GetDrawableVertexCount(drawableIndex);
+                        const int drawableVertexCount = model.GetDrawableVertexCount(drawableIndex);
                         csmFloat32 *drawableVertexes = const_cast<csmFloat32 *>(model.GetDrawableVertices(drawableIndex));
 
                         csmFloat32 minX = FLT_MAX, minY = FLT_MAX;
                         csmFloat32 maxX = FLT_MIN, maxY = FLT_MIN;
 
-                        csmInt32 loop = drawableVertexCount * Constant::VertexStep;
-                        for (csmInt32 pi = Constant::VertexOffset; pi < loop; pi += Constant::VertexStep)
+                        int loop = drawableVertexCount * Constant::VertexStep;
+                        for (int pi = Constant::VertexOffset; pi < loop; pi += Constant::VertexStep)
                         {
                             csmFloat32 x = drawableVertexes[pi];
                             csmFloat32 y = drawableVertexes[pi + 1];
@@ -370,11 +368,11 @@ namespace Live2D
                     }
                 }
 
-                void CubismClippingManager_OpenGLES2::SetupLayoutBounds(csmInt32 usingClipCount) const
+                void CubismClippingManager_OpenGLES2::SetupLayoutBounds(int usingClipCount) const
                 {
                     if (usingClipCount <= 0)
                     { // この場合は一つのマスクターゲットを毎回クリアして使用する
-                        for (csmUint32 index = 0; index < _clippingContextListForMask.GetSize(); index++)
+                        for (auto index = 0; index < _clippingContextListForMask.size(); index++)
                         {
                             CubismClippingContext *cc = _clippingContextListForMask[index];
                             cc->_layoutChannelNo = 0; // どうせ毎回消すので固定で良い
@@ -390,16 +388,16 @@ namespace Live2D
                     // マスクグループの数が4以下ならRGBA各チャンネルに１つずつマスクを配置し、5以上6以下ならRGBAを2,2,1,1と配置する
 
                     // RGBAを順番に使っていく。
-                    const csmInt32 div = usingClipCount / ColorChannelCount; //１チャンネルに配置する基本のマスク個数
-                    const csmInt32 mod = usingClipCount % ColorChannelCount; //余り、この番号のチャンネルまでに１つずつ配分する
+                    const int div = usingClipCount / ColorChannelCount; //１チャンネルに配置する基本のマスク個数
+                    const int mod = usingClipCount % ColorChannelCount; //余り、この番号のチャンネルまでに１つずつ配分する
 
                     // RGBAそれぞれのチャンネルを用意していく(0:R , 1:G , 2:B, 3:A, )
-                    csmInt32 curClipIndex = 0; //順番に設定していく
+                    int curClipIndex = 0; //順番に設定していく
 
-                    for (csmInt32 channelNo = 0; channelNo < ColorChannelCount; channelNo++)
+                    for (int channelNo = 0; channelNo < ColorChannelCount; channelNo++)
                     {
                         // このチャンネルにレイアウトする数
-                        const csmInt32 layoutCount = div + (channelNo < mod ? 1 : 0);
+                        const int layoutCount = div + (channelNo < mod ? 1 : 0);
 
                         // 分割方法を決定する
                         if (layoutCount == 0)
@@ -418,9 +416,9 @@ namespace Live2D
                         }
                         else if (layoutCount == 2)
                         {
-                            for (csmInt32 i = 0; i < layoutCount; i++)
+                            for (int i = 0; i < layoutCount; i++)
                             {
-                                const csmInt32 xpos = i % 2;
+                                const int xpos = i % 2;
 
                                 CubismClippingContext *cc = _clippingContextListForMask[curClipIndex++];
                                 cc->_layoutChannelNo = channelNo;
@@ -435,10 +433,10 @@ namespace Live2D
                         else if (layoutCount <= 4)
                         {
                             // 4分割して使う
-                            for (csmInt32 i = 0; i < layoutCount; i++)
+                            for (int i = 0; i < layoutCount; i++)
                             {
-                                const csmInt32 xpos = i % 2;
-                                const csmInt32 ypos = i / 2;
+                                const int xpos = i % 2;
+                                const int ypos = i / 2;
 
                                 CubismClippingContext *cc = _clippingContextListForMask[curClipIndex++];
                                 cc->_layoutChannelNo = channelNo;
@@ -452,10 +450,10 @@ namespace Live2D
                         else if (layoutCount <= 9)
                         {
                             // 9分割して使う
-                            for (csmInt32 i = 0; i < layoutCount; i++)
+                            for (int i = 0; i < layoutCount; i++)
                             {
-                                const csmInt32 xpos = i % 3;
-                                const csmInt32 ypos = i / 3;
+                                const int xpos = i % 3;
+                                const int ypos = i / 3;
 
                                 CubismClippingContext *cc = _clippingContextListForMask[curClipIndex++];
                                 cc->_layoutChannelNo = channelNo;
@@ -475,7 +473,7 @@ namespace Live2D
 
                             // 引き続き実行する場合、 SetupShaderProgramでオーバーアクセスが発生するので仕方なく適当に入れておく
                             // もちろん描画結果はろくなことにならない
-                            for (csmInt32 i = 0; i < layoutCount; i++)
+                            for (int i = 0; i < layoutCount; i++)
                             {
                                 CubismClippingContext *cc = _clippingContextListForMask[curClipIndex++];
                                 cc->_layoutChannelNo = 0;
@@ -488,22 +486,22 @@ namespace Live2D
                     }
                 }
 
-                CubismRenderer::CubismTextureColor *CubismClippingManager_OpenGLES2::GetChannelFlagAsColor(csmInt32 channelNo)
+                CubismRenderer::CubismTextureColor *CubismClippingManager_OpenGLES2::GetChannelFlagAsColor(int channelNo)
                 {
                     return _channelColors[channelNo];
                 }
 
-                csmVector<CubismClippingContext *> *CubismClippingManager_OpenGLES2::GetClippingContextListForDraw()
+                QVector<CubismClippingContext *> *CubismClippingManager_OpenGLES2::GetClippingContextListForDraw()
                 {
                     return &_clippingContextListForDraw;
                 }
 
-                void CubismClippingManager_OpenGLES2::SetClippingMaskBufferSize(csmInt32 size)
+                void CubismClippingManager_OpenGLES2::SetClippingMaskBufferSize(int size)
                 {
                     _clippingMaskBufferSize = size;
                 }
 
-                csmInt32 CubismClippingManager_OpenGLES2::GetClippingMaskBufferSize() const
+                int CubismClippingManager_OpenGLES2::GetClippingMaskBufferSize() const
                 {
                     return _clippingMaskBufferSize;
                 }
@@ -511,8 +509,8 @@ namespace Live2D
                 /*********************************************************************************************************************
                  *                                      CubismClippingContext
                  ********************************************************************************************************************/
-                CubismClippingContext::CubismClippingContext(CubismClippingManager_OpenGLES2 *manager, const csmInt32 *clippingDrawableIndices,
-                                                             csmInt32 clipCount)
+                CubismClippingContext::CubismClippingContext(CubismClippingManager_OpenGLES2 *manager, const int *clippingDrawableIndices,
+                                                             int clipCount)
                 {
                     _owner = manager;
 
@@ -527,7 +525,7 @@ namespace Live2D
                     _allClippedDrawRect = CSM_NEW csmRectF();
                     _layoutBounds = CSM_NEW csmRectF();
 
-                    _clippedDrawableIndexList = CSM_NEW csmVector<csmInt32>();
+                    _clippedDrawableIndexList = CSM_NEW QVector<int>();
                 }
 
                 CubismClippingContext::~CubismClippingContext()
@@ -551,9 +549,9 @@ namespace Live2D
                     }
                 }
 
-                void CubismClippingContext::AddClippedDrawable(csmInt32 drawableIndex)
+                void CubismClippingContext::AddClippedDrawable(int drawableIndex)
                 {
-                    _clippedDrawableIndexList->PushBack(drawableIndex);
+                    _clippedDrawableIndexList->append(drawableIndex);
                 }
 
                 CubismClippingManager_OpenGLES2 *CubismClippingContext::GetClippingManager()
@@ -660,7 +658,7 @@ namespace Live2D
                  ********************************************************************************************************************/
                 namespace
                 {
-                    const csmInt32 ShaderCount =
+                    const int ShaderCount =
                         19; ///< シェーダの数 = マスク生成用 + (通常 + 加算 + 乗算) * (マスク無 + マスク有 + マスク有反転 +
                             ///< マスク無の乗算済アルファ対応版 + マスク有の乗算済アルファ対応版 + マスク有反転の乗算済アルファ対応版)
                     CubismShader_OpenGLES2 *s_instance;
@@ -698,7 +696,7 @@ namespace Live2D
 
                 void CubismShader_OpenGLES2::ReleaseShaderProgram()
                 {
-                    for (csmUint32 i = 0; i < _shaderSets.GetSize(); i++)
+                    for (auto i = 0; i < _shaderSets.size(); i++)
                     {
                         if (_shaderSets[i]->ShaderProgram)
                         {
@@ -710,7 +708,7 @@ namespace Live2D
                 }
 
                 // SetupMask
-                static const csmChar *VertShaderSrcSetupMask =
+                static const auto VertShaderSrcSetupMask =
 #if defined(CSM_TARGET_IPHONE_ES2) || defined(CSM_TARGET_ANDROID_ES2)
                     "#version 100\n"
 #else
@@ -728,7 +726,7 @@ namespace Live2D
                     "v_texCoord = a_texCoord;"
                     "v_texCoord.y = 1.0 - v_texCoord.y;"
                     "}";
-                static const csmChar *FragShaderSrcSetupMask =
+                static const auto FragShaderSrcSetupMask =
 #if defined(CSM_TARGET_IPHONE_ES2) || defined(CSM_TARGET_ANDROID_ES2)
                     "#version 100\n"
                     "precision mediump float;"
@@ -751,7 +749,7 @@ namespace Live2D
                     "gl_FragColor = u_channelFlag * texture2D(s_texture0 , v_texCoord).a * isInside;"
                     "}";
 #if defined(CSM_TARGET_ANDROID_ES2)
-                static const csmChar *FragShaderSrcSetupMaskTegra =
+                static const QString &FragShaderSrcSetupMaskTegra =
                     "#version 100\n"
                     "#extension GL_NV_shader_framebuffer_fetch : enable\n"
                     "precision mediump float;"
@@ -774,7 +772,7 @@ namespace Live2D
 
                 //----- バーテックスシェーダプログラム -----
                 // Normal & Add & Mult 共通
-                static const csmChar *VertShaderSrc =
+                static const auto VertShaderSrc =
 #if defined(CSM_TARGET_IPHONE_ES2) || defined(CSM_TARGET_ANDROID_ES2)
                     "#version 100\n"
 #else
@@ -792,7 +790,7 @@ namespace Live2D
                     "}";
 
                 // Normal & Add & Mult 共通（クリッピングされたものの描画用）
-                static const csmChar *VertShaderSrcMasked =
+                static const auto VertShaderSrcMasked =
 #if defined(CSM_TARGET_IPHONE_ES2) || defined(CSM_TARGET_ANDROID_ES2)
                     "#version 100\n"
 #else
@@ -814,7 +812,7 @@ namespace Live2D
 
                 //----- フラグメントシェーダプログラム -----
                 // Normal & Add & Mult 共通
-                static const csmChar *FragShaderSrc =
+                static const auto FragShaderSrc =
 #if defined(CSM_TARGET_IPHONE_ES2) || defined(CSM_TARGET_ANDROID_ES2)
                     "#version 100\n"
                     "precision mediump float;"
@@ -830,7 +828,7 @@ namespace Live2D
                     "gl_FragColor = vec4(color.rgb * color.a,  color.a);"
                     "}";
 #if defined(CSM_TARGET_ANDROID_ES2)
-                static const csmChar *FragShaderSrcTegra = "#version 100\n"
+                static const QString &FragShaderSrcTegra = "#version 100\n"
                                                            "#extension GL_NV_shader_framebuffer_fetch : enable\n"
                                                            "precision mediump float;"
                                                            "varying vec2 v_texCoord;"      // v2f.texcoord
@@ -844,7 +842,7 @@ namespace Live2D
 #endif
 
                 // Normal & Add & Mult 共通 （PremultipliedAlpha）
-                static const csmChar *FragShaderSrcPremultipliedAlpha =
+                static const auto FragShaderSrcPremultipliedAlpha =
 #if defined(CSM_TARGET_IPHONE_ES2) || defined(CSM_TARGET_ANDROID_ES2)
                     "#version 100\n"
                     "precision mediump float;"
@@ -859,7 +857,7 @@ namespace Live2D
                     "gl_FragColor = texture2D(s_texture0 , v_texCoord) * u_baseColor;"
                     "}";
 #if defined(CSM_TARGET_ANDROID_ES2)
-                static const csmChar *FragShaderSrcPremultipliedAlphaTegra = "#version 100\n"
+                static const QString &FragShaderSrcPremultipliedAlphaTegra = "#version 100\n"
                                                                              "#extension GL_NV_shader_framebuffer_fetch : enable\n"
                                                                              "precision mediump float;"
                                                                              "varying vec2 v_texCoord;"      // v2f.texcoord
@@ -872,7 +870,7 @@ namespace Live2D
 #endif
 
                 // Normal & Add & Mult 共通（クリッピングされたものの描画用）
-                static const csmChar *FragShaderSrcMask =
+                static const auto FragShaderSrcMask =
 #if defined(CSM_TARGET_IPHONE_ES2) || defined(CSM_TARGET_ANDROID_ES2)
                     "#version 100\n"
                     "precision mediump float;"
@@ -895,7 +893,7 @@ namespace Live2D
                     "gl_FragColor = col_formask;"
                     "}";
 #if defined(CSM_TARGET_ANDROID_ES2)
-                static const csmChar *FragShaderSrcMaskTegra =
+                static const QString &FragShaderSrcMaskTegra =
                     "#version 100\n"
                     "#extension GL_NV_shader_framebuffer_fetch : enable\n"
                     "precision mediump float;"
@@ -917,7 +915,7 @@ namespace Live2D
 #endif
 
                 // Normal & Add & Mult 共通（クリッピングされて反転使用の描画用）
-                static const csmChar *FragShaderSrcMaskInverted =
+                static const auto FragShaderSrcMaskInverted =
 #if defined(CSM_TARGET_IPHONE_ES2) || defined(CSM_TARGET_ANDROID_ES2)
                     "#version 100\n"
                     "precision mediump float;"
@@ -940,7 +938,7 @@ namespace Live2D
                     "gl_FragColor = col_formask;"
                     "}";
 #if defined(CSM_TARGET_ANDROID_ES2)
-                static const csmChar *FragShaderSrcMaskInvertedTegra =
+                static const QString &FragShaderSrcMaskInvertedTegra =
                     "#version 100\n"
                     "#extension GL_NV_shader_framebuffer_fetch : enable\n"
                     "precision mediump float;"
@@ -962,7 +960,7 @@ namespace Live2D
 #endif
 
                 // Normal & Add & Mult 共通（クリッピングされたものの描画用、PremultipliedAlphaの場合）
-                static const csmChar *FragShaderSrcMaskPremultipliedAlpha =
+                static const auto FragShaderSrcMaskPremultipliedAlpha =
 #if defined(CSM_TARGET_IPHONE_ES2) || defined(CSM_TARGET_ANDROID_ES2)
                     "#version 100\n"
                     "precision mediump float;"
@@ -984,7 +982,7 @@ namespace Live2D
                     "gl_FragColor = col_formask;"
                     "}";
 #if defined(CSM_TARGET_ANDROID_ES2)
-                static const csmChar *FragShaderSrcMaskPremultipliedAlphaTegra =
+                static const QString &FragShaderSrcMaskPremultipliedAlphaTegra =
                     "#version 100\n"
                     "#extension GL_NV_shader_framebuffer_fetch : enable\n"
                     "precision mediump float;"
@@ -1005,7 +1003,7 @@ namespace Live2D
 #endif
 
                 // Normal & Add & Mult 共通（クリッピングされて反転使用の描画用、PremultipliedAlphaの場合）
-                static const csmChar *FragShaderSrcMaskInvertedPremultipliedAlpha =
+                static const auto FragShaderSrcMaskInvertedPremultipliedAlpha =
 #if defined(CSM_TARGET_IPHONE_ES2) || defined(CSM_TARGET_ANDROID_ES2)
                     "#version 100\n"
                     "precision mediump float;"
@@ -1027,7 +1025,7 @@ namespace Live2D
                     "gl_FragColor = col_formask;"
                     "}";
 #if defined(CSM_TARGET_ANDROID_ES2)
-                static const csmChar *FragShaderSrcMaskInvertedPremultipliedAlphaTegra =
+                static const QString &FragShaderSrcMaskInvertedPremultipliedAlphaTegra =
                     "#version 100\n"
                     "#extension GL_NV_shader_framebuffer_fetch : enable\n"
                     "precision mediump float;"
@@ -1086,9 +1084,9 @@ namespace Live2D
 
                 void CubismShader_OpenGLES2::GenerateShaders()
                 {
-                    for (csmInt32 i = 0; i < ShaderCount; i++)
+                    for (int i = 0; i < ShaderCount; i++)
                     {
-                        _shaderSets.PushBack(CSM_NEW CubismShaderSet());
+                        _shaderSets.append(CSM_NEW CubismShaderSet());
                     }
 
 #ifdef CSM_TARGET_ANDROID_ES2
@@ -1453,24 +1451,24 @@ namespace Live2D
                         OpenGLHelper::get()->glGetUniformLocation(_shaderSets[18]->ShaderProgram, "u_baseColor");
                 }
 
-                void CubismShader_OpenGLES2::SetupShaderProgram(CubismRenderer_OpenGLES2 *renderer, GLuint textureId, csmInt32 vertexCount,
+                void CubismShader_OpenGLES2::SetupShaderProgram(CubismRenderer_OpenGLES2 *renderer, GLuint textureId, int vertexCount,
                                                                 csmFloat32 *vertexArray, csmFloat32 *uvArray, csmFloat32 opacity,
                                                                 CubismRenderer::CubismBlendMode colorBlendMode,
-                                                                CubismRenderer::CubismTextureColor baseColor, csmBool isPremultipliedAlpha,
-                                                                CubismMatrix44 matrix4x4, csmBool invertedMask)
+                                                                CubismRenderer::CubismTextureColor baseColor, bool isPremultipliedAlpha,
+                                                                CubismMatrix44 matrix4x4, bool invertedMask)
                 {
                     Q_UNUSED(vertexCount)
                     Q_UNUSED(opacity)
-                    if (_shaderSets.GetSize() == 0)
+                    if (_shaderSets.size() == 0)
                     {
                         GenerateShaders();
                     }
 
                     // Blending
-                    csmInt32 SRC_COLOR;
-                    csmInt32 DST_COLOR;
-                    csmInt32 SRC_ALPHA;
-                    csmInt32 DST_ALPHA;
+                    int SRC_COLOR;
+                    int DST_COLOR;
+                    int SRC_ALPHA;
+                    int DST_ALPHA;
 
                     if (renderer->GetClippingContextBufferForMask() != NULL) // マスク生成時
                     {
@@ -1492,7 +1490,7 @@ namespace Live2D
                                                                    sizeof(csmFloat32) * 2, uvArray);
 
                         // チャンネル
-                        const csmInt32 channelNo = renderer->GetClippingContextBufferForMask()->_layoutChannelNo;
+                        const int channelNo = renderer->GetClippingContextBufferForMask()->_layoutChannelNo;
                         CubismRenderer::CubismTextureColor *colorChannel =
                             renderer->GetClippingContextBufferForMask()->GetClippingManager()->GetChannelFlagAsColor(channelNo);
                         OpenGLHelper::get()->glUniform4f(shaderSet->UnifromChannelFlagLocation, colorChannel->R, colorChannel->G,
@@ -1513,8 +1511,8 @@ namespace Live2D
                     }
                     else // マスク生成以外の場合
                     {
-                        const csmBool masked = renderer->GetClippingContextBufferForDraw() != NULL; // この描画オブジェクトはマスク対象か
-                        const csmInt32 offset = (masked ? (invertedMask ? 2 : 1) : 0) + (isPremultipliedAlpha ? 3 : 0);
+                        const bool masked = renderer->GetClippingContextBufferForDraw() != NULL; // この描画オブジェクトはマスク対象か
+                        const int offset = (masked ? (invertedMask ? 2 : 1) : 0) + (isPremultipliedAlpha ? 3 : 0);
 
                         CubismShaderSet *shaderSet;
                         switch (colorBlendMode)
@@ -1571,7 +1569,7 @@ namespace Live2D
                                                                     renderer->GetClippingContextBufferForDraw()->_matrixForDraw.GetArray());
 
                             // 使用するカラーチャンネルを設定
-                            const csmInt32 channelNo = renderer->GetClippingContextBufferForDraw()->_layoutChannelNo;
+                            const int channelNo = renderer->GetClippingContextBufferForDraw()->_layoutChannelNo;
                             CubismRenderer::CubismTextureColor *colorChannel =
                                 renderer->GetClippingContextBufferForDraw()->GetClippingManager()->GetChannelFlagAsColor(channelNo);
                             OpenGLHelper::get()->glUniform4f(shaderSet->UnifromChannelFlagLocation, colorChannel->R, colorChannel->G,
@@ -1593,7 +1591,7 @@ namespace Live2D
                     OpenGLHelper::get()->glBlendFuncSeparate(SRC_COLOR, DST_COLOR, SRC_ALPHA, DST_ALPHA);
                 }
 
-                csmBool CubismShader_OpenGLES2::CompileShaderSource(GLuint *outShader, GLenum shaderType, const csmChar *shaderSource)
+                bool CubismShader_OpenGLES2::CompileShaderSource(GLuint *outShader, GLenum shaderType, const char *shaderSource)
                 {
                     GLint status;
                     const GLchar *source = shaderSource;
@@ -1622,7 +1620,7 @@ namespace Live2D
                     return true;
                 }
 
-                csmBool CubismShader_OpenGLES2::LinkProgram(GLuint shaderProgram)
+                bool CubismShader_OpenGLES2::LinkProgram(GLuint shaderProgram)
                 {
                     GLint status;
                     OpenGLHelper::get()->glLinkProgram(shaderProgram);
@@ -1646,7 +1644,7 @@ namespace Live2D
                     return true;
                 }
 
-                csmBool CubismShader_OpenGLES2::ValidateProgram(GLuint shaderProgram)
+                bool CubismShader_OpenGLES2::ValidateProgram(GLuint shaderProgram)
                 {
                     GLint logLength, status;
 
@@ -1669,7 +1667,7 @@ namespace Live2D
                     return true;
                 }
 
-                GLuint CubismShader_OpenGLES2::LoadShaderProgram(const csmChar *vertShaderSrc, const csmChar *fragShaderSrc)
+                GLuint CubismShader_OpenGLES2::LoadShaderProgram(const char *vertShaderSrc, const char *fragShaderSrc)
                 {
                     GLuint vertShader, fragShader;
 
@@ -1870,7 +1868,7 @@ namespace Live2D
                     OpenGLHelper::get()->glGetVertexAttribiv = (PFNGLGETVERTEXATTRIBIVPROC) WinGlGetProcAddress("glGetVertexAttribiv");
                 }
 
-                void *CubismRenderer_OpenGLES2::WinGlGetProcAddress(const csmChar *name)
+                void *CubismRenderer_OpenGLES2::WinGlGetProcAddress(const QString &name)
                 {
                     void *ptr = wglGetProcAddress(name);
                     if (ptr == NULL)
@@ -1881,7 +1879,7 @@ namespace Live2D
                     return ptr;
                 }
 
-                void CubismRenderer_OpenGLES2::CheckGlError(const csmChar *message)
+                void CubismRenderer_OpenGLES2::CheckGlError(const QString &message)
                 {
                     GLenum errcode = OpenGLHelper::get()->glGetError();
                     if (errcode != GL_NO_ERROR)
@@ -1906,7 +1904,7 @@ namespace Live2D
                     : _clippingManager(NULL), _clippingContextBufferForMask(NULL), _clippingContextBufferForDraw(NULL)
                 {
                     // テクスチャ対応マップの容量を確保しておく.
-                    _textures.PrepareCapacity(32, true);
+                    //_textures.PrepareCapacity(32, true);
                 }
 
                 CubismRenderer_OpenGLES2::~CubismRenderer_OpenGLES2()
@@ -1935,7 +1933,7 @@ namespace Live2D
                                                                    _clippingManager->GetClippingMaskBufferSize());
                     }
 
-                    _sortedDrawableIndexList.Resize(model->GetDrawableCount(), 0);
+                    _sortedDrawableIndexList.resize(model->GetDrawableCount()); //, 0);
 
                     CubismRenderer::Initialize(model); //親クラスの処理を呼ぶ
                 }
@@ -1966,7 +1964,7 @@ namespace Live2D
                     //異方性フィルタリング。プラットフォームのOpenGLによっては未対応の場合があるので、未設定のときは設定しない
                     if (GetAnisotropy() > 0.0f)
                     {
-                        for (csmInt32 i = 0; i < _textures.GetSize(); i++)
+                        for (int i = 0; i < _textures.size(); i++)
                         {
                             OpenGLHelper::get()->glBindTexture(GL_TEXTURE_2D, _textures[i]);
                             OpenGLHelper::get()->glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY_EXT, GetAnisotropy());
@@ -1996,20 +1994,20 @@ namespace Live2D
                     // 上記クリッピング処理内でも一度PreDrawを呼ぶので注意!!
                     PreDraw();
 
-                    const csmInt32 drawableCount = GetModel()->GetDrawableCount();
-                    const csmInt32 *renderOrder = GetModel()->GetDrawableRenderOrders();
+                    const int drawableCount = GetModel()->GetDrawableCount();
+                    const int *renderOrder = GetModel()->GetDrawableRenderOrders();
 
                     // インデックスを描画順でソート
-                    for (csmInt32 i = 0; i < drawableCount; ++i)
+                    for (int i = 0; i < drawableCount; ++i)
                     {
-                        const csmInt32 order = renderOrder[i];
+                        const int order = renderOrder[i];
                         _sortedDrawableIndexList[order] = i;
                     }
 
                     // 描画
-                    for (csmInt32 i = 0; i < drawableCount; ++i)
+                    for (int i = 0; i < drawableCount; ++i)
                     {
-                        const csmInt32 drawableIndex = _sortedDrawableIndexList[i];
+                        const int drawableIndex = _sortedDrawableIndexList[i];
 
                         // Drawableが表示状態でなければ処理をパスする
                         if (!GetModel()->GetDrawableDynamicFlagIsVisible(drawableIndex))
@@ -2040,10 +2038,10 @@ namespace Live2D
                             }
 
                             {
-                                const csmInt32 clipDrawCount = clipContext->_clippingIdCount;
-                                for (csmInt32 index = 0; index < clipDrawCount; index++)
+                                const int clipDrawCount = clipContext->_clippingIdCount;
+                                for (int index = 0; index < clipDrawCount; index++)
                                 {
-                                    const csmInt32 clipDrawIndex = clipContext->_clippingIdList[index];
+                                    const int clipDrawIndex = clipContext->_clippingIdList[index];
 
                                     // 頂点情報が更新されておらず、信頼性がない場合は描画をパスする
                                     if (!GetModel()->GetDrawableDynamicFlagVertexPositionsDidChange(clipDrawIndex))
@@ -2100,9 +2098,9 @@ namespace Live2D
                     PostDraw();
                 }
 
-                void CubismRenderer_OpenGLES2::DrawMesh(csmInt32 textureNo, csmInt32 indexCount, csmInt32 vertexCount, csmUint16 *indexArray,
+                void CubismRenderer_OpenGLES2::DrawMesh(int textureNo, int indexCount, int vertexCount, csmUint16 *indexArray,
                                                         csmFloat32 *vertexArray, csmFloat32 *uvArray, csmFloat32 opacity,
-                                                        CubismBlendMode colorBlendMode, csmBool invertedMask)
+                                                        CubismBlendMode colorBlendMode, bool invertedMask)
                 {
 
 #ifdef CSM_TARGET_WIN_GL
@@ -2181,12 +2179,12 @@ namespace Live2D
                     _textures[modelTextureNo] = glTextureNo;
                 }
 
-                const csmMap<csmInt32, GLuint> &CubismRenderer_OpenGLES2::GetBindedTextures() const
+                const QMap<int, GLuint> &CubismRenderer_OpenGLES2::GetBindedTextures() const
                 {
                     return _textures;
                 }
 
-                void CubismRenderer_OpenGLES2::SetClippingMaskBufferSize(csmInt32 size)
+                void CubismRenderer_OpenGLES2::SetClippingMaskBufferSize(int size)
                 {
                     // FrameBufferのサイズを変更するためにインスタンスを破棄・再作成する
                     CSM_DELETE_SELF(CubismClippingManager_OpenGLES2, _clippingManager);
@@ -2199,7 +2197,7 @@ namespace Live2D
                                                  GetModel()->GetDrawableMaskCounts());
                 }
 
-                csmInt32 CubismRenderer_OpenGLES2::GetClippingMaskBufferSize() const
+                int CubismRenderer_OpenGLES2::GetClippingMaskBufferSize() const
                 {
                     return _clippingManager->GetClippingMaskBufferSize();
                 }

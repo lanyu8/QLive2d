@@ -15,7 +15,7 @@ bool App::Initialize(int w, int h)
     ApplicationInstance = new App();
     return ApplicationInstance->InitializeCubism(w, h);
 }
-void App::Run()
+void App::Repaint()
 {
     if (!initialized)
         return;
@@ -32,16 +32,16 @@ bool App::InitializeCubism(int w, int h)
         return false;
 
     _cubismOption.LogFunction = AppUtils::Log;
-    _cubismOption.LoggingLevel = Config::CubismLoggingLevel;
+    _cubismOption.LoggingLevel = CubismLoggingLevel;
     Csm::CubismFramework::StartUp(&_cubismAllocator, &_cubismOption);
     CubismFramework::Initialize();
 
-    std::string modelPath = QApplication::applicationDirPath().toStdString() + "/" + std::string(Config::ResourcesPath) + Config::ModelDir + "/";
-    std::string modelJsonName = Config::ModelDir;
+    const auto modelPath = QApplication::applicationDirPath() + "/" + ResourcesPath + ModelDir + "/";
+    auto modelJsonName = ModelDir;
     modelJsonName += ".model3.json";
-    std::cout << modelPath.c_str() << std::endl;
+    std::cout << modelPath.toStdString() << std::endl;
     _model = new Model();
-    _model->LoadAssets(modelPath.c_str(), modelJsonName.c_str());
+    _model->LoadAssets(modelPath, modelJsonName);
 
     AppUtils::UpdateTime();
     initialized = true;

@@ -104,22 +104,22 @@ namespace Live2D
                     return _modelColor;
                 }
 
-                void CubismRenderer::IsPremultipliedAlpha(csmBool enable)
+                void CubismRenderer::IsPremultipliedAlpha(bool enable)
                 {
                     _isPremultipliedAlpha = enable;
                 }
 
-                csmBool CubismRenderer::IsPremultipliedAlpha() const
+                bool CubismRenderer::IsPremultipliedAlpha() const
                 {
                     return _isPremultipliedAlpha;
                 }
 
-                void CubismRenderer::IsCulling(csmBool culling)
+                void CubismRenderer::IsCulling(bool culling)
                 {
                     _isCulling = culling;
                 }
 
-                csmBool CubismRenderer::IsCulling() const
+                bool CubismRenderer::IsCulling() const
                 {
                     return _isCulling;
                 }
@@ -139,12 +139,12 @@ namespace Live2D
                     return _model;
                 }
 
-                void CubismRenderer::UseHighPrecisionMask(csmBool high)
+                void CubismRenderer::UseHighPrecisionMask(bool high)
                 {
                     _useHighPrecisionMask = high;
                 }
 
-                csmBool CubismRenderer::IsUsingHighPrecisionMask()
+                bool CubismRenderer::IsUsingHighPrecisionMask()
                 {
                     return _useHighPrecisionMask;
                 }

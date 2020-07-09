@@ -59,7 +59,7 @@ namespace Live2D
                  * @param[in]   size    バッファのサイズ
                  * @return  作成されたインスタンス
                  */
-                static CubismExpressionMotion *Create(const csmByte *buf, csmSizeInt size);
+                static CubismExpressionMotion *Create(const QByteArray &buffer);
 
                 /**
                  * @brief モデルのパラメータの更新の実行
@@ -78,7 +78,7 @@ namespace Live2D
                 CubismExpressionMotion();
                 virtual ~CubismExpressionMotion();
 
-                csmVector<ExpressionParameter> _parameters; ///< 表情のパラメータ情報リスト
+                QVector<ExpressionParameter> _parameters; ///< 表情のパラメータ情報リスト
             };
 
         } // namespace Framework

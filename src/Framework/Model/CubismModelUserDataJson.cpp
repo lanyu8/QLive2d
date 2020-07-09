@@ -19,47 +19,46 @@ namespace Live2D
 
             namespace
             {
-                const csmChar *Meta = "Meta";
-                const csmChar *UserDataCount = "UserDataCount";
-                const csmChar *TotalUserDataSize = "TotalUserDataSize";
-                const csmChar *UserData = "UserData";
-                const csmChar *Target = "Target";
-                const csmChar *Id = "Id";
-                const csmChar *Value = "Value";
+                const QString &Meta = "Meta";
+                const QString &UserDataCount = "UserDataCount";
+                const QString &TotalUserDataSize = "TotalUserDataSize";
+                const QString &UserData = "UserData";
+                const QString &Target = "Target";
+                const QString &Id = "Id";
+                const QString &Value = "Value";
             } // namespace
-            CubismModelUserDataJson::CubismModelUserDataJson(const csmByte *buffer, csmSizeInt size)
+            CubismModelUserDataJson::CubismModelUserDataJson(const QByteArray &buffer)
             {
-                _json = Utils::CubismJson::Create(buffer, size);
+                _json = QJsonDocument::fromJson(buffer).object();
             }
 
             CubismModelUserDataJson::~CubismModelUserDataJson()
             {
-                Utils::CubismJson::Delete(_json);
             }
 
-            csmInt32 CubismModelUserDataJson::GetUserDataCount() const
+            int CubismModelUserDataJson::GetUserDataCount() const
             {
-                return _json->GetRoot()[Meta][UserDataCount].ToInt();
+                return _json[Meta].toObject()[UserDataCount].toInt();
             }
 
-            csmInt32 CubismModelUserDataJson::GetTotalUserDataSize() const
+            int CubismModelUserDataJson::GetTotalUserDataSize() const
             {
-                return _json->GetRoot()[Meta][TotalUserDataSize].ToInt();
+                return _json[Meta].toObject()[TotalUserDataSize].toInt();
             }
 
-            csmString CubismModelUserDataJson::GetUserDataTargetType(const csmInt32 i) const
+            QString CubismModelUserDataJson::GetUserDataTargetType(const int i) const
             {
-                return _json->GetRoot()[UserData][i][Target].GetRawString();
+                return _json[UserData].toArray()[i].toObject()[Target].toString();
             }
 
-            CubismIdHandle CubismModelUserDataJson::GetUserDataId(const csmInt32 i) const
+            CubismIdHandle CubismModelUserDataJson::GetUserDataId(const int i) const
             {
-                return CubismFramework::GetIdManager()->GetId(_json->GetRoot()[UserData][i][Id].GetRawString());
+                return CubismFramework::GetIdManager()->GetId(_json[UserData].toArray()[i].toObject()[Id].toString());
             }
 
-            const csmChar *CubismModelUserDataJson::GetUserDataValue(const csmInt32 i) const
+            const QString CubismModelUserDataJson::GetUserDataValue(const int i) const
             {
-                return _json->GetRoot()[UserData][i][Value].GetRawString();
+                return _json[UserData].toArray()[i].toObject()[Value].toString();
             }
 
         } // namespace Framework

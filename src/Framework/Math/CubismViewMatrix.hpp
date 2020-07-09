@@ -126,7 +126,7 @@ namespace Live2D
                  * @retval  true    拡大率は最大になっている
                  * @retval  false   拡大率は最大になっていない
                  */
-                csmBool IsMaxScale() const;
+                bool IsMaxScale() const;
 
                 /**
                  * @brief 拡大率が最小か？
@@ -136,7 +136,7 @@ namespace Live2D
                  * @retval  true    拡大率は最小になっている
                  * @retval  false   拡大率は最小になっていない
                  */
-                csmBool IsMinScale() const;
+                bool IsMinScale() const;
 
                 /**
                  * @brief デバイスに対応する論理座標の左辺のX軸位置の取得

@@ -9,7 +9,7 @@ class App
 {
   public:
     static bool Initialize(int w, int h);
-    void Run();
+    void Repaint();
     GLuint CreateShader();
     inline Model *GetModel()
     {
@@ -48,8 +48,6 @@ class App
     Allocator _cubismAllocator;
     Csm::CubismFramework::Option _cubismOption;
     GLWidget *_window = nullptr;
-
-    inline static App *instance = nullptr;
     Model *_model;
 };
 

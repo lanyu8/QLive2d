@@ -11,7 +11,6 @@
 #include "Id/CubismId.hpp"
 #include "Rendering/CubismRenderer.hpp"
 #include "Type/csmMap.hpp"
-#include "Type/csmVector.hpp"
 
 namespace Live2D
 {
@@ -65,7 +64,7 @@ namespace Live2D
                  * @param[in]   partId  パーツのID
                  * @return  パーツのインデックス
                  */
-                csmInt32 GetPartIndex(CubismIdHandle partId);
+                int GetPartIndex(CubismIdHandle partId);
 
                 /**
                  * @brief パーツの個数の取得
@@ -74,7 +73,7 @@ namespace Live2D
                  *
                  * @return パーツの個数
                  */
-                csmInt32 GetPartCount() const;
+                int GetPartCount() const;
 
                 /**
                  * @brief パーツの不透明度の設定
@@ -94,7 +93,7 @@ namespace Live2D
                  * @param[in]   partIndex   パーツのインデックス
                  * @param[in]   opacity     パーツの不透明度
                  */
-                void SetPartOpacity(csmInt32 partIndex, csmFloat32 opacity);
+                void SetPartOpacity(int partIndex, csmFloat32 opacity);
 
                 /**
                  * @brief パーツの不透明度の取得
@@ -114,7 +113,7 @@ namespace Live2D
                  * @param[in]   partIndex   パーツのインデックス
                  * @return  パーツの不透明度
                  */
-                csmFloat32 GetPartOpacity(csmInt32 partIndex);
+                csmFloat32 GetPartOpacity(int partIndex);
 
                 /**
                  * @brief パラメータのインデックスの取得
@@ -124,7 +123,7 @@ namespace Live2D
                  * @param[in]   parameterId パラメータID
                  * @return  パラメータのインデックス
                  */
-                csmInt32 GetParameterIndex(CubismIdHandle parameterId);
+                int GetParameterIndex(CubismIdHandle parameterId);
 
                 /**
                  * @brief パラメータの個数の取得
@@ -133,7 +132,7 @@ namespace Live2D
                  *
                  * @return パラメータの個数
                  */
-                csmInt32 GetParameterCount() const;
+                int GetParameterCount() const;
 
                 /**
                  * @brief パラメータの最大値の取得
@@ -183,7 +182,7 @@ namespace Live2D
                  * @param[in]   parameterIndex  パラメータのインデックス
                  * @return  パラメータの値
                  */
-                csmFloat32 GetParameterValue(csmInt32 parameterIndex);
+                csmFloat32 GetParameterValue(int parameterIndex);
 
                 /**
                  * @brief パラメータの値の設定
@@ -205,7 +204,7 @@ namespace Live2D
                  * @param[in]   value           パラメータの値
                  * @param[in]   weight          重み
                  */
-                void SetParameterValue(csmInt32 parameterIndex, csmFloat32 value, csmFloat32 weight = 1.0f);
+                void SetParameterValue(int parameterIndex, csmFloat32 value, csmFloat32 weight = 1.0f);
 
                 /**
                  * @brief パラメータの値の加算
@@ -227,7 +226,7 @@ namespace Live2D
                  * @param[in]   value           加算する値
                  * @param[in]   weight          重み
                  */
-                void AddParameterValue(csmInt32 parameterIndex, csmFloat32 value, csmFloat32 weight = 1.0f);
+                void AddParameterValue(int parameterIndex, csmFloat32 value, csmFloat32 weight = 1.0f);
 
                 /**
                  * @brief パラメータの値の乗算
@@ -249,7 +248,7 @@ namespace Live2D
                  * @param[in]   value           乗算する値
                  * @param[in]   weight          重み
                  */
-                void MultiplyParameterValue(csmInt32 parameterIndex, csmFloat32 value, csmFloat32 weight = 1.0f);
+                void MultiplyParameterValue(int parameterIndex, csmFloat32 value, csmFloat32 weight = 1.0f);
 
                 /**
                  * @brief Drawableのインデックスの取得
@@ -259,7 +258,7 @@ namespace Live2D
                  * @param[in]   drawableId  DrawableのID
                  * @return  Drawableのインデックス
                  */
-                csmInt32 GetDrawableIndex(CubismIdHandle drawableId) const;
+                int GetDrawableIndex(CubismIdHandle drawableId) const;
 
                 /**
                  * @brief Drawableの個数の取得
@@ -268,7 +267,7 @@ namespace Live2D
                  *
                  * @return  Drawableの個数
                  */
-                csmInt32 GetDrawableCount() const;
+                int GetDrawableCount() const;
 
                 /**
                  * @brief DrawableのIDの取得
@@ -278,7 +277,7 @@ namespace Live2D
                  * @param[in]   drawableIndex   Drawableのインデックス
                  * @return  DrawableのID
                  */
-                CubismIdHandle GetDrawableId(csmInt32 drawableIndex) const;
+                CubismIdHandle GetDrawableId(int drawableIndex) const;
 
                 /**
                  * @brief Drawableの描画順リストの取得
@@ -287,7 +286,7 @@ namespace Live2D
                  *
                  * @return Drawableの描画順リスト
                  */
-                const csmInt32 *GetDrawableRenderOrders() const;
+                const int *GetDrawableRenderOrders() const;
 
                 /**
                  * @brief Drawableのテクスチャインデックスリストの取得
@@ -297,7 +296,7 @@ namespace Live2D
                  * @param[in]   drawableIndex   Drawableのインデックス
                  * @return  Drawableのテクスチャインデックスリスト
                  */
-                csmInt32 GetDrawableTextureIndices(csmInt32 drawableIndex) const;
+                int GetDrawableTextureIndices(int drawableIndex) const;
 
                 /**
                  * @brief Drawableの頂点インデックスの個数の取得
@@ -307,7 +306,7 @@ namespace Live2D
                  * @param[in]   drawableIndex   Drawableのインデックス
                  * @return  Drawableの頂点インデックスの個数
                  */
-                csmInt32 GetDrawableVertexIndexCount(csmInt32 drawableIndex) const;
+                int GetDrawableVertexIndexCount(int drawableIndex) const;
 
                 /**
                  * @brief Drawableの頂点の個数の取得
@@ -317,7 +316,7 @@ namespace Live2D
                  * @param[in]   drawableIndex   Drawableのインデックス
                  * @return  Drawableの頂点の個数
                  */
-                csmInt32 GetDrawableVertexCount(csmInt32 drawableIndex) const;
+                int GetDrawableVertexCount(int drawableIndex) const;
 
                 /**
                  * @brief Drawableの頂点リストの取得
@@ -327,7 +326,7 @@ namespace Live2D
                  * @param[in]   drawableIndex   Drawableのインデックス
                  * @return  Drawableの頂点リスト
                  */
-                const csmFloat32 *GetDrawableVertices(csmInt32 drawableIndex) const;
+                const csmFloat32 *GetDrawableVertices(int drawableIndex) const;
 
                 /**
                  * @brief Drawableの頂点インデックスリストの取得
@@ -337,7 +336,7 @@ namespace Live2D
                  * @param[in]   drawableIndex   Drawableのインデックス
                  * @return  Drawableの頂点インデックスリスト
                  */
-                const csmUint16 *GetDrawableVertexIndices(csmInt32 drawableIndex) const;
+                const csmUint16 *GetDrawableVertexIndices(int drawableIndex) const;
 
                 /**
                  * @brief Drawableの頂点リストの取得
@@ -347,7 +346,7 @@ namespace Live2D
                  * @param[in]   drawableIndex   Drawableのインデックス
                  * @return  Drawableの頂点リスト
                  */
-                const Core::csmVector2 *GetDrawableVertexPositions(csmInt32 drawableIndex) const;
+                const Core::csmVector2 *GetDrawableVertexPositions(int drawableIndex) const;
 
                 /**
                  * @brief Drawableの頂点のUVリストの取得
@@ -357,7 +356,7 @@ namespace Live2D
                  * @param[in]   drawableIndex   Drawableのインデックス
                  * @return  Drawableの頂点のUVリスト
                  */
-                const Core::csmVector2 *GetDrawableVertexUvs(csmInt32 drawableIndex) const;
+                const Core::csmVector2 *GetDrawableVertexUvs(int drawableIndex) const;
 
                 /**
                  * @brief Drawableの不透明度の取得
@@ -367,7 +366,7 @@ namespace Live2D
                  * @param[in]   drawableIndex   Drawableのインデックス
                  * @return  Drawableの不透明度
                  */
-                csmFloat32 GetDrawableOpacity(csmInt32 drawableIndex) const;
+                csmFloat32 GetDrawableOpacity(int drawableIndex) const;
 
                 /**
                  * @brief Drawableのカリング情報の取得
@@ -377,7 +376,7 @@ namespace Live2D
                  * @param[in]   drawableIndex   Drawableのインデックス
                  * @return  Drawableのカリング情報
                  */
-                csmInt32 GetDrawableCulling(csmInt32 drawableIndex) const;
+                int GetDrawableCulling(int drawableIndex) const;
 
                 /**
                  * @brief Drawableのブレンドモードの取得
@@ -387,7 +386,7 @@ namespace Live2D
                  * @param[in]   drawableIndex   Drawableのインデックス
                  * @return  Drawableのブレンドモード
                  */
-                Rendering::CubismRenderer::CubismBlendMode GetDrawableBlendMode(csmInt32 drawableIndex) const;
+                Rendering::CubismRenderer::CubismBlendMode GetDrawableBlendMode(int drawableIndex) const;
 
                 /**
                  * @brief Drawableのマスクの反転使用の取得
@@ -398,7 +397,7 @@ namespace Live2D
                  * @param[in]   drawableIndex   Drawableのインデックス
                  * @return  Drawableのマスクの反転設定
                  */
-                csmBool GetDrawableInvertedMask(csmInt32 drawableIndex) const;
+                bool GetDrawableInvertedMask(int drawableIndex) const;
 
                 /**
                  * @brief Drawableの表示情報の取得
@@ -409,7 +408,7 @@ namespace Live2D
                  * @return  true    Drawableが表示
                  * @retval  false   Drawableが非表示
                  */
-                csmBool GetDrawableDynamicFlagIsVisible(csmInt32 drawableIndex) const;
+                bool GetDrawableDynamicFlagIsVisible(int drawableIndex) const;
 
                 /**
                  * @brief Drawableの表示状態の変化の取得
@@ -420,7 +419,7 @@ namespace Live2D
                  * @retval  true    Drawableの表示状態が直近のCubismModel::Update関数で変化した
                  * @retval  false   Drawableの表示状態が直近のCubismModel::Update関数で変化していない
                  */
-                csmBool GetDrawableDynamicFlagVisibilityDidChange(csmInt32 drawableIndex) const;
+                bool GetDrawableDynamicFlagVisibilityDidChange(int drawableIndex) const;
 
                 /**
                  * @brief Drawableの不透明度の変化情報の取得
@@ -431,7 +430,7 @@ namespace Live2D
                  * @retval  true    Drawableの不透明度が直近のCubismModel::Update関数で変化した
                  * @retval  false   Drawableの不透明度が直近のCubismModel::Update関数で変化していない
                  */
-                csmBool GetDrawableDynamicFlagOpacityDidChange(csmInt32 drawableIndex) const;
+                bool GetDrawableDynamicFlagOpacityDidChange(int drawableIndex) const;
 
                 /**
                  * @brief DrawableのDrawOrderの変化情報の取得
@@ -443,7 +442,7 @@ namespace Live2D
                  * @retval  true    Drawableの不透明度が直近のCubismModel::Update関数で変化した
                  * @retval  false   Drawableの不透明度が直近のCubismModel::Update関数で変化していない
                  */
-                csmBool GetDrawableDynamicFlagDrawOrderDidChange(csmInt32 drawableIndex) const;
+                bool GetDrawableDynamicFlagDrawOrderDidChange(int drawableIndex) const;
 
                 /**
                  * @brief Drawableの描画順序の変化情報の取得
@@ -454,7 +453,7 @@ namespace Live2D
                  * @retval  true    Drawableの描画の順序が直近のCubismModel::Update関数で変化した
                  * @retval  false   Drawableの描画の順序が直近のCubismModel::Update関数で変化していない
                  */
-                csmBool GetDrawableDynamicFlagRenderOrderDidChange(csmInt32 drawableIndex) const;
+                bool GetDrawableDynamicFlagRenderOrderDidChange(int drawableIndex) const;
 
                 /**
                  * @brief DrawableのVertexPositionsの変化情報の取得
@@ -465,7 +464,7 @@ namespace Live2D
                  * @retval  true    Drawableの頂点情報が直近のCubismModel::Update関数で変化した
                  * @retval  false   Drawableの頂点情報が直近のCubismModel::Update関数で変化していない
                  */
-                csmBool GetDrawableDynamicFlagVertexPositionsDidChange(csmInt32 drawableIndex) const;
+                bool GetDrawableDynamicFlagVertexPositionsDidChange(int drawableIndex) const;
 
                 /**
                  * @brief Drawableのクリッピングマスクリストの取得
@@ -474,7 +473,7 @@ namespace Live2D
                  *
                  * @return  Drawableのクリッピングマスクリスト
                  */
-                const csmInt32 **GetDrawableMasks() const;
+                const int **GetDrawableMasks() const;
 
                 /**
                  * @brief Drawableのクリッピングマスクの個数リストの取得
@@ -483,7 +482,7 @@ namespace Live2D
                  *
                  * @return  Drawableのクリッピングマスクの個数リスト
                  */
-                const csmInt32 *GetDrawableMaskCounts() const;
+                const int *GetDrawableMaskCounts() const;
 
                 /**
                  * @brief クリッピングマスクの使用状態
@@ -493,7 +492,7 @@ namespace Live2D
                  * @retval  true    クリッピングマスクを使用している
                  * @retval  false   クリッピングマスクを使用していない
                  */
-                csmBool IsUsingMasking() const;
+                bool IsUsingMasking() const;
 
                 /**
                  * @brief 保存されたパラメータの読み込み
@@ -539,13 +538,13 @@ namespace Live2D
                  */
                 void Initialize();
 
-                csmMap<csmInt32, csmFloat32> _notExistPartOpacities; ///< 存在していないパーツの不透明度のリスト
-                csmMap<CubismIdHandle, csmInt32> _notExistPartId;    ///< 存在していないパーツIDのリスト
+                QMap<int, csmFloat32> _notExistPartOpacities; ///< 存在していないパーツの不透明度のリスト
+                QMap<CubismIdHandle, int> _notExistPartId;    ///< 存在していないパーツIDのリスト
 
-                csmMap<csmInt32, csmFloat32> _notExistParameterValues; ///< 存在していないパラメータの値のリスト
-                csmMap<CubismIdHandle, csmInt32> _notExistParameterId; ///< 存在していないパラメータIDのリスト
+                QMap<int, csmFloat32> _notExistParameterValues; ///< 存在していないパラメータの値のリスト
+                QMap<CubismIdHandle, int> _notExistParameterId; ///< 存在していないパラメータIDのリスト
 
-                csmVector<csmFloat32> _savedParameters; ///< 保存されたパラメータ
+                QVector<csmFloat32> _savedParameters; ///< 保存されたパラメータ
 
                 Core::csmModel *_model; ///< モデル
 
@@ -555,9 +554,9 @@ namespace Live2D
 
                 csmFloat32 *_partOpacities; ///< パーツの不透明度のリスト
 
-                csmVector<CubismIdHandle> _parameterIds;
-                csmVector<CubismIdHandle> _partIds;
-                csmVector<CubismIdHandle> _drawableIds;
+                QVector<CubismIdHandle> _parameterIds;
+                QVector<CubismIdHandle> _partIds;
+                QVector<CubismIdHandle> _drawableIds;
             };
 
         } // namespace Framework

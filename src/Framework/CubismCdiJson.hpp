@@ -28,7 +28,7 @@ namespace Live2D
                  * @param[in]   buffer  cdi3.jsonが読み込まれているバッファ
                  * @param[in]   size    バッファのサイズ
                  */
-                CubismCdiJson(const csmByte *buffer, csmSizeInt size);
+                CubismCdiJson(const QByteArray &buffer);
 
                 /**
                  * @brief デストラクタ
@@ -39,31 +39,26 @@ namespace Live2D
 
                 // Parameters
 
-                csmInt32 GetParametersCount();
+                int GetParametersCount();
 
-                const csmChar *GetParametersId(csmInt32 index);
-
-                const csmChar *GetParametersGroupId(csmInt32 index);
-
-                const csmChar *GetParametersName(csmInt32 index);
+                const QString GetParametersId(int index);
+                const QString GetParametersGroupId(int index);
+                const QString GetParametersName(int index);
 
                 // ParameterGroups
 
-                csmInt32 GetParameterGroupsCount();
+                int GetParameterGroupsCount();
 
-                const csmChar *GetParameterGroupsId(csmInt32 index);
-
-                const csmChar *GetParameterGroupsGroupId(csmInt32 index);
-
-                const csmChar *GetParameterGroupsName(csmInt32 index);
+                const QString GetParameterGroupsId(int index);
+                const QString GetParameterGroupsGroupId(int index);
+                const QString GetParameterGroupsName(int index);
 
                 // Parts
 
-                csmInt32 GetPartsCount();
+                int GetPartsCount();
 
-                const csmChar *GetPartsId(csmInt32 index);
-
-                const csmChar *GetPartsName(csmInt32 index);
+                const QString GetPartsId(int index);
+                const QString GetPartsName(int index);
 
               private:
                 /**
@@ -72,7 +67,7 @@ namespace Live2D
                  * @retval       true  -> キーが存在する
                  * @retval       false -> キーが存在しない
                  */
-                csmBool IsExistParameters() const;
+                bool IsExistParameters() const;
 
                 /**
                  * @brief        パラメータグループのキーが存在するかどうかを確認する
@@ -80,7 +75,7 @@ namespace Live2D
                  * @retval       true  -> キーが存在する
                  * @retval       false -> キーが存在しない
                  */
-                csmBool IsExistParameterGroups() const;
+                bool IsExistParameterGroups() const;
 
                 /**
                  * @brief        パーツのキーが存在するかどうかを確認する
@@ -88,9 +83,9 @@ namespace Live2D
                  * @retval       true  -> キーが存在する
                  * @retval       false -> キーが存在しない
                  */
-                csmBool IsExistParts() const;
+                bool IsExistParts() const;
 
-                Utils::CubismJson *_json;
+                Utils::CubismJson _json;
             };
 
         } // namespace Framework

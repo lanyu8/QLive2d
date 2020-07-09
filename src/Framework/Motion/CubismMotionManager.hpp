@@ -47,7 +47,7 @@ namespace Live2D
                  *
                  * @return  モーションの優先度
                  */
-                csmInt32 GetCurrentPriority() const;
+                int GetCurrentPriority() const;
 
                 /**
                  * @brief 予約中のモーションの優先度の取得
@@ -56,7 +56,7 @@ namespace Live2D
                  *
                  * @return  モーションの優先度
                  */
-                csmInt32 GetReservePriority() const;
+                int GetReservePriority() const;
 
                 /**
                  * @brief 予約中のモーションの優先度の設定
@@ -65,7 +65,7 @@ namespace Live2D
                  *
                  * @param[in]   val     優先度
                  */
-                void SetReservePriority(csmInt32 val);
+                void SetReservePriority(int val);
 
                 /**
                  * @brief 優先度を設定してモーションの開始
@@ -78,7 +78,7 @@ namespace Live2D
                  * @return
                  * 開始したモーションの識別番号を返す。個別のモーションが終了したか否かを判定するIsFinished()の引数で使用する。開始できない時は「-1」
                  */
-                CubismMotionQueueEntryHandle StartMotionPriority(ACubismMotion *motion, csmBool autoDelete, csmInt32 priority);
+                CubismMotionQueueEntryHandle StartMotionPriority(ACubismMotion *motion, bool autoDelete, int priority);
 
                 /**
                  * @brief モーションの更新
@@ -90,7 +90,7 @@ namespace Live2D
                  * @retval  true    更新されている
                  * @retval  false   更新されていない
                  */
-                csmBool UpdateMotion(CubismModel *model, csmFloat32 deltaTimeSeconds);
+                bool UpdateMotion(CubismModel *model, csmFloat32 deltaTimeSeconds);
 
                 /**
                  * @brief モーションの予約
@@ -101,11 +101,11 @@ namespace Live2D
                  * @retval  true    予約できた
                  * @retval  false   予約できなかった
                  */
-                csmBool ReserveMotion(csmInt32 priority);
+                bool ReserveMotion(int priority);
 
               private:
-                csmInt32 _currentPriority; ///<  現在再生中のモーションの優先度
-                csmInt32
+                int _currentPriority; ///<  現在再生中のモーションの優先度
+                int
                     _reservePriority; ///<  再生予定のモーションの優先度。再生中は0になる。モーションファイルを別スレッドで読み込むときの機能。
             };
 

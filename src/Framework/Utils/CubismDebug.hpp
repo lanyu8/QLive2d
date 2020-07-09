@@ -69,19 +69,6 @@
     #define CubismLogError(fmt, ...)
 #endif
 
-//------------ LIVE2D NAMESPACE ------------
-namespace Live2D
-{
-    namespace Cubism
-    {
-        namespace Framework
-        {
-            template<class T>
-            class csmVector;
-        }
-    } // namespace Cubism
-} // namespace Live2D
-
 namespace Live2D
 {
     namespace Cubism
@@ -107,7 +94,7 @@ namespace Live2D
                      *@param    ...      ->  可変長引数
                      *
                      */
-                    static void Print(CubismFramework::Option::LogLevel logLevel, const csmChar *format, ...);
+                    static void Print(CubismFramework::Option::LogLevel logLevel, const QString &format, ...);
 
                     /**
                      *@brief    データから指定した長さだけダンプ出力する。<br>
@@ -118,7 +105,7 @@ namespace Live2D
                      *@param    length   ->  ダンプする長さ
                      *
                      */
-                    static void DumpBytes(CubismFramework::Option::LogLevel logLevel, const csmUint8 *data, csmInt32 length);
+                    static void DumpBytes(CubismFramework::Option::LogLevel logLevel, const csmUint8 *data, int length);
 
                   private:
                     /**

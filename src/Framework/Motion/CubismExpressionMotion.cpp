@@ -19,15 +19,15 @@ namespace Live2D
             namespace
             {
                 // exp3.jsonのキーとデフォルト値
-                const csmChar *ExpressionKeyFadeIn = "FadeInTime";
-                const csmChar *ExpressionKeyFadeOut = "FadeOutTime";
-                const csmChar *ExpressionKeyParameters = "Parameters";
-                const csmChar *ExpressionKeyId = "Id";
-                const csmChar *ExpressionKeyValue = "Value";
-                const csmChar *ExpressionKeyBlend = "Blend";
-                const csmChar *BlendValueAdd = "Add";
-                const csmChar *BlendValueMultiply = "Multiply";
-                const csmChar *BlendValueOverwrite = "Overwrite";
+                const QString &ExpressionKeyFadeIn = "FadeInTime";
+                const QString &ExpressionKeyFadeOut = "FadeOutTime";
+                const QString &ExpressionKeyParameters = "Parameters";
+                const QString &ExpressionKeyId = "Id";
+                const QString &ExpressionKeyValue = "Value";
+                const QString &ExpressionKeyBlend = "Blend";
+                const QString &BlendValueAdd = "Add";
+                const QString &BlendValueMultiply = "Multiply";
+                const QString &BlendValueOverwrite = "Overwrite";
                 const csmFloat32 DefaultFadeTime = 1.0f;
             } // namespace
 
@@ -39,39 +39,36 @@ namespace Live2D
             {
             }
 
-            CubismExpressionMotion *CubismExpressionMotion::Create(const csmByte *buffer, csmSizeInt size)
+            CubismExpressionMotion *CubismExpressionMotion::Create(const QByteArray &buffer)
             {
                 CubismExpressionMotion *expression = CSM_NEW CubismExpressionMotion();
 
-                Utils::CubismJson *json = Utils::CubismJson::Create(buffer, size);
-                Utils::Value &root = json->GetRoot();
+                const auto &root = QJsonDocument::fromJson(buffer).object();
 
-                expression->SetFadeInTime(root[ExpressionKeyFadeIn].ToFloat(DefaultFadeTime));   // フェードイン
-                expression->SetFadeOutTime(root[ExpressionKeyFadeOut].ToFloat(DefaultFadeTime)); // フェードアウト
+                expression->SetFadeInTime(root[ExpressionKeyFadeIn].toDouble(DefaultFadeTime));   // フェードイン
+                expression->SetFadeOutTime(root[ExpressionKeyFadeOut].toDouble(DefaultFadeTime)); // フェードアウト
 
                 // 各パラメータについて
-                const csmInt32 parameterCount = root[ExpressionKeyParameters].GetSize();
-                expression->_parameters.PrepareCapacity(parameterCount);
+                const int parameterCount = root[ExpressionKeyParameters].toArray().size();
 
-                for (csmInt32 i = 0; i < parameterCount; ++i)
+                for (int i = 0; i < parameterCount; ++i)
                 {
-                    Utils::Value &param = root[ExpressionKeyParameters][i];
-                    const CubismIdHandle parameterId =
-                        CubismFramework::GetIdManager()->GetId(param[ExpressionKeyId].GetRawString());     // パラメータID
-                    const csmFloat32 value = static_cast<csmFloat32>(param[ExpressionKeyValue].ToFloat()); // 値
+                    const auto param = root[ExpressionKeyParameters][i].toObject();
+                    const CubismIdHandle parameterId = CubismFramework::GetIdManager()->GetId(param[ExpressionKeyId].toString()); // パラメータID
+                    const csmFloat32 value = static_cast<csmFloat32>(param[ExpressionKeyValue].toVariant().toFloat());            // 値
 
                     // 計算方法の設定
                     ExpressionBlendType blendType;
 
-                    if (param[ExpressionKeyBlend].IsNull() || param[ExpressionKeyBlend].GetString() == BlendValueAdd)
+                    if (param[ExpressionKeyBlend].isNull() || param[ExpressionKeyBlend].toString() == BlendValueAdd)
                     {
                         blendType = ExpressionBlendType_Add;
                     }
-                    else if (param[ExpressionKeyBlend].GetString() == BlendValueMultiply)
+                    else if (param[ExpressionKeyBlend].toString() == BlendValueMultiply)
                     {
                         blendType = ExpressionBlendType_Multiply;
                     }
-                    else if (param[ExpressionKeyBlend].GetString() == BlendValueOverwrite)
+                    else if (param[ExpressionKeyBlend].toString() == BlendValueOverwrite)
                     {
                         blendType = ExpressionBlendType_Overwrite;
                     }
@@ -88,17 +85,17 @@ namespace Live2D
                     item.BlendType = blendType;
                     item.Value = value;
 
-                    expression->_parameters.PushBack(item);
+                    expression->_parameters.append(item);
                 }
 
-                Utils::CubismJson::Delete(json); // JSONデータは不要になったら削除する
+                // Utils::CubismJson::Delete(json); // JSONデータは不要になったら削除する
 
                 return expression;
             }
 
             void CubismExpressionMotion::DoUpdateParameters(CubismModel *model, csmFloat32, csmFloat32 weight, CubismMotionQueueEntry *)
             {
-                for (csmUint32 i = 0; i < _parameters.GetSize(); ++i)
+                for (auto i = 0; i < _parameters.size(); ++i)
                 {
                     ExpressionParameter &parameter = _parameters[i];
 

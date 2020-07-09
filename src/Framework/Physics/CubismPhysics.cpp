@@ -26,9 +26,9 @@ namespace Live2D
             {
 
                 /// physics types tags.
-                const csmChar *PhysicsTypeTagX = "X";
-                const csmChar *PhysicsTypeTagY = "Y";
-                const csmChar *PhysicsTypeTagAngle = "Angle";
+                const QString &PhysicsTypeTagX = "X";
+                const QString &PhysicsTypeTagY = "Y";
+                const QString &PhysicsTypeTagAngle = "Angle";
 
                 /// Constant of air resistance.
                 const csmFloat32 AirResistance = 5.0f;
@@ -52,9 +52,9 @@ namespace Live2D
                 /// @param  value  Evaluation target value.
                 ///
                 /// @return  Sign of value.
-                csmInt32 Sign(csmFloat32 value)
+                int Sign(csmFloat32 value)
                 {
-                    csmInt32 ret = 0;
+                    int ret = 0;
 
                     if (value > 0.0f)
                     {
@@ -76,7 +76,7 @@ namespace Live2D
 
                 csmFloat32 NormalizeParameterValue(csmFloat32 value, csmFloat32 parameterMinimum, csmFloat32 parameterMaximum,
                                                    csmFloat32 parameterDefault, csmFloat32 normalizedMinimum, csmFloat32 normalizedMaximum,
-                                                   csmFloat32 normalizedDefault, csmInt32 isInverted)
+                                                   csmFloat32 normalizedDefault, int isInverted)
                 {
                     Q_UNUSED(parameterDefault)
                     csmFloat32 result = 0.0f;
@@ -147,7 +147,7 @@ namespace Live2D
                                                                       csmFloat32 parameterMinimumValue, csmFloat32 parameterMaximumValue,
                                                                       csmFloat32 parameterDefaultValue,
                                                                       CubismPhysicsNormalization *normalizationPosition,
-                                                                      CubismPhysicsNormalization *, csmInt32 isInverted, csmFloat32 weight)
+                                                                      CubismPhysicsNormalization *, int isInverted, csmFloat32 weight)
                 {
                     targetTranslation->X += NormalizeParameterValue(value, parameterMinimumValue, parameterMaximumValue, parameterDefaultValue,
                                                                     normalizationPosition->Minimum, normalizationPosition->Maximum,
@@ -159,7 +159,7 @@ namespace Live2D
                                                                       csmFloat32 parameterMinimumValue, csmFloat32 parameterMaximumValue,
                                                                       csmFloat32 parameterDefaultValue,
                                                                       CubismPhysicsNormalization *normalizationPosition,
-                                                                      CubismPhysicsNormalization *, csmInt32 isInverted, csmFloat32 weight)
+                                                                      CubismPhysicsNormalization *, int isInverted, csmFloat32 weight)
                 {
                     targetTranslation->Y += NormalizeParameterValue(value, parameterMinimumValue, parameterMaximumValue, parameterDefaultValue,
                                                                     normalizationPosition->Minimum, normalizationPosition->Maximum,
@@ -170,8 +170,7 @@ namespace Live2D
                 void GetInputAngleFromNormalizedParameterValue(CubismVector2 *, csmFloat32 *targetAngle, csmFloat32 value,
                                                                csmFloat32 parameterMinimumValue, csmFloat32 parameterMaximumValue,
                                                                csmFloat32 parameterDefaultValue, CubismPhysicsNormalization *,
-                                                               CubismPhysicsNormalization *normalizationAngle, csmInt32 isInverted,
-                                                               csmFloat32 weight)
+                                                               CubismPhysicsNormalization *normalizationAngle, int isInverted, csmFloat32 weight)
                 {
                     *targetAngle += NormalizeParameterValue(value, parameterMinimumValue, parameterMaximumValue, parameterDefaultValue,
                                                             normalizationAngle->Minimum, normalizationAngle->Maximum,
@@ -179,7 +178,7 @@ namespace Live2D
                                     weight;
                 }
 
-                csmFloat32 GetOutputTranslationX(CubismVector2 translation, CubismPhysicsParticle *, csmInt32 particleIndex, csmInt32 isInverted,
+                csmFloat32 GetOutputTranslationX(CubismVector2 translation, CubismPhysicsParticle *, int particleIndex, int isInverted,
                                                  CubismVector2)
                 {
                     Q_UNUSED(particleIndex)
@@ -193,8 +192,7 @@ namespace Live2D
                     return outputValue;
                 }
 
-                csmFloat32 GetOutputTranslationY(CubismVector2 translation, CubismPhysicsParticle *, csmInt32, csmInt32 isInverted,
-                                                 CubismVector2)
+                csmFloat32 GetOutputTranslationY(CubismVector2 translation, CubismPhysicsParticle *, int, int isInverted, CubismVector2)
                 {
                     csmFloat32 outputValue = translation.Y;
 
@@ -206,8 +204,8 @@ namespace Live2D
                     return outputValue;
                 }
 
-                csmFloat32 GetOutputAngle(CubismVector2 translation, CubismPhysicsParticle *particles, csmInt32 particleIndex,
-                                          csmInt32 isInverted, CubismVector2 parentGravity)
+                csmFloat32 GetOutputAngle(CubismVector2 translation, CubismPhysicsParticle *particles, int particleIndex, int isInverted,
+                                          CubismVector2 parentGravity)
                 {
                     csmFloat32 outputValue;
 
@@ -255,11 +253,11 @@ namespace Live2D
                 /// @param  thresholdValue    Threshold of movement.
                 /// @param  deltaTimeSeconds  Delta time.
                 /// @param  airResistance     Air resistance.
-                void UpdateParticles(CubismPhysicsParticle *strand, csmInt32 strandCount, CubismVector2 totalTranslation, csmFloat32 totalAngle,
+                void UpdateParticles(CubismPhysicsParticle *strand, int strandCount, CubismVector2 totalTranslation, csmFloat32 totalAngle,
                                      CubismVector2 windDirection, csmFloat32 thresholdValue, csmFloat32 deltaTimeSeconds,
                                      csmFloat32 airResistance)
                 {
-                    csmInt32 i;
+                    int i;
                     csmFloat32 totalRadian;
                     csmFloat32 delay;
                     csmFloat32 radian;
@@ -395,7 +393,7 @@ namespace Live2D
             {
                 CubismPhysicsParticle *strand;
                 CubismPhysicsSubRig *currentSetting;
-                csmInt32 i, settingIndex;
+                int i, settingIndex;
                 CubismVector2 radius;
 
                 for (settingIndex = 0; settingIndex < _physicsRig->SubRigCount; ++settingIndex)
@@ -427,11 +425,11 @@ namespace Live2D
                 }
             }
 
-            CubismPhysics *CubismPhysics::Create(const csmByte *buffer, csmSizeInt size)
+            CubismPhysics *CubismPhysics::Create(const QByteArray &buffer)
             {
                 CubismPhysics *ret = CSM_NEW CubismPhysics();
 
-                ret->Parse(buffer, size);
+                ret->Parse(buffer);
                 ret->_physicsRig->Gravity.Y = 0;
 
                 return ret;
@@ -442,23 +440,23 @@ namespace Live2D
                 CSM_DELETE_SELF(CubismPhysics, physics);
             }
 
-            void CubismPhysics::Parse(const csmByte *physicsJson, csmSizeInt size)
+            void CubismPhysics::Parse(const QByteArray &buffer)
             {
                 _physicsRig = CSM_NEW CubismPhysicsRig;
 
-                CubismPhysicsJson *json = CSM_NEW CubismPhysicsJson(physicsJson, size);
+                CubismPhysicsJson *json = CSM_NEW CubismPhysicsJson(buffer);
 
                 _physicsRig->Gravity = json->GetGravity();
                 _physicsRig->Wind = json->GetWind();
                 _physicsRig->SubRigCount = json->GetSubRigCount();
 
-                _physicsRig->Settings.UpdateSize(_physicsRig->SubRigCount, CubismPhysicsSubRig(), true);
-                _physicsRig->Inputs.UpdateSize(json->GetTotalInputCount(), CubismPhysicsInput(), true);
-                _physicsRig->Outputs.UpdateSize(json->GetTotalOutputCount(), CubismPhysicsOutput(), true);
-                _physicsRig->Particles.UpdateSize(json->GetVertexCount(), CubismPhysicsParticle(), true);
+                _physicsRig->Settings.resize(_physicsRig->SubRigCount);   //, CubismPhysicsSubRig(), true);
+                _physicsRig->Inputs.resize(json->GetTotalInputCount());   //, CubismPhysicsInput(), true);
+                _physicsRig->Outputs.resize(json->GetTotalOutputCount()); //, CubismPhysicsOutput(), true);
+                _physicsRig->Particles.resize(json->GetVertexCount());    //, CubismPhysicsParticle(), true);
 
-                csmInt32 inputIndex = 0, outputIndex = 0, particleIndex = 0;
-                for (csmUint32 i = 0; i < _physicsRig->Settings.GetSize(); ++i)
+                int inputIndex = 0, outputIndex = 0, particleIndex = 0;
+                for (auto i = 0; i < _physicsRig->Settings.size(); ++i)
                 {
                     _physicsRig->Settings[i].NormalizationPosition.Minimum = json->GetNormalizationPositionMinimumValue(i);
                     _physicsRig->Settings[i].NormalizationPosition.Maximum = json->GetNormalizationPositionMaximumValue(i);
@@ -471,23 +469,23 @@ namespace Live2D
                     // Input
                     _physicsRig->Settings[i].InputCount = json->GetInputCount(i);
                     _physicsRig->Settings[i].BaseInputIndex = inputIndex;
-                    for (csmInt32 j = 0; j < _physicsRig->Settings[i].InputCount; ++j)
+                    for (int j = 0; j < _physicsRig->Settings[i].InputCount; ++j)
                     {
                         _physicsRig->Inputs[inputIndex + j].SourceParameterIndex = -1;
                         _physicsRig->Inputs[inputIndex + j].Weight = json->GetInputWeight(i, j);
                         _physicsRig->Inputs[inputIndex + j].Reflect = json->GetInputReflect(i, j);
 
-                        if (strcmp(json->GetInputType(i, j), PhysicsTypeTagX) == 0)
+                        if (json->GetInputType(i, j) == PhysicsTypeTagX)
                         {
                             _physicsRig->Inputs[inputIndex + j].Type = CubismPhysicsSource_X;
                             _physicsRig->Inputs[inputIndex + j].GetNormalizedParameterValue = GetInputTranslationXFromNormalizedParameterValue;
                         }
-                        else if (strcmp(json->GetInputType(i, j), PhysicsTypeTagY) == 0)
+                        else if (json->GetInputType(i, j) == PhysicsTypeTagY)
                         {
                             _physicsRig->Inputs[inputIndex + j].Type = CubismPhysicsSource_Y;
                             _physicsRig->Inputs[inputIndex + j].GetNormalizedParameterValue = GetInputTranslationYFromNormalizedParameterValue;
                         }
-                        else if (strcmp(json->GetInputType(i, j), PhysicsTypeTagAngle) == 0)
+                        else if (json->GetInputType(i, j) == PhysicsTypeTagAngle)
                         {
                             _physicsRig->Inputs[inputIndex + j].Type = CubismPhysicsSource_Angle;
                             _physicsRig->Inputs[inputIndex + j].GetNormalizedParameterValue = GetInputAngleFromNormalizedParameterValue;
@@ -501,7 +499,7 @@ namespace Live2D
                     // Output
                     _physicsRig->Settings[i].OutputCount = json->GetOutputCount(i);
                     _physicsRig->Settings[i].BaseOutputIndex = outputIndex;
-                    for (csmInt32 j = 0; j < _physicsRig->Settings[i].OutputCount; ++j)
+                    for (int j = 0; j < _physicsRig->Settings[i].OutputCount; ++j)
                     {
                         _physicsRig->Outputs[outputIndex + j].DestinationParameterIndex = -1;
                         _physicsRig->Outputs[outputIndex + j].VertexIndex = json->GetOutputVertexIndex(i, j);
@@ -510,19 +508,19 @@ namespace Live2D
                         _physicsRig->Outputs[outputIndex + j].Destination.TargetType = CubismPhysicsTargetType_Parameter;
 
                         _physicsRig->Outputs[outputIndex + j].Destination.Id = json->GetOutputsDestinationId(i, j);
-                        if (strcmp(json->GetOutputType(i, j), PhysicsTypeTagX) == 0)
+                        if (json->GetOutputType(i, j) == PhysicsTypeTagX)
                         {
                             _physicsRig->Outputs[outputIndex + j].Type = CubismPhysicsSource_X;
                             _physicsRig->Outputs[outputIndex + j].GetValue = GetOutputTranslationX;
                             _physicsRig->Outputs[outputIndex + j].GetScale = GetOutputScaleTranslationX;
                         }
-                        else if (strcmp(json->GetOutputType(i, j), PhysicsTypeTagY) == 0)
+                        else if (json->GetOutputType(i, j) == PhysicsTypeTagY)
                         {
                             _physicsRig->Outputs[outputIndex + j].Type = CubismPhysicsSource_Y;
                             _physicsRig->Outputs[outputIndex + j].GetValue = GetOutputTranslationY;
                             _physicsRig->Outputs[outputIndex + j].GetScale = GetOutputScaleTranslationY;
                         }
-                        else if (strcmp(json->GetOutputType(i, j), PhysicsTypeTagAngle) == 0)
+                        else if (json->GetOutputType(i, j) == PhysicsTypeTagAngle)
                         {
                             _physicsRig->Outputs[outputIndex + j].Type = CubismPhysicsSource_Angle;
                             _physicsRig->Outputs[outputIndex + j].GetValue = GetOutputAngle;
@@ -536,7 +534,7 @@ namespace Live2D
                     // Particle
                     _physicsRig->Settings[i].ParticleCount = json->GetParticleCount(i);
                     _physicsRig->Settings[i].BaseParticleIndex = particleIndex;
-                    for (csmInt32 j = 0; j < _physicsRig->Settings[i].ParticleCount; ++j)
+                    for (int j = 0; j < _physicsRig->Settings[i].ParticleCount; ++j)
                     {
                         _physicsRig->Particles[particleIndex + j].Mobility = json->GetParticleMobility(i, j);
                         _physicsRig->Particles[particleIndex + j].Delay = json->GetParticleDelay(i, j);
@@ -560,7 +558,7 @@ namespace Live2D
                 csmFloat32 radAngle;
                 csmFloat32 outputValue;
                 CubismVector2 totalTranslation;
-                csmInt32 i, settingIndex, particleIndex;
+                int i, settingIndex, particleIndex;
                 CubismPhysicsSubRig *currentSetting;
                 CubismPhysicsInput *currentInput;
                 CubismPhysicsOutput *currentOutput;

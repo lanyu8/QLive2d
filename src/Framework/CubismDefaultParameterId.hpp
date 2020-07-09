@@ -26,56 +26,56 @@ namespace Live2D
             {
 
                 // パーツID
-                extern const csmChar *HitAreaPrefix;
-                extern const csmChar *HitAreaHead;
-                extern const csmChar *HitAreaBody;
-                extern const csmChar *PartsIdCore;
-                extern const csmChar *PartsArmPrefix;
-                extern const csmChar *PartsArmLPrefix;
-                extern const csmChar *PartsArmRPrefix;
+                const inline QString HitAreaPrefix = "HitArea";
+                const inline QString HitAreaHead = "Head";
+                const inline QString HitAreaBody = "Body";
+                const inline QString PartsIdCore = "Parts01Core";
+                const inline QString PartsArmPrefix = "Parts01Arm_";
+                const inline QString PartsArmLPrefix = "Parts01ArmL_";
+                const inline QString PartsArmRPrefix = "Parts01ArmR_";
 
-                // パラメータID
-                extern const csmChar *ParamAngleX;
-                extern const csmChar *ParamAngleY;
-                extern const csmChar *ParamAngleZ;
-                extern const csmChar *ParamEyeLOpen;
-                extern const csmChar *ParamEyeLSmile;
-                extern const csmChar *ParamEyeROpen;
-                extern const csmChar *ParamEyeRSmile;
-                extern const csmChar *ParamEyeBallX;
-                extern const csmChar *ParamEyeBallY;
-                extern const csmChar *ParamEyeBallForm;
-                extern const csmChar *ParamBrowLY;
-                extern const csmChar *ParamBrowRY;
-                extern const csmChar *ParamBrowLX;
-                extern const csmChar *ParamBrowRX;
-                extern const csmChar *ParamBrowLAngle;
-                extern const csmChar *ParamBrowRAngle;
-                extern const csmChar *ParamBrowLForm;
-                extern const csmChar *ParamBrowRForm;
-                extern const csmChar *ParamMouthForm;
-                extern const csmChar *ParamMouthOpenY;
-                extern const csmChar *ParamCheek;
-                extern const csmChar *ParamBodyAngleX;
-                extern const csmChar *ParamBodyAngleY;
-                extern const csmChar *ParamBodyAngleZ;
-                extern const csmChar *ParamBreath;
-                extern const csmChar *ParamArmLA;
-                extern const csmChar *ParamArmRA;
-                extern const csmChar *ParamArmLB;
-                extern const csmChar *ParamArmRB;
-                extern const csmChar *ParamHandL;
-                extern const csmChar *ParamHandR;
-                extern const csmChar *ParamHairFront;
-                extern const csmChar *ParamHairSide;
-                extern const csmChar *ParamHairBack;
-                extern const csmChar *ParamHairFluffy;
-                extern const csmChar *ParamShoulderY;
-                extern const csmChar *ParamBustX;
-                extern const csmChar *ParamBustY;
-                extern const csmChar *ParamBaseX;
-                extern const csmChar *ParamBaseY;
-                extern const csmChar *ParamNONE;
+                // パラ inline QString
+                const inline QString ParamAngleX = "ParamAngleX";
+                const inline QString ParamAngleY = "ParamAngleY";
+                const inline QString ParamAngleZ = "ParamAngleZ";
+                const inline QString ParamEyeLOpen = "ParamEyeLOpen";
+                const inline QString ParamEyeLSmile = "ParamEyeLSmile";
+                const inline QString ParamEyeROpen = "ParamEyeROpen";
+                const inline QString ParamEyeRSmile = "ParamEyeRSmile";
+                const inline QString ParamEyeBallX = "ParamEyeBallX";
+                const inline QString ParamEyeBallY = "ParamEyeBallY";
+                const inline QString ParamEyeBallForm = "ParamEyeBallForm";
+                const inline QString ParamBrowLY = "ParamBrowLY";
+                const inline QString ParamBrowRY = "ParamBrowRY";
+                const inline QString ParamBrowLX = "ParamBrowLX";
+                const inline QString ParamBrowRX = "ParamBrowRX";
+                const inline QString ParamBrowLAngle = "ParamBrowLAngle";
+                const inline QString ParamBrowRAngle = "ParamBrowRAngle";
+                const inline QString ParamBrowLForm = "ParamBrowLForm";
+                const inline QString ParamBrowRForm = "ParamBrowRForm";
+                const inline QString ParamMouthForm = "ParamMouthForm";
+                const inline QString ParamMouthOpenY = "ParamMouthOpenY";
+                const inline QString ParamCheek = "ParamCheek";
+                const inline QString ParamBodyAngleX = "ParamBodyAngleX";
+                const inline QString ParamBodyAngleY = "ParamBodyAngleY";
+                const inline QString ParamBodyAngleZ = "ParamBodyAngleZ";
+                const inline QString ParamBreath = "ParamBreath";
+                const inline QString ParamArmLA = "ParamArmLA";
+                const inline QString ParamArmRA = "ParamArmRA";
+                const inline QString ParamArmLB = "ParamArmLB";
+                const inline QString ParamArmRB = "ParamArmRB";
+                const inline QString ParamHandL = "ParamHandL";
+                const inline QString ParamHandR = "ParamHandR";
+                const inline QString ParamHairFront = "ParamHairFront";
+                const inline QString ParamHairSide = "ParamHairSide";
+                const inline QString ParamHairBack = "ParamHairBack";
+                const inline QString ParamHairFluffy = "ParamHairFluffy";
+                const inline QString ParamShoulderY = "ParamShoulderY";
+                const inline QString ParamBustX = "ParamBustX";
+                const inline QString ParamBustY = "ParamBustY";
+                const inline QString ParamBaseX = "ParamBaseX";
+                const inline QString ParamBaseY = "ParamBaseY";
+                const inline QString ParamNONE = "NONE:";
             } // namespace DefaultParameterId
         }     // namespace Framework
     }         // namespace Cubism

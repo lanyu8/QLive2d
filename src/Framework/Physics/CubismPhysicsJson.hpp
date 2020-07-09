@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright(c) Live2D Inc. All rights reserved.
  *
  * Use of this source code is governed by the Live2D Open Software license
@@ -34,7 +34,7 @@ namespace Live2D
                  * @param[in]   buffer  physics3.jsonが読み込まれているバッファ
                  * @param[in]   size    バッファのサイズ
                  */
-                CubismPhysicsJson(const csmByte *buffer, csmSizeInt size);
+                CubismPhysicsJson(const QByteArray &buffer);
 
                 /**
                  * @brief デストラクタ
@@ -68,7 +68,7 @@ namespace Live2D
                  *
                  * @return 物理点の管理の個数
                  */
-                csmInt32 GetSubRigCount() const;
+                int GetSubRigCount() const;
 
                 /**
                  * @brief 入力の総合計の取得
@@ -77,7 +77,7 @@ namespace Live2D
                  *
                  * @return 入力の総合計
                  */
-                csmInt32 GetTotalInputCount() const;
+                int GetTotalInputCount() const;
 
                 /**
                  * @brief 出力の総合計の取得
@@ -86,7 +86,7 @@ namespace Live2D
                  *
                  * @return 出力の総合計
                  */
-                csmInt32 GetTotalOutputCount() const;
+                int GetTotalOutputCount() const;
 
                 /**
                  * @brief 物理点の個数の取得
@@ -95,7 +95,7 @@ namespace Live2D
                  *
                  * @return 物理点の個数
                  */
-                csmInt32 GetVertexCount() const;
+                int GetVertexCount() const;
 
                 /**
                  * @brief 正規化された位置の最小値の取得
@@ -105,7 +105,7 @@ namespace Live2D
                  * @param[in]   physicsSettingIndex   物理演算の設定のインデックス
                  * @return 正規化された位置の最小値
                  */
-                csmFloat32 GetNormalizationPositionMinimumValue(csmInt32 physicsSettingIndex) const;
+                csmFloat32 GetNormalizationPositionMinimumValue(int physicsSettingIndex) const;
 
                 /**
                  * @brief 正規化された位置の最大値の取得
@@ -115,7 +115,7 @@ namespace Live2D
                  * @param[in]   physicsSettingIndex   物理演算の設定のインデックス
                  * @return 正規化された位置の最大値
                  */
-                csmFloat32 GetNormalizationPositionMaximumValue(csmInt32 physicsSettingIndex) const;
+                csmFloat32 GetNormalizationPositionMaximumValue(int physicsSettingIndex) const;
 
                 /**
                  * @brief 正規化された位置のデフォルト値の取得
@@ -125,7 +125,7 @@ namespace Live2D
                  * @param[in]   physicsSettingIndex   物理演算の設定のインデックス
                  * @return 正規化された位置のデフォルト値
                  */
-                csmFloat32 GetNormalizationPositionDefaultValue(csmInt32 physicsSettingIndex) const;
+                csmFloat32 GetNormalizationPositionDefaultValue(int physicsSettingIndex) const;
 
                 /**
                  * @brief 正規化された角度の最小値の取得
@@ -135,7 +135,7 @@ namespace Live2D
                  * @param[in]   physicsSettingIndex   物理演算の設定のインデックス
                  * @return 正規化された角度の最小値
                  */
-                csmFloat32 GetNormalizationAngleMinimumValue(csmInt32 physicsSettingIndex) const;
+                csmFloat32 GetNormalizationAngleMinimumValue(int physicsSettingIndex) const;
 
                 /**
                  * @brief 正規化された角度の最大値の取得
@@ -145,7 +145,7 @@ namespace Live2D
                  * @param[in]   physicsSettingIndex   物理演算の設定のインデックス
                  * @return 正規化された角度の最大値
                  */
-                csmFloat32 GetNormalizationAngleMaximumValue(csmInt32 physicsSettingIndex) const;
+                csmFloat32 GetNormalizationAngleMaximumValue(int physicsSettingIndex) const;
 
                 /**
                  * @brief 正規化された角度のデフォルト値の取得
@@ -155,7 +155,7 @@ namespace Live2D
                  * @param[in]   physicsSettingIndex   物理演算の設定のインデックス
                  * @return 正規化された角度のデフォルト値
                  */
-                csmFloat32 GetNormalizationAngleDefaultValue(csmInt32 physicsSettingIndex) const;
+                csmFloat32 GetNormalizationAngleDefaultValue(int physicsSettingIndex) const;
 
                 /**
                  * @brief 入力の個数の取得
@@ -165,7 +165,7 @@ namespace Live2D
                  * @param[in]   physicsSettingIndex   物理演算の設定のインデックス
                  * @return 入力の個数
                  */
-                csmInt32 GetInputCount(csmInt32 physicsSettingIndex) const;
+                int GetInputCount(int physicsSettingIndex) const;
 
                 /**
                  * @brief 入力の重みの取得
@@ -176,7 +176,7 @@ namespace Live2D
                  * @param[in]   inputIndex               入力のインデックス
                  * @return 入力の重み
                  */
-                csmFloat32 GetInputWeight(csmInt32 physicsSettingIndex, csmInt32 inputIndex) const;
+                csmFloat32 GetInputWeight(int physicsSettingIndex, int inputIndex) const;
 
                 /**
                  * @brief 入力の反転の取得
@@ -187,7 +187,7 @@ namespace Live2D
                  * @param[in]   inputIndex               入力のインデックス
                  * @return 入力の反転
                  */
-                csmBool GetInputReflect(csmInt32 physicsSettingIndex, csmInt32 inputIndex) const;
+                bool GetInputReflect(int physicsSettingIndex, int inputIndex) const;
 
                 /**
                  * @brief 入力の種類の取得
@@ -198,7 +198,7 @@ namespace Live2D
                  * @param[in]   inputIndex               入力のインデックス
                  * @return 入力の種類
                  */
-                const csmChar *GetInputType(csmInt32 physicsSettingIndex, csmInt32 inputIndex) const;
+                const QString GetInputType(int physicsSettingIndex, int inputIndex) const;
 
                 /**
                  * @brief 入力元のIDの取得
@@ -209,7 +209,7 @@ namespace Live2D
                  * @param[in]   inputIndex               入力のインデックス
                  * @return 入力元のID
                  */
-                CubismIdHandle GetInputSourceId(csmInt32 physicsSettingIndex, csmInt32 inputIndex) const;
+                CubismIdHandle GetInputSourceId(int physicsSettingIndex, int inputIndex) const;
 
                 /**
                  * @brief 出力の個数の取得
@@ -219,7 +219,7 @@ namespace Live2D
                  * @param[in]   physicsSettingIndex   物理演算の設定のインデックス
                  * @return 出力の個数
                  */
-                csmInt32 GetOutputCount(csmInt32 physicsSettingIndex) const;
+                int GetOutputCount(int physicsSettingIndex) const;
 
                 /**
                  * @brief 出力の物理点のインデックスの取得
@@ -230,7 +230,7 @@ namespace Live2D
                  * @param[in]   outputIndex              出力のインデックス
                  * @return 出力の物理点のインデックス
                  */
-                csmInt32 GetOutputVertexIndex(csmInt32 physicsSettingIndex, csmInt32 outputIndex) const;
+                int GetOutputVertexIndex(int physicsSettingIndex, int outputIndex) const;
 
                 /**
                  * @brief 出力の角度のスケールの取得
@@ -241,7 +241,7 @@ namespace Live2D
                  * @param[in]   outputIndex              出力のインデックス
                  * @return 出力の角度のスケール
                  */
-                csmFloat32 GetOutputAngleScale(csmInt32 physicsSettingIndex, csmInt32 outputIndex) const;
+                csmFloat32 GetOutputAngleScale(int physicsSettingIndex, int outputIndex) const;
 
                 /**
                  * @brief 出力の重みの取得
@@ -252,7 +252,7 @@ namespace Live2D
                  * @param[in]   outputIndex              出力のインデックス
                  * @return 出力の重み
                  */
-                csmFloat32 GetOutputWeight(csmInt32 physicsSettingIndex, csmInt32 outputIndex) const;
+                csmFloat32 GetOutputWeight(int physicsSettingIndex, int outputIndex) const;
 
                 /**
                  * @brief 出力先のIDの取得
@@ -263,7 +263,7 @@ namespace Live2D
                  * @param[in]   outputIndex              出力のインデックス
                  * @return 出力先のID
                  */
-                CubismIdHandle GetOutputsDestinationId(csmInt32 physicsSettingIndex, csmInt32 outputIndex) const;
+                CubismIdHandle GetOutputsDestinationId(int physicsSettingIndex, int outputIndex) const;
 
                 /**
                  * @brief 出力の種類の取得
@@ -274,7 +274,7 @@ namespace Live2D
                  * @param[in]   outputIndex              出力のインデックス
                  * @return 出力の種類
                  */
-                const csmChar *GetOutputType(csmInt32 physicsSettingIndex, csmInt32 outputIndex) const;
+                const QString GetOutputType(int physicsSettingIndex, int outputIndex) const;
 
                 /**
                  * @brief 出力の反転の取得
@@ -285,7 +285,7 @@ namespace Live2D
                  * @param[in]   outputIndex              出力のインデックス
                  * @return 出力の反転
                  */
-                csmBool GetOutputReflect(csmInt32 physicsSettingIndex, csmInt32 outputIndex) const;
+                bool GetOutputReflect(int physicsSettingIndex, int outputIndex) const;
 
                 /**
                  * @brief 物理点の個数の取得
@@ -295,7 +295,7 @@ namespace Live2D
                  * @param[in]   physicsSettingIndex   物理演算の設定のインデックス
                  * @return 物理点の個数
                  */
-                csmInt32 GetParticleCount(csmInt32 physicsSettingIndex) const;
+                int GetParticleCount(int physicsSettingIndex) const;
 
                 /**
                  * @brief 物理点の動きやすさの取得
@@ -306,7 +306,7 @@ namespace Live2D
                  * @param[in]   vertexIndex             物理点のインデックス
                  * @return 物理点の動きやすさ
                  */
-                csmFloat32 GetParticleMobility(csmInt32 physicsSettingIndex, csmInt32 vertexIndex) const;
+                csmFloat32 GetParticleMobility(int physicsSettingIndex, int vertexIndex) const;
 
                 /**
                  * @brief 物理点の遅れの取得
@@ -317,7 +317,7 @@ namespace Live2D
                  * @param[in]   vertexIndex           物理点のインデックス
                  * @return 物理点の遅れ
                  */
-                csmFloat32 GetParticleDelay(csmInt32 physicsSettingIndex, csmInt32 vertexIndex) const;
+                csmFloat32 GetParticleDelay(int physicsSettingIndex, int vertexIndex) const;
 
                 /**
                  * @brief 物理点の加速度の取得
@@ -328,7 +328,7 @@ namespace Live2D
                  * @param[in]   vertexIndex           物理点のインデックス
                  * @return 物理点の加速度
                  */
-                csmFloat32 GetParticleAcceleration(csmInt32 physicsSettingIndex, csmInt32 vertexIndex) const;
+                csmFloat32 GetParticleAcceleration(int physicsSettingIndex, int vertexIndex) const;
 
                 /**
                  * @brief 物理点の距離の取得
@@ -339,7 +339,7 @@ namespace Live2D
                  * @param[in]   vertexIndex              物理点のインデックス
                  * @return 物理点の距離
                  */
-                csmFloat32 GetParticleRadius(csmInt32 physicsSettingIndex, csmInt32 vertexIndex) const;
+                csmFloat32 GetParticleRadius(int physicsSettingIndex, int vertexIndex) const;
 
                 /**
                  * @brief 物理点の位置の取得
@@ -350,10 +350,10 @@ namespace Live2D
                  * @param[in]   vertexIndex           物理点のインデックス
                  * @return 物理点の位置
                  */
-                CubismVector2 GetParticlePosition(csmInt32 physicsSettingIndex, csmInt32 vertexIndex) const;
+                CubismVector2 GetParticlePosition(int physicsSettingIndex, int vertexIndex) const;
 
               private:
-                Utils::CubismJson *_json; ///< physics3.jsonデータ
+                Utils::CubismJson _json; ///< physics3.jsonデータ
             };
 
         } // namespace Framework

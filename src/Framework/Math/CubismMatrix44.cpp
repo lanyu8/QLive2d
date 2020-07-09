@@ -37,20 +37,20 @@ namespace Live2D
             void CubismMatrix44::Multiply(csmFloat32 *a, csmFloat32 *b, csmFloat32 *dst)
             {
                 csmFloat32 c[16] = { 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
-                csmInt32 n = 4;
+                int n = 4;
 
-                for (csmInt32 i = 0; i < n; ++i)
+                for (int i = 0; i < n; ++i)
                 {
-                    for (csmInt32 j = 0; j < n; ++j)
+                    for (int j = 0; j < n; ++j)
                     {
-                        for (csmInt32 k = 0; k < n; ++k)
+                        for (int k = 0; k < n; ++k)
                         {
                             c[j + i * 4] += a[k + i * 4] * b[j + k * 4];
                         }
                     }
                 }
 
-                for (csmInt32 i = 0; i < 16; ++i)
+                for (int i = 0; i < 16; ++i)
                 {
                     dst[i] = c[i];
                 }
@@ -104,7 +104,7 @@ namespace Live2D
 
             void CubismMatrix44::SetMatrix(csmFloat32 *tr)
             {
-                for (csmInt32 i = 0; i < 16; ++i)
+                for (int i = 0; i < 16; ++i)
                 {
                     _tr[i] = tr[i];
                 }

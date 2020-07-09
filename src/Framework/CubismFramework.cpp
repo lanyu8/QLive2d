@@ -26,18 +26,11 @@ namespace Live2D
         namespace Framework
         {
 
-            // Framework内で使う定数の宣言
-            namespace Constant
-            {
-                const csmInt32 VertexOffset = 0;
-                const csmInt32 VertexStep = 2;
-            } // namespace Constant
-
             // ファイルスコープの変数を初期化
             namespace
             {
-                csmBool s_isStarted = false;
-                csmBool s_isInitialized = false;
+                bool s_isStarted = false;
+                bool s_isInitialized = false;
                 ICubismAllocator *s_allocator = NULL;
                 const CubismFramework::Option *s_option = NULL;
                 CubismIdManager *s_cubismIdManager = NULL;
@@ -58,7 +51,7 @@ namespace Live2D
 
 #endif
 
-            csmBool CubismFramework::StartUp(ICubismAllocator *allocator, const Option *option)
+            bool CubismFramework::StartUp(ICubismAllocator *allocator, const Option *option)
             {
                 if (s_isStarted)
                 {
@@ -113,7 +106,7 @@ namespace Live2D
 #endif
             }
 
-            csmBool CubismFramework::IsStarted()
+            bool CubismFramework::IsStarted()
             {
                 return s_isStarted;
             }
@@ -141,7 +134,7 @@ namespace Live2D
 #endif
 
                 //---- static 初期化 ----
-                Utils::Value::StaticInitializeNotForClientCall();
+                // Utils::Value::StaticInitializeNotForClientCall();
 
                 s_cubismIdManager = CSM_NEW CubismIdManager();
 
@@ -168,7 +161,7 @@ namespace Live2D
                 }
 
                 //---- static 解放 ----
-                Utils::Value::StaticReleaseNotForClientCall();
+                // Utils::Value::StaticReleaseNotForClientCall();
 
                 CSM_DELETE(s_cubismIdManager);
 
@@ -196,12 +189,12 @@ namespace Live2D
                 CubismLogInfo("CubismFramework::Dispose() is complete.");
             }
 
-            csmBool CubismFramework::IsInitialized()
+            bool CubismFramework::IsInitialized()
             {
                 return s_isInitialized;
             }
 
-            void CubismFramework::CoreLogFunction(const csmChar *message)
+            void CubismFramework::CoreLogFunction(const char *message)
             {
                 // Return if logging not possible.
                 if (!Core::csmGetLogFunction())
@@ -228,7 +221,7 @@ namespace Live2D
 
 #ifdef CSM_DEBUG_MEMORY_LEAKING
 
-            void *CubismFramework::Allocate(csmSizeType size, const csmChar *fileName, csmInt32 lineNumber)
+            void *CubismFramework::Allocate(csmSizeType size, const QString &fileName, csmInt32 lineNumber)
             {
                 void *address = GetAllocator()->Allocate(size);
 
@@ -242,7 +235,7 @@ namespace Live2D
                 return address;
             }
 
-            void *CubismFramework::AllocateAligned(csmSizeType size, csmUint32 alignment, const csmChar *fileName, csmInt32 lineNumber)
+            void *CubismFramework::AllocateAligned(csmSizeType size, csmUint32 alignment, const QString &fileName, csmInt32 lineNumber)
             {
                 void *address = GetAllocator()->AllocateAligned(size, alignment);
 
@@ -256,7 +249,7 @@ namespace Live2D
                 return address;
             }
 
-            void CubismFramework::Deallocate(void *address, const csmChar *fileName, csmInt32 lineNumber)
+            void CubismFramework::Deallocate(void *address, const QString &fileName, csmInt32 lineNumber)
             {
                 if (!address)
                 {
@@ -282,7 +275,7 @@ namespace Live2D
                 GetAllocator()->Deallocate(address);
             }
 
-            void CubismFramework::DeallocateAligned(void *address, const csmChar *fileName, csmInt32 lineNumber)
+            void CubismFramework::DeallocateAligned(void *address, const QString &fileName, csmInt32 lineNumber)
             {
                 if (!address)
                 {
@@ -350,26 +343,26 @@ namespace Live2D
 #ifdef CSM_DEBUG_MEMORY_LEAKING
 
 void *operator new(Live2D::Cubism::Framework::csmSizeType size, Live2D::Cubism::Framework::CubismAllocationTag tag,
-                   const Live2D::Cubism::Framework::csmChar *fileName, Live2D::Cubism::Framework::csmInt32 lineNumber)
+                   const Live2D::Cubism::Framework::QString &fileName, Live2D::Cubism::Framework::csmInt32 lineNumber)
 {
     return Live2D::Cubism::Framework::CubismFramework::Allocate(size, fileName, lineNumber);
 }
 
 void *operator new(Live2D::Cubism::Framework::csmSizeType size, Live2D::Cubism::Framework::csmUint32 alignment,
-                   Live2D::Cubism::Framework::CubismAllocationAlignedTag tag, const Live2D::Cubism::Framework::csmChar *fileName,
+                   Live2D::Cubism::Framework::CubismAllocationAlignedTag tag, const Live2D::Cubism::Framework::QString &fileName,
                    Live2D::Cubism::Framework::csmInt32 lineNumber)
 {
     return Live2D::Cubism::Framework::CubismFramework::AllocateAligned(size, alignment, fileName, lineNumber);
 }
 
-void operator delete(void *address, Live2D::Cubism::Framework::CubismAllocationTag tag, const Live2D::Cubism::Framework::csmChar *fileName,
+void operator delete(void *address, Live2D::Cubism::Framework::CubismAllocationTag tag, const Live2D::Cubism::Framework::QString &fileName,
                      Live2D::Cubism::Framework::csmInt32 lineNumber)
 {
     Live2D::Cubism::Framework::CubismFramework::Deallocate(address, fileName, lineNumber);
 }
 
 void operator delete(void *address, Live2D::Cubism::Framework::CubismAllocationAlignedTag tag,
-                     const Live2D::Cubism::Framework::csmChar *fileName, Live2D::Cubism::Framework::csmInt32 lineNumber)
+                     const Live2D::Cubism::Framework::QString &fileName, Live2D::Cubism::Framework::csmInt32 lineNumber)
 {
     Live2D::Cubism::Framework::CubismFramework::DeallocateAligned(address, fileName, lineNumber);
 }

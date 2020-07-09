@@ -25,7 +25,7 @@ namespace Live2D
 
             CubismMotionQueueManager::~CubismMotionQueueManager()
             {
-                for (csmUint32 i = 0; i < _motions.GetSize(); ++i)
+                for (auto i = 0; i < _motions.size(); ++i)
                 {
                     if (_motions[i])
                     {
@@ -34,7 +34,7 @@ namespace Live2D
                 }
             }
 
-            CubismMotionQueueEntryHandle CubismMotionQueueManager::StartMotion(ACubismMotion *motion, csmBool autoDelete,
+            CubismMotionQueueEntryHandle CubismMotionQueueManager::StartMotion(ACubismMotion *motion, bool autoDelete,
                                                                                csmFloat32 userTimeSeconds)
             {
                 if (motion == NULL)
@@ -45,9 +45,9 @@ namespace Live2D
                 CubismMotionQueueEntry *motionQueueEntry = NULL;
 
                 // 既にモーションがあれば終了フラグを立てる
-                for (csmUint32 i = 0; i < _motions.GetSize(); ++i)
+                for (auto i = 0; i < _motions.size(); ++i)
                 {
-                    motionQueueEntry = _motions.At(i);
+                    motionQueueEntry = _motions.at(i);
                     if (motionQueueEntry == NULL)
                     {
                         continue;
@@ -61,25 +61,25 @@ namespace Live2D
                 motionQueueEntry->_autoDelete = autoDelete;
                 motionQueueEntry->_motion = motion;
 
-                _motions.PushBack(motionQueueEntry, false);
+                _motions.append(motionQueueEntry);
 
                 return motionQueueEntry->_motionQueueEntryHandle;
             }
 
-            csmBool CubismMotionQueueManager::DoUpdateMotion(CubismModel *model, csmFloat32 userTimeSeconds)
+            bool CubismMotionQueueManager::DoUpdateMotion(CubismModel *model, csmFloat32 userTimeSeconds)
             {
-                csmBool updated = false;
+                bool updated = false;
 
                 // ------- 処理を行う --------
                 // 既にモーションがあれば終了フラグを立てる
 
-                for (csmVector<CubismMotionQueueEntry *>::iterator ite = _motions.Begin(); ite != _motions.End();)
+                for (QVector<CubismMotionQueueEntry *>::iterator ite = _motions.begin(); ite != _motions.end();)
                 {
                     CubismMotionQueueEntry *motionQueueEntry = *ite;
 
                     if (motionQueueEntry == NULL)
                     {
-                        ite = _motions.Erase(ite); // 削除
+                        ite = _motions.erase(ite); // 削除
                         continue;
                     }
 
@@ -88,7 +88,7 @@ namespace Live2D
                     if (motion == NULL)
                     {
                         CSM_DELETE(motionQueueEntry);
-                        ite = _motions.Erase(ite); // 削除
+                        ite = _motions.erase(ite); // 削除
 
                         continue;
                     }
@@ -98,11 +98,11 @@ namespace Live2D
                     updated = true;
 
                     // ------ ユーザトリガーイベントを検査する ----
-                    const csmVector<const csmString *> &firedList =
+                    const QVector<const QString *> &firedList =
                         motion->GetFiredEvent(motionQueueEntry->GetLastCheckEventTime() - motionQueueEntry->GetStartTime(),
                                               userTimeSeconds - motionQueueEntry->GetStartTime());
 
-                    for (csmUint32 i = 0; i < firedList.GetSize(); ++i)
+                    for (auto i = 0; i < firedList.size(); ++i)
                     {
                         _eventCallback(this, *(firedList[i]), _eventCustomData);
                     }
@@ -113,7 +113,7 @@ namespace Live2D
                     if (motionQueueEntry->IsFinished())
                     {
                         CSM_DELETE(motionQueueEntry);
-                        ite = _motions.Erase(ite); // 削除
+                        ite = _motions.erase(ite); // 削除
                     }
                     else
                     {
@@ -129,7 +129,7 @@ namespace Live2D
                 //------- 処理を行う --------
                 //既にモーションがあれば終了フラグを立てる
 
-                for (csmVector<CubismMotionQueueEntry *>::iterator ite = _motions.Begin(); ite != _motions.End(); ++ite)
+                for (QVector<CubismMotionQueueEntry *>::iterator ite = _motions.begin(); ite != _motions.end(); ++ite)
                 {
                     CubismMotionQueueEntry *motionQueueEntry = *ite;
 
@@ -147,18 +147,18 @@ namespace Live2D
                 return NULL;
             }
 
-            csmBool CubismMotionQueueManager::IsFinished()
+            bool CubismMotionQueueManager::IsFinished()
             {
                 // ------- 処理を行う --------
                 // 既にモーションがあれば終了フラグを立てる
 
-                for (csmVector<CubismMotionQueueEntry *>::iterator ite = _motions.Begin(); ite != _motions.End();)
+                for (QVector<CubismMotionQueueEntry *>::iterator ite = _motions.begin(); ite != _motions.end();)
                 {
                     CubismMotionQueueEntry *motionQueueEntry = *ite;
 
                     if (motionQueueEntry == NULL)
                     {
-                        ite = _motions.Erase(ite); // 削除
+                        ite = _motions.erase(ite); // 削除
                         continue;
                     }
 
@@ -167,7 +167,7 @@ namespace Live2D
                     if (motion == NULL)
                     {
                         CSM_DELETE(motionQueueEntry);
-                        ite = _motions.Erase(ite); // 削除
+                        ite = _motions.erase(ite); // 削除
                         continue;
                     }
 
@@ -185,11 +185,11 @@ namespace Live2D
                 return true;
             }
 
-            csmBool CubismMotionQueueManager::IsFinished(CubismMotionQueueEntryHandle motionQueueEntryNumber)
+            bool CubismMotionQueueManager::IsFinished(CubismMotionQueueEntryHandle motionQueueEntryNumber)
             {
                 // 既にモーションがあれば終了フラグを立てる
 
-                for (csmVector<CubismMotionQueueEntry *>::iterator ite = _motions.Begin(); ite != _motions.End(); ite++)
+                for (QVector<CubismMotionQueueEntry *>::iterator ite = _motions.begin(); ite != _motions.end(); ite++)
                 {
                     CubismMotionQueueEntry *motionQueueEntry = *ite;
 
@@ -212,20 +212,20 @@ namespace Live2D
                 // ------- 処理を行う --------
                 // 既にモーションがあれば終了フラグを立てる
 
-                for (csmVector<CubismMotionQueueEntry *>::iterator ite = _motions.Begin(); ite != _motions.End();)
+                for (QVector<CubismMotionQueueEntry *>::iterator ite = _motions.begin(); ite != _motions.end();)
                 {
                     CubismMotionQueueEntry *motionQueueEntry = *ite;
 
                     if (motionQueueEntry == NULL)
                     {
-                        ite = _motions.Erase(ite);
+                        ite = _motions.erase(ite);
 
                         continue;
                     }
 
                     // ----- 終了済みの処理があれば削除する ------
                     CSM_DELETE(motionQueueEntry);
-                    ite = _motions.Erase(ite); //削除
+                    ite = _motions.erase(ite); //削除
                 }
             }
 

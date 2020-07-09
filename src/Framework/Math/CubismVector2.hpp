@@ -178,7 +178,7 @@ namespace Live2D
                  * @retval  true    値は等しい
                  * @retval  false   値は等しくない
                  */
-                csmBool operator==(const CubismVector2 &rhs) const;
+                bool operator==(const CubismVector2 &rhs) const;
 
                 /**
                  * @brief 等しさの確認（等しくないか？）
@@ -189,7 +189,7 @@ namespace Live2D
                  * @retval  true    値は等しくない
                  * @retval  false   値は等しい
                  */
-                csmBool operator!=(const CubismVector2 &rhs) const;
+                bool operator!=(const CubismVector2 &rhs) const;
 
                 /**
                  * @brief 正規化の適用
@@ -228,7 +228,7 @@ namespace Live2D
                 csmFloat32 Dot(const CubismVector2 &a) const;
             };
 
-            // Utility functions for csmVector2.
+            // Utility functions for QVector2.
             CubismVector2 operator+(const CubismVector2 &a, const CubismVector2 &b);
             CubismVector2 operator-(const CubismVector2 &a, const CubismVector2 &b);
             CubismVector2 operator*(const CubismVector2 &vector, const csmFloat32 scalar);

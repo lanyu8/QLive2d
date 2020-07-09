@@ -1,4 +1,4 @@
-﻿/**
+/**
  * Copyright(c) Live2D Inc. All rights reserved.
  *
  * Use of this source code is governed by the Live2D Proprietary Software license
@@ -7,7 +7,7 @@
 
 #ifndef LIVE2D_CUBISM_CORE_H
 #define LIVE2D_CUBISM_CORE_H
-
+#include <QString>
 #if defined(__cplusplus)
 extern "C"
 {
@@ -111,7 +111,7 @@ extern "C"
      *
      * @param  message  Null-terminated string message to log.
      */
-    typedef void (*csmLogFunction)(const char* message);
+    typedef void (*csmLogFunction)(const char *message);
 
 #if CSM_CORE_WIN32_DLL
 #define csmCallingConvention __stdcall

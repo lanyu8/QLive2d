@@ -7,6 +7,7 @@
 
 #include "CubismIdManager.hpp"
 
+#include "CubismFramework.hpp"
 #include "CubismId.hpp"
 
 namespace Live2D
@@ -22,48 +23,39 @@ namespace Live2D
 
             CubismIdManager::~CubismIdManager()
             {
-                for (csmUint32 i = 0; i < _ids.GetSize(); ++i)
+                for (auto i = 0; i < _ids.size(); ++i)
                 {
                     CSM_DELETE_SELF(CubismId, _ids[i]);
                 }
             }
 
-            void CubismIdManager::RegisterIds(const csmChar **ids, csmInt32 count)
-            {
-                for (csmInt32 i = 0; i < count; ++i)
-                {
-                    RegisterId(ids[i]);
-                }
-            }
+            //            void CubismIdManager::RegisterIds(const QString &ids, int count)
+            //            {
+            //                for (int i = 0; i < count; ++i)
+            //                {
+            //                    RegisterId(ids[i]);
+            //                }
+            //            }
 
-            void CubismIdManager::RegisterIds(const csmVector<csmString> &ids)
-            {
-                for (csmUint32 i = 0; i < ids.GetSize(); ++i)
-                {
-                    RegisterId(ids[i]);
-                }
-            }
+            //            void CubismIdManager::RegisterIds(const QVector<QString> &ids)
+            //            {
+            //                for (csmUint32 i = 0; i < ids.GetSize(); ++i)
+            //                {
+            //                    RegisterId(ids[i]);
+            //                }
+            //            }
 
-            const CubismId *CubismIdManager::GetId(const csmString &id)
-            {
-                return RegisterId(id.GetRawString());
-            }
-
-            const CubismId *CubismIdManager::GetId(const csmChar *id)
+            const CubismId *CubismIdManager::GetId(const QString &id)
             {
                 return RegisterId(id);
             }
 
-            csmBool CubismIdManager::IsExist(const csmString &id) const
-            {
-                return IsExist(id.GetRawString());
-            }
-            csmBool CubismIdManager::IsExist(const csmChar *id) const
+            bool CubismIdManager::IsExist(const QString &id) const
             {
                 return (FindId(id) != NULL);
             }
 
-            const CubismId *CubismIdManager::RegisterId(const csmChar *id)
+            const CubismId *CubismIdManager::RegisterId(const QString &id)
             {
                 CubismId *result = NULL;
 
@@ -73,19 +65,13 @@ namespace Live2D
                 }
 
                 result = CSM_NEW CubismId(id);
-                _ids.PushBack(result);
-
+                _ids.append(result);
                 return result;
             }
 
-            const CubismId *CubismIdManager::RegisterId(const csmString &id)
+            CubismId *CubismIdManager::FindId(const QString &id) const
             {
-                return RegisterId(id.GetRawString());
-            }
-
-            CubismId *CubismIdManager::FindId(const csmChar *id) const
-            {
-                for (csmUint32 i = 0; i < _ids.GetSize(); ++i)
+                for (auto i = 0; i < _ids.size(); ++i)
                 {
                     if (_ids[i]->GetString() == id)
                     {

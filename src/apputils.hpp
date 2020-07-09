@@ -20,7 +20,7 @@ class AppUtils
         s_deltaTime = (s_currentFrame - s_lastFrame) / 1000.0;
         s_lastFrame = s_currentFrame;
     }
-    inline static void Log(const Csm::csmChar *message)
+    inline static void Log(const char *message)
     {
         std::cout << message << std::endl;
     }

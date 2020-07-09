@@ -88,12 +88,12 @@ namespace Live2D
                 return *this;
             }
 
-            csmBool CubismVector2::operator==(const CubismVector2 &rhs) const
+            bool CubismVector2::operator==(const CubismVector2 &rhs) const
             {
                 return (X == rhs.X) && (Y == rhs.Y);
             }
 
-            csmBool CubismVector2::operator!=(const CubismVector2 &rhs) const
+            bool CubismVector2::operator!=(const CubismVector2 &rhs) const
             {
                 return !(*this == rhs);
             }

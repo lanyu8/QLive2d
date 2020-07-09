@@ -42,22 +42,22 @@ Model::~Model()
     ReleaseMotions();
     ReleaseExpressions();
 
-    for (csmInt32 i = 0; i < _modelSetting->GetMotionGroupCount(); i++)
+    for (int i = 0; i < _modelSetting->GetMotionGroupCount(); i++)
     {
-        const csmChar *group = _modelSetting->GetMotionGroupName(i);
+        const QString &group = _modelSetting->GetMotionGroupName(i);
         ReleaseMotionGroup(group);
     }
     delete (_modelSetting);
 }
 
-void Model::LoadAssets(const csmChar *dir, const csmChar *fileName)
+void Model::LoadAssets(const QString &dir, const QString &fileName)
 {
     _modelHomeDir = dir;
     // csmSizeInt size;
-    const csmString path = csmString(dir) + fileName;
+    const QString path = QString(dir) + fileName;
     AppUtils::FileContent buffer;
-    AppUtils::readFileContent(path.GetRawString(), buffer);
-    ICubismModelSetting *setting = new CubismModelSettingJson(reinterpret_cast<Csm::csmByte *>(buffer.data()), buffer.size());
+    AppUtils::readFileContent(path, buffer);
+    ICubismModelSetting *setting = new CubismModelSettingJson(buffer);
     buffer.clear();
     SetupModel(setting);
     CreateRenderer();
@@ -71,26 +71,26 @@ void Model::SetupModel(ICubismModelSetting *setting)
     _modelSetting = setting;
     AppUtils::FileContent buffer;
 
-    if (strcmp(_modelSetting->GetModelFileName(), "") != 0)
+    if (!_modelSetting->GetModelFileName().isEmpty())
     {
-        csmString path = _modelSetting->GetModelFileName();
+        QString path = _modelSetting->GetModelFileName();
         path = _modelHomeDir + path;
-        AppUtils::readFileContent(path.GetRawString(), buffer);
-        LoadModel(reinterpret_cast<Csm::csmByte *>(buffer.data()), buffer.size());
+        AppUtils::readFileContent(path, buffer);
+        LoadModel(buffer);
     }
 
     // Expression
     if (_modelSetting->GetExpressionCount() > 0)
     {
-        const csmInt32 count = _modelSetting->GetExpressionCount();
-        for (csmInt32 i = 0; i < count; i++)
+        const int count = _modelSetting->GetExpressionCount();
+        for (int i = 0; i < count; i++)
         {
-            csmString name = _modelSetting->GetExpressionName(i);
-            csmString path = _modelSetting->GetExpressionFileName(i);
+            QString name = _modelSetting->GetExpressionName(i);
+            QString path = _modelSetting->GetExpressionFileName(i);
             path = _modelHomeDir + path;
 
-            AppUtils::readFileContent(path.GetRawString(), buffer);
-            ACubismMotion *motion = LoadExpression(reinterpret_cast<Csm::csmByte *>(buffer.data()), buffer.size(), name.GetRawString());
+            AppUtils::readFileContent(path, buffer);
+            ACubismMotion *motion = LoadExpression(buffer, name);
 
             if (_expressions[name] != NULL)
             {
@@ -102,22 +102,20 @@ void Model::SetupModel(ICubismModelSetting *setting)
     }
 
     // Physics
-    if (strcmp(_modelSetting->GetPhysicsFileName(), "") != 0)
+    if (!_modelSetting->GetPhysicsFileName().isEmpty())
     {
-        csmString path = _modelSetting->GetPhysicsFileName();
+        QString path = _modelSetting->GetPhysicsFileName();
         path = _modelHomeDir + path;
-        AppUtils::readFileContent(path.GetRawString(), buffer);
-        LoadPhysics(reinterpret_cast<Csm::csmByte *>(buffer.data()), buffer.size());
+        AppUtils::readFileContent(path, buffer);
+        LoadPhysics(buffer);
     }
 
     // Pose
-    if (strcmp(_modelSetting->GetPoseFileName(), "") != 0)
+    if (!_modelSetting->GetPoseFileName().isEmpty())
     {
-        csmString path = _modelSetting->GetPoseFileName();
-        path = _modelHomeDir + path;
-
-        AppUtils::readFileContent(path.GetRawString(), buffer);
-        LoadPose(reinterpret_cast<Csm::csmByte *>(buffer.data()), buffer.size());
+        const auto path = _modelHomeDir + _modelSetting->GetPoseFileName();
+        AppUtils::readFileContent(path, buffer);
+        LoadPose(buffer);
     }
 
     // EyeBlink
@@ -129,53 +127,53 @@ void Model::SetupModel(ICubismModelSetting *setting)
     {
         _breath = CubismBreath::Create();
 
-        csmVector<CubismBreath::BreathParameterData> breathParameters;
+        QVector<CubismBreath::BreathParameterData> breathParameters;
 
-        breathParameters.PushBack(CubismBreath::BreathParameterData(_idParamAngleX, 0.0f, 15.0f, 6.5345f, 0.5f));
-        breathParameters.PushBack(CubismBreath::BreathParameterData(_idParamAngleY, 0.0f, 8.0f, 3.5345f, 0.5f));
-        breathParameters.PushBack(CubismBreath::BreathParameterData(_idParamAngleZ, 0.0f, 10.0f, 5.5345f, 0.5f));
-        breathParameters.PushBack(CubismBreath::BreathParameterData(_idParamBodyAngleX, 0.0f, 4.0f, 15.5345f, 0.5f));
-        breathParameters.PushBack(
+        breathParameters.append(CubismBreath::BreathParameterData(_idParamAngleX, 0.0f, 15.0f, 6.5345f, 0.5f));
+        breathParameters.append(CubismBreath::BreathParameterData(_idParamAngleY, 0.0f, 8.0f, 3.5345f, 0.5f));
+        breathParameters.append(CubismBreath::BreathParameterData(_idParamAngleZ, 0.0f, 10.0f, 5.5345f, 0.5f));
+        breathParameters.append(CubismBreath::BreathParameterData(_idParamBodyAngleX, 0.0f, 4.0f, 15.5345f, 0.5f));
+        breathParameters.append(
             CubismBreath::BreathParameterData(CubismFramework::GetIdManager()->GetId(ParamBreath), 0.5f, 0.5f, 3.2345f, 0.5f));
 
         _breath->SetParameters(breathParameters);
     }
 
     // UserData
-    if (strcmp(_modelSetting->GetUserDataFile(), "") != 0)
+    if (!_modelSetting->GetUserDataFile().isEmpty())
     {
-        csmString path = _modelSetting->GetUserDataFile();
+        QString path = _modelSetting->GetUserDataFile();
         path = _modelHomeDir + path;
-        AppUtils::readFileContent(path.GetRawString(), buffer);
-        LoadUserData(reinterpret_cast<Csm::csmByte *>(buffer.data()), buffer.size());
+        AppUtils::readFileContent(path, buffer);
+        LoadUserData(buffer);
     }
 
     // EyeBlinkIds
     {
-        csmInt32 eyeBlinkIdCount = _modelSetting->GetEyeBlinkParameterCount();
-        for (csmInt32 i = 0; i < eyeBlinkIdCount; ++i)
+        int eyeBlinkIdCount = _modelSetting->GetEyeBlinkParameterCount();
+        for (int i = 0; i < eyeBlinkIdCount; ++i)
         {
-            _eyeBlinkIds.PushBack(_modelSetting->GetEyeBlinkParameterId(i));
+            _eyeBlinkIds.append(_modelSetting->GetEyeBlinkParameterId(i));
         }
     }
 
     // LipSyncIds
     {
-        csmInt32 lipSyncIdCount = _modelSetting->GetLipSyncParameterCount();
-        for (csmInt32 i = 0; i < lipSyncIdCount; ++i)
+        int lipSyncIdCount = _modelSetting->GetLipSyncParameterCount();
+        for (int i = 0; i < lipSyncIdCount; ++i)
         {
-            _lipSyncIds.PushBack(_modelSetting->GetLipSyncParameterId(i));
+            _lipSyncIds.append(_modelSetting->GetLipSyncParameterId(i));
         }
     }
 
     // Layout
-    csmMap<csmString, csmFloat32> layout;
+    QMap<QString, csmFloat32> layout;
     _modelSetting->GetLayoutMap(layout);
     _modelMatrix->SetupFromLayout(layout);
     _model->SaveParameters();
-    for (csmInt32 i = 0; i < _modelSetting->GetMotionGroupCount(); i++)
+    for (int i = 0; i < _modelSetting->GetMotionGroupCount(); i++)
     {
-        const csmChar *group = _modelSetting->GetMotionGroupName(i);
+        const QString &group = _modelSetting->GetMotionGroupName(i);
         PreloadMotionGroup(group);
     }
     _motionManager->StopAllMotions();
@@ -184,23 +182,21 @@ void Model::SetupModel(ICubismModelSetting *setting)
     _initialized = true;
 }
 
-void Model::PreloadMotionGroup(const csmChar *group)
+void Model::PreloadMotionGroup(const QString &group)
 {
-    const csmInt32 count = _modelSetting->GetMotionCount(group);
+    const int count = _modelSetting->GetMotionCount(group);
 
-    for (csmInt32 i = 0; i < count; i++)
+    for (int i = 0; i < count; i++)
     {
         // ex) idle_0
-        csmString name = Utils::CubismString::GetFormatedString("%s_%d", group, i);
-        csmString path = _modelSetting->GetMotionFileName(group, i);
-        path = _modelHomeDir + path;
+        auto name = group + "_" + QString::number(i); // Utils::CubismString::GetFormatedString("%s_%d", group, i);
+        auto path = _modelHomeDir + _modelSetting->GetMotionFileName(group, i);
 
         AppUtils::FileContent buffer;
         // csmSizeInt size;
 
-        AppUtils::readFileContent(path.GetRawString(), buffer);
-        CubismMotion *tmpMotion =
-            static_cast<CubismMotion *>(LoadMotion(reinterpret_cast<Csm::csmByte *>(buffer.data()), buffer.size(), name.GetRawString()));
+        AppUtils::readFileContent(path, buffer);
+        CubismMotion *tmpMotion = static_cast<CubismMotion *>(LoadMotion(buffer, name));
 
         csmFloat32 fadeTime = _modelSetting->GetMotionFadeInTimeValue(group, i);
         if (fadeTime >= 0.0f)
@@ -223,15 +219,15 @@ void Model::PreloadMotionGroup(const csmChar *group)
     }
 }
 
-void Model::ReleaseMotionGroup(const csmChar *group) const
+void Model::ReleaseMotionGroup(const QString &group) const
 {
-    const csmInt32 count = _modelSetting->GetMotionCount(group);
-    for (csmInt32 i = 0; i < count; i++)
+    const int count = _modelSetting->GetMotionCount(group);
+    for (int i = 0; i < count; i++)
     {
-        csmString voice = _modelSetting->GetMotionSoundFileName(group, i);
-        if (strcmp(voice.GetRawString(), "") != 0)
+        QString voice = _modelSetting->GetMotionSoundFileName(group, i);
+        if (!voice.isEmpty())
         {
-            csmString path = voice;
+            QString path = voice;
             path = _modelHomeDir + path;
         }
     }
@@ -244,12 +240,12 @@ void Model::ReleaseMotionGroup(const csmChar *group) const
  */
 void Model::ReleaseMotions()
 {
-    for (csmMap<csmString, ACubismMotion *>::const_iterator iter = _motions.Begin(); iter != _motions.End(); ++iter)
+    for (auto iter = _motions.begin(); iter != _motions.end(); ++iter)
     {
-        ACubismMotion::Delete(iter->Second);
+        ACubismMotion::Delete(iter.value());
     }
 
-    _motions.Clear();
+    _motions.clear();
 }
 
 /**
@@ -259,12 +255,12 @@ void Model::ReleaseMotions()
  */
 void Model::ReleaseExpressions()
 {
-    for (csmMap<csmString, ACubismMotion *>::const_iterator iter = _expressions.Begin(); iter != _expressions.End(); ++iter)
+    for (auto iter = _expressions.begin(); iter != _expressions.end(); ++iter)
     {
-        ACubismMotion::Delete(iter->Second);
+        ACubismMotion::Delete(iter.value());
     }
 
-    _expressions.Clear();
+    _expressions.clear();
 }
 
 void Model::Update()
@@ -272,12 +268,12 @@ void Model::Update()
     const csmFloat32 deltaTimeSeconds = AppUtils::GetDeltaTime();
     _userTimeSeconds += deltaTimeSeconds;
 
-    csmBool motionUpdated = false;
+    bool motionUpdated = false;
 
     _model->LoadParameters(); // 前回セーブされた状態をロード
     if (_motionManager->IsFinished())
     {
-        StartRandomMotion(Config::MotionGroupIdle, Config::PriorityIdle);
+        StartRandomMotion(MotionGroupIdle, PriorityIdle);
     }
     else
     {
@@ -317,7 +313,7 @@ void Model::Update()
     {
         csmFloat32 value = 0; // リアルタイムでリップシンクを行う場合、システムから音量を取得して0〜1の範囲で値を入力します。
 
-        for (csmUint32 i = 0; i < _lipSyncIds.GetSize(); ++i)
+        for (auto i = 0; i < _lipSyncIds.size(); ++i)
         {
             _model->AddParameterValue(_lipSyncIds[i], value, 0.8f);
         }
@@ -332,10 +328,10 @@ void Model::Update()
     _model->Update();
 }
 
-CubismMotionQueueEntryHandle Model::StartMotion(const csmChar *group, csmInt32 no, csmInt32 priority,
+CubismMotionQueueEntryHandle Model::StartMotion(const QString &group, int no, int priority,
                                                 ACubismMotion::FinishedMotionCallback onFinishedMotionHandler)
 {
-    if (priority == Config::PriorityForce)
+    if (priority == PriorityForce)
     {
         _motionManager->SetReservePriority(priority);
     }
@@ -344,23 +340,22 @@ CubismMotionQueueEntryHandle Model::StartMotion(const csmChar *group, csmInt32 n
         return InvalidMotionQueueEntryHandleValue;
     }
 
-    const csmString fileName = _modelSetting->GetMotionFileName(group, no);
+    const QString fileName = _modelSetting->GetMotionFileName(group, no);
 
     // ex) idle_0
-    csmString name = Utils::CubismString::GetFormatedString("%s_%d", group, no);
-    CubismMotion *motion = static_cast<CubismMotion *>(_motions[name.GetRawString()]);
-    csmBool autoDelete = false;
+    QString name = group + "_" + QString::number(no); // Utils::CubismString::GetFormatedString("%s_%d", group, no);
+    CubismMotion *motion = static_cast<CubismMotion *>(_motions[name]);
+    bool autoDelete = false;
 
     if (motion == NULL)
     {
-        csmString path = fileName;
+        QString path = fileName;
         path = _modelHomeDir + path;
 
         AppUtils::FileContent buffer;
         // csmSizeInt size;
-        AppUtils::readFileContent(path.GetRawString(), buffer);
-        motion = static_cast<CubismMotion *>(
-            LoadMotion(reinterpret_cast<Csm::csmByte *>(buffer.data()), buffer.size(), NULL, onFinishedMotionHandler));
+        AppUtils::readFileContent(path, buffer);
+        motion = static_cast<CubismMotion *>(LoadMotion(buffer, NULL, onFinishedMotionHandler));
         csmFloat32 fadeTime = _modelSetting->GetMotionFadeInTimeValue(group, no);
         if (fadeTime >= 0.0f)
         {
@@ -381,22 +376,22 @@ CubismMotionQueueEntryHandle Model::StartMotion(const csmChar *group, csmInt32 n
     }
 
     // voice
-    csmString voice = _modelSetting->GetMotionSoundFileName(group, no);
-    if (strcmp(voice.GetRawString(), "") != 0)
+    QString voice = _modelSetting->GetMotionSoundFileName(group, no);
+    if (!voice.isEmpty())
     {
-        csmString path = voice;
+        QString path = voice;
         path = _modelHomeDir + path;
     }
 
     return _motionManager->StartMotionPriority(motion, autoDelete, priority);
 }
 
-CubismMotionQueueEntryHandle Model::StartRandomMotion(const csmChar *group, csmInt32 priority,
+CubismMotionQueueEntryHandle Model::StartRandomMotion(const QString &group, int priority,
                                                       ACubismMotion::FinishedMotionCallback onFinishedMotionHandler)
 {
     if (_modelSetting->GetMotionCount(group) == 0)
         return InvalidMotionQueueEntryHandleValue;
-    csmInt32 no = rand() % _modelSetting->GetMotionCount(group);
+    int no = rand() % _modelSetting->GetMotionCount(group);
     return StartMotion(group, no, priority, onFinishedMotionHandler);
 }
 
@@ -411,14 +406,14 @@ void Model::Draw()
     GetRenderer<Rendering::CubismRenderer_OpenGLES2>()->SetMvpMatrix(&matrix);
     GetRenderer<Rendering::CubismRenderer_OpenGLES2>()->DrawModel();
 }
-Csm::csmBool Model::TestMouse(Csm::csmFloat32 x, Csm::csmFloat32 y)
+bool Model::TestMouse(Csm::csmFloat32 x, Csm::csmFloat32 y)
 {
     if (_opacity < 1)
     {
         return false;
     }
-    const csmInt32 count = _modelSetting->GetHitAreasCount();
-    for (csmInt32 i = 0; i < count; i++)
+    const int count = _modelSetting->GetHitAreasCount();
+    for (int i = 0; i < count; i++)
     {
         const CubismIdHandle drawID = _modelSetting->GetHitAreaId(i);
         if (IsHit(drawID, x - offsetx, y - offsety))
@@ -426,16 +421,16 @@ Csm::csmBool Model::TestMouse(Csm::csmFloat32 x, Csm::csmFloat32 y)
     }
     return false;
 }
-csmBool Model::HitTest(const csmChar *hitAreaName, csmFloat32 x, csmFloat32 y)
+bool Model::HitTest(const QString &hitAreaName, csmFloat32 x, csmFloat32 y)
 {
     if (_opacity < 1)
     {
         return false;
     }
-    const csmInt32 count = _modelSetting->GetHitAreasCount();
-    for (csmInt32 i = 0; i < count; i++)
+    const int count = _modelSetting->GetHitAreasCount();
+    for (int i = 0; i < count; i++)
     {
-        if (strcmp(_modelSetting->GetHitAreaName(i), hitAreaName) == 0)
+        if (_modelSetting->GetHitAreaName(i) == hitAreaName)
         {
             const CubismIdHandle drawID = _modelSetting->GetHitAreaId(i);
             return IsHit(drawID, x, y);
@@ -444,31 +439,30 @@ csmBool Model::HitTest(const csmChar *hitAreaName, csmFloat32 x, csmFloat32 y)
     return false; // 存在しない場合はfalse
 }
 
-void Model::SetExpression(const csmChar *expressionID)
+void Model::SetExpression(const QString &expressionID)
 {
     ACubismMotion *motion = _expressions[expressionID];
     if (motion != NULL)
     {
-        _expressionManager->StartMotionPriority(motion, false, Config::PriorityForce);
+        _expressionManager->StartMotionPriority(motion, false, PriorityForce);
     }
 }
 
 void Model::SetRandomExpression()
 {
-    if (_expressions.GetSize() == 0)
+    if (_expressions.size() == 0)
     {
         return;
     }
 
-    csmInt32 no = rand() % _expressions.GetSize();
-    csmMap<csmString, ACubismMotion *>::const_iterator map_ite;
-    csmInt32 i = 0;
-    for (map_ite = _expressions.Begin(); map_ite != _expressions.End(); map_ite++)
+    int no = rand() % _expressions.size();
+    int i = 0;
+    for (auto map_ite = _expressions.begin(); map_ite != _expressions.end(); map_ite++)
     {
         if (i == no)
         {
-            csmString name = (*map_ite).First;
-            SetExpression(name.GetRawString());
+            QString name = map_ite.key();
+            SetExpression(name);
             return;
         }
         i++;
@@ -477,18 +471,18 @@ void Model::SetRandomExpression()
 
 void Model::SetupTextures()
 {
-    for (csmInt32 modelTextureNumber = 0; modelTextureNumber < _modelSetting->GetTextureCount(); modelTextureNumber++)
+    for (int modelTextureNumber = 0; modelTextureNumber < _modelSetting->GetTextureCount(); modelTextureNumber++)
     {
         // テクスチャ名が空文字だった場合はロード・バインド処理をスキップ
-        if (strcmp(_modelSetting->GetTextureFileName(modelTextureNumber), "") == 0)
+        if (_modelSetting->GetTextureFileName(modelTextureNumber).isEmpty())
         {
             continue;
         }
 
-        csmString texturePath = _modelSetting->GetTextureFileName(modelTextureNumber);
+        QString texturePath = _modelSetting->GetTextureFileName(modelTextureNumber);
         texturePath = _modelHomeDir + texturePath;
 
-        GLuint texture = TextureLoader::CreateTextureFromPngFile(texturePath.GetRawString());
+        GLuint texture = TextureLoader::CreateTextureFromPngFile(texturePath);
         GetRenderer<Rendering::CubismRenderer_OpenGLES2>()->BindTexture(modelTextureNumber, texture);
     }
     GetRenderer<Rendering::CubismRenderer_OpenGLES2>()->IsPremultipliedAlpha(false);

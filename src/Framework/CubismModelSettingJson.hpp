@@ -37,7 +37,7 @@ namespace Live2D
                  * @param[in] size       Model3Jsonのデータサイズ
                  *
                  */
-                CubismModelSettingJson(const csmByte *buffer, csmSizeInt size);
+                CubismModelSettingJson(const QByteArray &buffer);
 
                 /**
                  * @brief デストラクタ
@@ -53,67 +53,67 @@ namespace Live2D
                  */
                 Utils::CubismJson *GetJsonPointer() const;
 
-                const csmChar *GetModelFileName();
+                const QString GetModelFileName() const override;
 
-                csmInt32 GetTextureCount();
+                int GetTextureCount() const override;
 
-                const csmChar *GetTextureDirectory();
+                const QString GetTextureDirectory() const override;
 
-                const csmChar *GetTextureFileName(csmInt32 index);
+                const QString GetTextureFileName(int index) const override;
 
-                csmInt32 GetHitAreasCount();
+                int GetHitAreasCount() const override;
 
-                CubismIdHandle GetHitAreaId(csmInt32 index);
+                CubismIdHandle GetHitAreaId(int index) const override;
 
-                const csmChar *GetHitAreaName(csmInt32 index);
+                const QString GetHitAreaName(int index) const override;
 
-                const csmChar *GetPhysicsFileName();
+                const QString GetPhysicsFileName() const override;
 
-                const csmChar *GetPoseFileName();
+                const QString GetPoseFileName() const override;
 
-                csmInt32 GetExpressionCount();
+                int GetExpressionCount() const override;
 
-                const csmChar *GetExpressionName(csmInt32 index);
+                const QString GetExpressionName(int index) const override;
 
-                const csmChar *GetExpressionFileName(csmInt32 index);
+                const QString GetExpressionFileName(int index) const override;
 
-                csmInt32 GetMotionGroupCount();
+                int GetMotionGroupCount() const override;
 
-                const csmChar *GetMotionGroupName(csmInt32 index);
+                const QString GetMotionGroupName(int index) const override;
 
-                csmInt32 GetMotionCount(const csmChar *groupName);
+                int GetMotionCount(const QString &groupName) const override;
 
-                const csmChar *GetMotionFileName(const csmChar *groupName, csmInt32 index);
+                const QString GetMotionFileName(const QString &groupName, int index) const override;
 
-                const csmChar *GetMotionSoundFileName(const csmChar *groupName, csmInt32 index);
+                const QString GetMotionSoundFileName(const QString &groupName, int index) const override;
 
-                csmFloat32 GetMotionFadeInTimeValue(const csmChar *groupName, csmInt32 index);
+                csmFloat32 GetMotionFadeInTimeValue(const QString &groupName, int index) const override;
 
-                csmFloat32 GetMotionFadeOutTimeValue(const csmChar *groupName, csmInt32 index);
+                csmFloat32 GetMotionFadeOutTimeValue(const QString &groupName, int index) const override;
 
-                const csmChar *GetUserDataFile();
+                const QString GetUserDataFile() const override;
 
-                csmBool GetLayoutMap(csmMap<csmString, csmFloat32> &outLayoutMap);
+                bool GetLayoutMap(QMap<QString, csmFloat32> &outLayoutMap) const override;
 
-                csmInt32 GetEyeBlinkParameterCount();
+                int GetEyeBlinkParameterCount() const override;
 
-                CubismIdHandle GetEyeBlinkParameterId(csmInt32 index);
+                CubismIdHandle GetEyeBlinkParameterId(int index) const override;
 
-                csmInt32 GetLipSyncParameterCount();
+                int GetLipSyncParameterCount() const override;
 
-                CubismIdHandle GetLipSyncParameterId(csmInt32 index);
+                CubismIdHandle GetLipSyncParameterId(int index) const override;
 
               private:
                 enum FrequentNode
                 {
-                    FrequentNode_Groups,      ///< GetRoot()[Groups]
-                    FrequentNode_Moc,         ///< GetRoot()[FileReferences][Moc]
-                    FrequentNode_Motions,     ///< GetRoot()[FileReferences][Motions]
-                    FrequentNode_Expressions, ///< GetRoot()[FileReferences][Expressions]
-                    FrequentNode_Textures,    ///< GetRoot()[FileReferences][Textures]
-                    FrequentNode_Physics,     ///< GetRoot()[FileReferences][Physics]
-                    FrequentNode_Pose,        ///< GetRoot()[FileReferences][Pose]
-                    FrequentNode_HitAreas,    ///< GetRoot()[HitAreas]
+                    FrequentNode_Groups = 0,      ///< GetRoot()[Groups]
+                    FrequentNode_Moc = 1,         ///< GetRoot()[FileReferences][Moc]
+                    FrequentNode_Motions = 2,     ///< GetRoot()[FileReferences][Motions]
+                    FrequentNode_Expressions = 3, ///< GetRoot()[FileReferences][Expressions]
+                    FrequentNode_Textures = 4,    ///< GetRoot()[FileReferences][Textures]
+                    FrequentNode_Physics = 5,     ///< GetRoot()[FileReferences][Physics]
+                    FrequentNode_Pose = 6,        ///< GetRoot()[FileReferences][Pose]
+                    FrequentNode_HitAreas = 7,    ///< GetRoot()[HitAreas]
                 };
 
                 /**
@@ -122,7 +122,7 @@ namespace Live2D
                  * @retval       true  -> キーが存在する
                  * @retval       false -> キーが存在しない
                  */
-                csmBool IsExistModelFile() const;
+                bool IsExistModelFile() const;
 
                 /**
                  * @brief        テクスチャファイルのキーが存在するかどうかを確認する
@@ -130,7 +130,7 @@ namespace Live2D
                  * @retval       true  -> キーが存在する
                  * @retval       false -> キーが存在しない
                  */
-                csmBool IsExistTextureFiles() const;
+                bool IsExistTextureFiles() const;
 
                 /**
                  * @brief        当たり判定のキーが存在するかどうかを確認する
@@ -138,7 +138,7 @@ namespace Live2D
                  * @retval       true  -> キーが存在する
                  * @retval       false -> キーが存在しない
                  */
-                csmBool IsExistHitAreas() const;
+                bool IsExistHitAreas() const;
 
                 /**
                  * @brief        物理演算ファイルのキーが存在するかどうかを確認する
@@ -146,7 +146,7 @@ namespace Live2D
                  * @retval       true  -> キーが存在する
                  * @retval       false -> キーが存在しない
                  */
-                csmBool IsExistPhysicsFile() const;
+                bool IsExistPhysicsFile() const;
 
                 /**
                  * @brief        ポーズ設定ファイルのキーが存在するかどうかを確認する
@@ -154,7 +154,7 @@ namespace Live2D
                  * @retval       true  -> キーが存在する
                  * @retval       false -> キーが存在しない
                  */
-                csmBool IsExistPoseFile() const;
+                bool IsExistPoseFile() const;
 
                 /**
                  * @brief        表情設定ファイルのキーが存在するかどうかを確認する
@@ -162,7 +162,7 @@ namespace Live2D
                  * @retval       true  -> キーが存在する
                  * @retval       false -> キーが存在しない
                  */
-                csmBool IsExistExpressionFile() const;
+                bool IsExistExpressionFile() const;
 
                 /**
                  * @brief        モーショングループのキーが存在するかどうかを確認する
@@ -170,7 +170,7 @@ namespace Live2D
                  * @retval       true  -> キーが存在する
                  * @retval       false -> キーが存在しない
                  */
-                csmBool IsExistMotionGroups() const;
+                bool IsExistMotionGroups() const;
 
                 /**
                  * @brief        引数で指定したモーショングループのキーが存在するかどうかを確認する
@@ -179,7 +179,7 @@ namespace Live2D
                  * @retval       true  -> キーが存在する
                  * @retval       false -> キーが存在しない
                  */
-                csmBool IsExistMotionGroupName(const csmChar *groupName) const;
+                bool IsExistMotionGroupName(const QString &groupName) const;
 
                 /**
                  * @brief        引数で指定したモーションに対応するサウンドファイルのキーが存在するかどうかを確認する
@@ -189,7 +189,7 @@ namespace Live2D
                  * @retval       true  -> キーが存在する
                  * @retval       false -> キーが存在しない
                  */
-                csmBool IsExistMotionSoundFile(const csmChar *groupName, csmInt32 index) const;
+                bool IsExistMotionSoundFile(const QString &groupName, int index) const;
 
                 /**
                  * @brief        引数で指定したモーションに対応するフェードイン時間のキーが存在するかどうかを確認する
@@ -199,7 +199,7 @@ namespace Live2D
                  * @retval       true  -> キーが存在する
                  * @retval       false -> キーが存在しない
                  */
-                csmBool IsExistMotionFadeIn(const csmChar *groupName, csmInt32 index) const;
+                bool IsExistMotionFadeIn(const QString &groupName, int index) const;
 
                 /**
                  * @brief        引数で指定したモーションに対応するフェードアウト時間のキーが存在するかどうかを確認する
@@ -209,7 +209,7 @@ namespace Live2D
                  * @retval       true  -> キーが存在する
                  * @retval       false -> キーが存在しない
                  */
-                csmBool IsExistMotionFadeOut(const csmChar *groupName, csmInt32 index) const;
+                bool IsExistMotionFadeOut(const QString &groupName, int index) const;
 
                 /**
                  * @brief        UserDataのファイル名が存在するか確認
@@ -217,7 +217,7 @@ namespace Live2D
                  * @retval       true   キーが存在する
                  * @retval       false  キーが存在しない
                  */
-                csmBool IsExistUserDataFile() const;
+                bool IsExistUserDataFile() const;
 
                 /**
                  * @brief        目パチに対応付けられたパラメータが存在するかどうかを確認する
@@ -225,7 +225,7 @@ namespace Live2D
                  * @retval       true  -> キーが存在する
                  * @retval       false -> キーが存在しない
                  */
-                csmBool IsExistEyeBlinkParameters() const;
+                bool IsExistEyeBlinkParameters() const;
 
                 /**
                  * @brief        リップシンクに対応付けられたパラメータが存在するかどうかを確認する
@@ -233,10 +233,10 @@ namespace Live2D
                  * @retval       true  -> キーが存在する
                  * @retval       false -> キーが存在しない
                  */
-                csmBool IsExistLipSyncParameters() const;
+                bool IsExistLipSyncParameters() const;
 
-                Utils::CubismJson *_json;             ///< モデルデータjson
-                csmVector<Utils::Value *> _jsonValue; ///< 上jsonの頻出ノード
+                Utils::CubismJson _json; ///< モデルデータjson
+                QList<QJsonValue> frequentJsonValues;
             };
         } // namespace Framework
     }     // namespace Cubism

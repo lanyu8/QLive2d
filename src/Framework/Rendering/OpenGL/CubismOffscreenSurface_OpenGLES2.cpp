@@ -63,7 +63,7 @@ namespace Live2D
                     OpenGLHelper::get()->glClear(GL_COLOR_BUFFER_BIT);
                 }
 
-                csmBool CubismOffscreenFrame_OpenGLES2::CreateOffscreenFrame(csmUint32 displayBufferWidth, csmUint32 displayBufferHeight,
+                bool CubismOffscreenFrame_OpenGLES2::CreateOffscreenFrame(csmUint32 displayBufferWidth, csmUint32 displayBufferHeight,
                                                                              GLuint colorBuffer)
                 {
                     // 一旦削除
@@ -140,7 +140,7 @@ namespace Live2D
                     return _bufferHeight;
                 }
 
-                csmBool CubismOffscreenFrame_OpenGLES2::IsValid() const
+                bool CubismOffscreenFrame_OpenGLES2::IsValid() const
                 {
                     return _renderTexture != 0;
                 }

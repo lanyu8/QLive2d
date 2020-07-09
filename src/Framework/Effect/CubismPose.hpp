@@ -68,10 +68,10 @@ namespace Live2D
                      */
                     void Initialize(CubismModel *model);
 
-                    CubismIdHandle PartId;    ///< パーツID
-                    csmInt32 ParameterIndex;  ///< パラメータのインデックス
-                    csmInt32 PartIndex;       ///< パーツのインデックス
-                    csmVector<PartData> Link; ///< 連動するパラメータ
+                    CubismIdHandle PartId;  ///< パーツID
+                    int ParameterIndex;     ///< パラメータのインデックス
+                    int PartIndex;          ///< パーツのインデックス
+                    QVector<PartData> Link; ///< 連動するパラメータ
                 };
 
                 /**
@@ -83,7 +83,7 @@ namespace Live2D
                  * @param[in]   size         pose3.jsonのデータのサイズ[Byte]
                  * @return                   作成されたインスタンス
                  */
-                static CubismPose *Create(const csmByte *pose3json, csmSizeInt size);
+                static CubismPose *Create(const QByteArray &data);
 
                 /**
                  * @brief インスタンスの破棄
@@ -149,12 +149,12 @@ namespace Live2D
                  * @param[in]   beginIndex          フェード操作を行うパーツグループの先頭インデックス
                  * @param[in]   partGroupCount      フェード操作を行うパーツグループの個数
                  */
-                void DoFade(CubismModel *model, csmFloat32 deltaTimeSeconds, csmInt32 beginIndex, csmInt32 partGroupCount);
+                void DoFade(CubismModel *model, csmFloat32 deltaTimeSeconds, int beginIndex, int partGroupCount);
 
-                csmVector<PartData> _partGroups;      ///< パーツグループ
-                csmVector<csmInt32> _partGroupCounts; ///< それぞれのパーツグループの個数
-                csmFloat32 _fadeTimeSeconds;          ///< フェード時間[秒]
-                CubismModel *_lastModel;              ///< 前回操作したモデル
+                QVector<PartData> _partGroups; ///< パーツグループ
+                QVector<int> _partGroupCounts; ///< それぞれのパーツグループの個数
+                csmFloat32 _fadeTimeSeconds;   ///< フェード時間[秒]
+                CubismModel *_lastModel;       ///< 前回操作したモデル
             };
 
         } // namespace Framework

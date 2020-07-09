@@ -36,7 +36,7 @@ namespace Live2D
                  * @param[in]   mocBytes    Mocファイルのバッファ
                  * @param[in]   size        バッファのサイズ
                  */
-                static CubismMoc *Create(const csmByte *mocBytes, csmSizeInt size);
+                static CubismMoc *Create(const QByteArray &buffer);
 
                 /**
                  * @brief Mocデータを削除
@@ -78,8 +78,8 @@ namespace Live2D
                  */
                 virtual ~CubismMoc();
 
-                Core::csmMoc *_moc;   ///< Mocデータ
-                csmInt32 _modelCount; ///< Mocデータから作られたモデルの個数
+                Core::csmMoc *_moc; ///< Mocデータ
+                int _modelCount;    ///< Mocデータから作られたモデルの個数
             };
 
         } // namespace Framework

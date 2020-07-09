@@ -14,7 +14,6 @@
 #include "CubismMotionQueueManager.hpp"
 #include "Id/CubismIdManager.hpp"
 #include "Math/CubismMath.hpp"
-#include "Type/csmVector.hpp"
 
 #include <float.h>
 
@@ -28,11 +27,11 @@ namespace Live2D
             namespace
             {
 
-                const csmChar *EffectNameEyeBlink = "EyeBlink";
-                const csmChar *EffectNameLipSync = "LipSync";
-                const csmChar *TargetNameModel = "Model";
-                const csmChar *TargetNameParameter = "Parameter";
-                const csmChar *TargetNamePartOpacity = "PartOpacity";
+                const QString &EffectNameEyeBlink = "EyeBlink";
+                const QString &EffectNameLipSync = "LipSync";
+                const QString &TargetNameModel = "Model";
+                const QString &TargetNameParameter = "Parameter";
+                const QString &TargetNamePartOpacity = "PartOpacity";
 
                 CubismMotionPoint LerpPoints(const CubismMotionPoint a, const CubismMotionPoint b, const csmFloat32 t)
                 {
@@ -87,15 +86,15 @@ namespace Live2D
                     return points[1].Value;
                 }
 
-                csmFloat32 EvaluateCurve(const CubismMotionData *motionData, const csmInt32 index, csmFloat32 time)
+                csmFloat32 EvaluateCurve(const CubismMotionData *motionData, const int index, csmFloat32 time)
                 {
                     // Find segment to evaluate.
                     const CubismMotionCurve &curve = motionData->Curves[index];
 
-                    csmInt32 target = -1;
-                    const csmInt32 totalSegmentCount = curve.BaseSegmentIndex + curve.SegmentCount;
-                    csmInt32 pointPosition = 0;
-                    for (csmInt32 i = curve.BaseSegmentIndex; i < totalSegmentCount; ++i)
+                    int target = -1;
+                    const int totalSegmentCount = curve.BaseSegmentIndex + curve.SegmentCount;
+                    int pointPosition = 0;
+                    for (int i = curve.BaseSegmentIndex; i < totalSegmentCount; ++i)
                     {
                         // Get first point of next segment.
                         pointPosition = motionData->Segments[i].BasePointIndex +
@@ -135,11 +134,11 @@ namespace Live2D
                 CSM_DELETE(_motionData);
             }
 
-            CubismMotion *CubismMotion::Create(const csmByte *buffer, csmSizeInt size, FinishedMotionCallback onFinishedMotionHandler)
+            CubismMotion *CubismMotion::Create(const QByteArray &buffer, FinishedMotionCallback onFinishedMotionHandler)
             {
                 CubismMotion *ret = CSM_NEW CubismMotion();
 
-                ret->Parse(buffer, size);
+                ret->Parse(buffer);
                 ret->_sourceFrameRate = ret->_motionData->Fps;
                 ret->_loopDurationSeconds = ret->_motionData->Duration;
                 ret->_onFinishedMotion = onFinishedMotionHandler;
@@ -179,18 +178,18 @@ namespace Live2D
                 csmFloat32 eyeBlinkValue = FLT_MAX;
 
                 //まばたき、リップシンクのうちモーションの適用を検出するためのビット（maxFlagCount個まで
-                const csmInt32 MaxTargetSize = 64;
+                const int MaxTargetSize = 64;
                 csmUint64 lipSyncFlags = 0ULL;
                 csmUint64 eyeBlinkFlags = 0ULL;
 
                 //瞬き、リップシンクのターゲット数が上限を超えている場合
-                if (_eyeBlinkParameterIds.GetSize() > MaxTargetSize)
+                if (_eyeBlinkParameterIds.size() > MaxTargetSize)
                 {
-                    CubismLogDebug("too many eye blink targets : %d", _eyeBlinkParameterIds.GetSize());
+                    CubismLogDebug("too many eye blink targets : %d", _eyeBlinkParameterIds.size());
                 }
-                if (_lipSyncParameterIds.GetSize() > MaxTargetSize)
+                if (_lipSyncParameterIds.size() > MaxTargetSize)
                 {
-                    CubismLogDebug("too many lip sync targets : %d", _lipSyncParameterIds.GetSize());
+                    CubismLogDebug("too many lip sync targets : %d", _lipSyncParameterIds.size());
                 }
 
                 const csmFloat32 tmpFadeIn =
@@ -204,7 +203,7 @@ namespace Live2D
                         CubismMath::GetEasingSine((motionQueueEntry->GetEndTime() - userTimeSeconds) / _fadeOutSeconds);
 
                 csmFloat32 value;
-                csmInt32 c, parameterIndex;
+                int c, parameterIndex;
 
                 // 'Repeat' time as necessary.
                 csmFloat32 time = timeOffsetSeconds;
@@ -217,7 +216,7 @@ namespace Live2D
                     }
                 }
 
-                csmVector<CubismMotionCurve> &curves = _motionData->Curves;
+                QVector<CubismMotionCurve> &curves = _motionData->Curves;
 
                 // Evaluate model curves.
                 for (c = 0; c < _motionData->CurveCount && curves[c].Type == CubismMotionCurveTarget_Model; ++c)
@@ -235,7 +234,7 @@ namespace Live2D
                     }
                 }
 
-                csmInt32 parameterMotionCurveCount = 0;
+                int parameterMotionCurveCount = 0;
 
                 for (; c < _motionData->CurveCount && curves[c].Type == CubismMotionCurveTarget_Parameter; ++c)
                 {
@@ -257,7 +256,7 @@ namespace Live2D
 
                     if (eyeBlinkValue != FLT_MAX)
                     {
-                        for (csmUint32 i = 0; i < _eyeBlinkParameterIds.GetSize() && i < MaxTargetSize; ++i)
+                        for (auto i = 0; i < _eyeBlinkParameterIds.size() && i < MaxTargetSize; ++i)
                         {
                             if (_eyeBlinkParameterIds[i] == curves[c].Id)
                             {
@@ -270,7 +269,7 @@ namespace Live2D
 
                     if (lipSyncValue != FLT_MAX)
                     {
-                        for (csmUint32 i = 0; i < _lipSyncParameterIds.GetSize() && i < MaxTargetSize; ++i)
+                        for (auto i = 0; i < _lipSyncParameterIds.size() && i < MaxTargetSize; ++i)
                         {
                             if (_lipSyncParameterIds[i] == curves[c].Id)
                             {
@@ -329,7 +328,7 @@ namespace Live2D
                 {
                     if (eyeBlinkValue != FLT_MAX)
                     {
-                        for (csmUint32 i = 0; i < _eyeBlinkParameterIds.GetSize() && i < MaxTargetSize; ++i)
+                        for (auto i = 0; i < _eyeBlinkParameterIds.size() && i < MaxTargetSize; ++i)
                         {
                             const csmFloat32 sourceValue = model->GetParameterValue(_eyeBlinkParameterIds[i]);
                             //モーションでの上書きがあった時にはまばたきは適用しない
@@ -346,7 +345,7 @@ namespace Live2D
 
                     if (lipSyncValue != FLT_MAX)
                     {
-                        for (csmUint32 i = 0; i < _lipSyncParameterIds.GetSize() && i < MaxTargetSize; ++i)
+                        for (auto i = 0; i < _lipSyncParameterIds.size() && i < MaxTargetSize; ++i)
                         {
                             const csmFloat32 sourceValue = model->GetParameterValue(_lipSyncParameterIds[i]);
                             //モーションでの上書きがあった時にはリップシンクは適用しない
@@ -404,11 +403,11 @@ namespace Live2D
                 _lastWeight = fadeWeight;
             }
 
-            void CubismMotion::Parse(const csmByte *motionJson, const csmSizeInt size)
+            void CubismMotion::Parse(const QByteArray &buffer)
             {
                 _motionData = CSM_NEW CubismMotionData;
 
-                CubismMotionJson *json = CSM_NEW CubismMotionJson(motionJson, size);
+                CubismMotionJson *json = CSM_NEW CubismMotionJson(buffer);
 
                 _motionData->Duration = json->GetMotionDuration();
                 _motionData->Loop = json->IsMotionLoop();
@@ -434,26 +433,26 @@ namespace Live2D
                     _fadeOutSeconds = 1.0f;
                 }
 
-                _motionData->Curves.UpdateSize(_motionData->CurveCount, CubismMotionCurve(), true);
-                _motionData->Segments.UpdateSize(json->GetMotionTotalSegmentCount(), CubismMotionSegment(), true);
-                _motionData->Points.UpdateSize(json->GetMotionTotalPointCount(), CubismMotionPoint(), true);
-                _motionData->Events.UpdateSize(_motionData->EventCount, CubismMotionEvent(), true);
+                _motionData->Curves.resize(_motionData->CurveCount);              //, CubismMotionCurve(), true);
+                _motionData->Segments.resize(json->GetMotionTotalSegmentCount()); //, CubismMotionSegment(), true);
+                _motionData->Points.resize(json->GetMotionTotalPointCount());     //, CubismMotionPoint(), true);
+                _motionData->Events.resize(_motionData->EventCount);              //, CubismMotionEvent(), true);
 
-                csmInt32 totalPointCount = 0;
-                csmInt32 totalSegmentCount = 0;
+                int totalPointCount = 0;
+                int totalSegmentCount = 0;
 
                 // Curves
-                for (csmInt32 curveCount = 0; curveCount < _motionData->CurveCount; ++curveCount)
+                for (int curveCount = 0; curveCount < _motionData->CurveCount; ++curveCount)
                 {
-                    if (strcmp(json->GetMotionCurveTarget(curveCount), TargetNameModel) == 0)
+                    if (json->GetMotionCurveTarget(curveCount) == TargetNameModel)
                     {
                         _motionData->Curves[curveCount].Type = CubismMotionCurveTarget_Model;
                     }
-                    else if (strcmp(json->GetMotionCurveTarget(curveCount), TargetNameParameter) == 0)
+                    else if (json->GetMotionCurveTarget(curveCount) == TargetNameParameter)
                     {
                         _motionData->Curves[curveCount].Type = CubismMotionCurveTarget_Parameter;
                     }
-                    else if (strcmp(json->GetMotionCurveTarget(curveCount), TargetNamePartOpacity) == 0)
+                    else if (json->GetMotionCurveTarget(curveCount) == TargetNamePartOpacity)
                     {
                         _motionData->Curves[curveCount].Type = CubismMotionCurveTarget_PartOpacity;
                     }
@@ -468,7 +467,7 @@ namespace Live2D
                         (json->IsExistMotionCurveFadeOutTime(curveCount)) ? json->GetMotionCurveFadeOutTime(curveCount) : -1.0f;
 
                     // Segments
-                    for (csmInt32 segmentPosition = 0; segmentPosition < json->GetMotionCurveSegmentCount(curveCount);)
+                    for (int segmentPosition = 0; segmentPosition < json->GetMotionCurveSegmentCount(curveCount);)
                     {
                         if (segmentPosition == 0)
                         {
@@ -485,7 +484,7 @@ namespace Live2D
                             _motionData->Segments[totalSegmentCount].BasePointIndex = totalPointCount - 1;
                         }
 
-                        const csmInt32 segment = static_cast<csmInt32>(json->GetMotionCurveSegment(curveCount, segmentPosition));
+                        const int segment = static_cast<int>(json->GetMotionCurveSegment(curveCount, segmentPosition));
 
                         switch (segment)
                         {
@@ -559,7 +558,7 @@ namespace Live2D
                     }
                 }
 
-                for (csmInt32 userdatacount = 0; userdatacount < json->GetEventCount(); ++userdatacount)
+                for (int userdatacount = 0; userdatacount < json->GetEventCount(); ++userdatacount)
                 {
                     _motionData->Events[userdatacount].FireTime = json->GetEventTime(userdatacount);
                     _motionData->Events[userdatacount].Value = json->GetEventValue(userdatacount);
@@ -570,7 +569,7 @@ namespace Live2D
 
             void CubismMotion::SetParameterFadeInTime(CubismIdHandle parameterId, csmFloat32 value)
             {
-                csmVector<CubismMotionCurve> &curves = _motionData->Curves;
+                QVector<CubismMotionCurve> &curves = _motionData->Curves;
 
                 for (csmInt16 i = 0; i < _motionData->CurveCount; ++i)
                 {
@@ -584,7 +583,7 @@ namespace Live2D
 
             void CubismMotion::SetParameterFadeOutTime(CubismIdHandle parameterId, csmFloat32 value)
             {
-                csmVector<CubismMotionCurve> &curves = _motionData->Curves;
+                QVector<CubismMotionCurve> &curves = _motionData->Curves;
 
                 for (csmInt16 i = 0; i < _motionData->CurveCount; ++i)
                 {
@@ -598,7 +597,7 @@ namespace Live2D
 
             csmFloat32 CubismMotion::GetParameterFadeInTime(CubismIdHandle parameterId) const
             {
-                csmVector<CubismMotionCurve> &curves = _motionData->Curves;
+                QVector<CubismMotionCurve> &curves = _motionData->Curves;
 
                 for (csmInt16 i = 0; i < _motionData->CurveCount; ++i)
                 {
@@ -613,7 +612,7 @@ namespace Live2D
 
             csmFloat32 CubismMotion::GetParameterFadeOutTime(CubismIdHandle parameterId) const
             {
-                csmVector<CubismMotionCurve> &curves = _motionData->Curves;
+                QVector<CubismMotionCurve> &curves = _motionData->Curves;
 
                 for (csmInt16 i = 0; i < _motionData->CurveCount; ++i)
                 {
@@ -626,22 +625,22 @@ namespace Live2D
                 return -1;
             }
 
-            void CubismMotion::IsLoop(csmBool loop)
+            void CubismMotion::IsLoop(bool loop)
             {
                 this->_isLoop = loop;
             }
 
-            csmBool CubismMotion::IsLoop() const
+            bool CubismMotion::IsLoop() const
             {
                 return this->_isLoop;
             }
 
-            void CubismMotion::IsLoopFadeIn(csmBool loopFadeIn)
+            void CubismMotion::IsLoopFadeIn(bool loopFadeIn)
             {
                 this->_isLoopFadeIn = loopFadeIn;
             }
 
-            csmBool CubismMotion::IsLoopFadeIn() const
+            bool CubismMotion::IsLoopFadeIn() const
             {
                 return this->_isLoopFadeIn;
             }
@@ -651,22 +650,21 @@ namespace Live2D
                 return _loopDurationSeconds;
             }
 
-            void CubismMotion::SetEffectIds(const csmVector<CubismIdHandle> &eyeBlinkParameterIds,
-                                            const csmVector<CubismIdHandle> &lipSyncParameterIds)
+            void CubismMotion::SetEffectIds(const QVector<CubismIdHandle> &eyeBlinkParameterIds,
+                                            const QVector<CubismIdHandle> &lipSyncParameterIds)
             {
                 _eyeBlinkParameterIds = eyeBlinkParameterIds;
                 _lipSyncParameterIds = lipSyncParameterIds;
             }
 
-            const csmVector<const csmString *> &CubismMotion::GetFiredEvent(csmFloat32 beforeCheckTimeSeconds, csmFloat32 motionTimeSeconds)
+            const QVector<const QString *> &CubismMotion::GetFiredEvent(csmFloat32 beforeCheckTimeSeconds, csmFloat32 motionTimeSeconds)
             {
-                _firedEventValues.UpdateSize(0);
                 /// イベントの発火チェック
-                for (csmInt32 u = 0; u < _motionData->EventCount; ++u)
+                for (int u = 0; u < _motionData->EventCount; ++u)
                 {
                     if ((_motionData->Events[u].FireTime > beforeCheckTimeSeconds) && (_motionData->Events[u].FireTime <= motionTimeSeconds))
                     {
-                        _firedEventValues.PushBack(&_motionData->Events[u].Value);
+                        _firedEventValues.append(&_motionData->Events[u].Value);
                     }
                 }
 

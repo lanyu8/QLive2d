@@ -42,12 +42,12 @@ namespace Live2D
                 }
             }
 
-            csmBool CubismMotionQueueEntry::IsFinished() const
+            bool CubismMotionQueueEntry::IsFinished() const
             {
                 return _finished;
             }
 
-            csmBool CubismMotionQueueEntry::IsStarted() const
+            bool CubismMotionQueueEntry::IsStarted() const
             {
                 return _started;
             }
@@ -82,22 +82,22 @@ namespace Live2D
                 this->_endTimeSeconds = endTime;
             }
 
-            void CubismMotionQueueEntry::IsFinished(csmBool f)
+            void CubismMotionQueueEntry::IsFinished(bool f)
             {
                 this->_finished = f;
             }
 
-            void CubismMotionQueueEntry::IsStarted(csmBool f)
+            void CubismMotionQueueEntry::IsStarted(bool f)
             {
                 this->_started = f;
             }
 
-            csmBool CubismMotionQueueEntry::IsAvailable() const
+            bool CubismMotionQueueEntry::IsAvailable() const
             {
                 return _available;
             }
 
-            void CubismMotionQueueEntry::IsAvailable(csmBool v)
+            void CubismMotionQueueEntry::IsAvailable(bool v)
             {
                 this->_available = v;
             }

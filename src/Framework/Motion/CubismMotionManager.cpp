@@ -22,22 +22,22 @@ namespace Live2D
             {
             }
 
-            csmInt32 CubismMotionManager::GetCurrentPriority() const
+            int CubismMotionManager::GetCurrentPriority() const
             {
                 return _currentPriority;
             }
 
-            csmInt32 CubismMotionManager::GetReservePriority() const
+            int CubismMotionManager::GetReservePriority() const
             {
                 return _reservePriority;
             }
 
-            void CubismMotionManager::SetReservePriority(csmInt32 val)
+            void CubismMotionManager::SetReservePriority(int val)
             {
                 _reservePriority = val;
             }
 
-            CubismMotionQueueEntryHandle CubismMotionManager::StartMotionPriority(ACubismMotion *motion, csmBool autoDelete, csmInt32 priority)
+            CubismMotionQueueEntryHandle CubismMotionManager::StartMotionPriority(ACubismMotion *motion, bool autoDelete, int priority)
             {
                 if (priority == _reservePriority)
                 {
@@ -49,11 +49,11 @@ namespace Live2D
                 return CubismMotionQueueManager::StartMotion(motion, autoDelete, _userTimeSeconds);
             }
 
-            csmBool CubismMotionManager::UpdateMotion(CubismModel *model, csmFloat32 deltaTimeSeconds)
+            bool CubismMotionManager::UpdateMotion(CubismModel *model, csmFloat32 deltaTimeSeconds)
             {
                 _userTimeSeconds += deltaTimeSeconds;
 
-                const csmBool updated = CubismMotionQueueManager::DoUpdateMotion(model, _userTimeSeconds);
+                const bool updated = CubismMotionQueueManager::DoUpdateMotion(model, _userTimeSeconds);
 
                 if (IsFinished())
                 {
@@ -63,7 +63,7 @@ namespace Live2D
                 return updated;
             }
 
-            csmBool CubismMotionManager::ReserveMotion(csmInt32 priority)
+            bool CubismMotionManager::ReserveMotion(int priority)
             {
                 if ((priority <= _reservePriority) || (priority <= _currentPriority))
                 {

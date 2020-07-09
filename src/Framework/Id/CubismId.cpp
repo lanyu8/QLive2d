@@ -20,13 +20,12 @@ namespace Live2D
             {
             }
 
-            CubismId::CubismId(const CubismId &c) : _id(c._id)
+            CubismId::CubismId(const QString &str) : _id(str)
             {
             }
-
-            CubismId::CubismId(const csmChar *id)
+            CubismId::CubismId(const CubismId &c) : _id(c._id)
             {
-                _id = id;
+                _id = c._id;
             }
 
             CubismId::~CubismId()
@@ -43,17 +42,17 @@ namespace Live2D
                 return *this;
             }
 
-            csmBool CubismId::operator==(const CubismId &c) const
+            bool CubismId::operator==(const CubismId &c) const
             {
                 return (_id == c._id);
             }
 
-            csmBool CubismId::operator!=(const CubismId &c) const
+            bool CubismId::operator!=(const CubismId &c) const
             {
                 return !(_id == c._id);
             }
 
-            const csmString &CubismId::GetString() const
+            const QString &CubismId::GetString() const
             {
                 return _id;
             }

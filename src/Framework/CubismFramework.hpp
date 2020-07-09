@@ -57,17 +57,17 @@ namespace Live2D
 // メモリリークの検出や確保・解放の追跡を行う。
 
 void *operator new(Live2D::Cubism::Framework::csmSizeType size, Live2D::Cubism::Framework::CubismAllocationTag tag,
-                   const Live2D::Cubism::Framework::csmChar *fileName, Live2D::Cubism::Framework::csmInt32 lineNumber);
+                   const Live2D::Cubism::Framework::QString &fileName, Live2D::Cubism::Framework::csmInt32 lineNumber);
 void *operator new(Live2D::Cubism::Framework::csmSizeType size, Live2D::Cubism::Framework::csmUint32 alignment,
-                   Live2D::Cubism::Framework::CubismAllocationAlignedTag tag, const Live2D::Cubism::Framework::csmChar *fileName,
+                   Live2D::Cubism::Framework::CubismAllocationAlignedTag tag, const Live2D::Cubism::Framework::QString &fileName,
                    Live2D::Cubism::Framework::csmInt32 lineNumber);
-void operator delete(void *address, Live2D::Cubism::Framework::CubismAllocationTag tag, const Live2D::Cubism::Framework::csmChar *fileName,
+void operator delete(void *address, Live2D::Cubism::Framework::CubismAllocationTag tag, const Live2D::Cubism::Framework::QString &fileName,
                      Live2D::Cubism::Framework::csmInt32 lineNumber);
 void operator delete(void *address, Live2D::Cubism::Framework::CubismAllocationAlignedTag tag,
-                     const Live2D::Cubism::Framework::csmChar *fileName, Live2D::Cubism::Framework::csmInt32 lineNumber);
+                     const Live2D::Cubism::Framework::QString &fileName, Live2D::Cubism::Framework::csmInt32 lineNumber);
 
 template<typename T>
-void CsmDelete(T *address, const Live2D::Cubism::Framework::csmChar *fileName, Live2D::Cubism::Framework::csmInt32 lineNumber)
+void CsmDelete(T *address, const Live2D::Cubism::Framework::QString &fileName, Live2D::Cubism::Framework::csmInt32 lineNumber)
 {
     if (!address)
     {
@@ -210,11 +210,12 @@ namespace Live2D
              * @brief Framework内で使う定数の宣言
              *
              */
+            // Framework内で使う定数の宣言
             namespace Constant
             {
-                extern const csmInt32 VertexOffset; ///< メッシュ頂点のオフセット値
-                extern const csmInt32 VertexStep;   ///< メッシュ頂点のステップ値
-            }                                       // namespace Constant
+                constexpr auto VertexOffset = 0;
+                constexpr auto VertexStep = 2;
+            } // namespace Constant
 
             /**
              * @brief Live2D Cubism Original Workflow SDKのエントリポイント<br>
@@ -259,7 +260,7 @@ namespace Live2D
                  *
                  * @return   準備処理が完了したらtrueが返ります。
                  */
-                static csmBool StartUp(ICubismAllocator *allocator, const Option *option = NULL);
+                static bool StartUp(ICubismAllocator *allocator, const Option *option = NULL);
 
                 /**
                  * @brief    StartUp()で初期化したCubismFrameworkの各パラメータをクリアします。<br>
@@ -273,7 +274,7 @@ namespace Live2D
                  *
                  * @return  APIを使用する準備が完了していればtrueが返ります。
                  */
-                static csmBool IsStarted();
+                static bool IsStarted();
 
                 /**
                  * @brief  Cubism Framework内のリソースを初期化してモデルを表示可能な状態にします。<br>
@@ -293,14 +294,14 @@ namespace Live2D
                  *
                  * @return  リソース確保が完了していればtrueが返ります。
                  */
-                static csmBool IsInitialized();
+                static bool IsInitialized();
 
                 /**
                  * @brief   Core APIにバインドしたログ関数を実行する
                  *
                  * @param message   ->  ログメッセージ
                  */
-                static void CoreLogFunction(const csmChar *message);
+                static void CoreLogFunction(const char *message);
 
                 /**
                  * @biref   現在のログ出力レベル設定の値を返す。
@@ -318,10 +319,10 @@ namespace Live2D
 
 #ifdef CSM_DEBUG_MEMORY_LEAKING
 
-                static void *Allocate(csmSizeType size, const csmChar *fileName, csmInt32 lineNumber);
-                static void *AllocateAligned(csmSizeType size, csmUint32 alignment, const csmChar *fileName, csmInt32 lineNumber);
-                static void Deallocate(void *address, const csmChar *fileName, csmInt32 lineNumber);
-                static void DeallocateAligned(void *address, const csmChar *fileName, csmInt32 lineNumber);
+                static void *Allocate(csmSizeType size, const QString &fileName, csmInt32 lineNumber);
+                static void *AllocateAligned(csmSizeType size, csmUint32 alignment, const QString &fileName, csmInt32 lineNumber);
+                static void Deallocate(void *address, const QString &fileName, csmInt32 lineNumber);
+                static void DeallocateAligned(void *address, const QString &fileName, csmInt32 lineNumber);
 
 #else
 

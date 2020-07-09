@@ -17,59 +17,23 @@
 //#include <Windows.h>
 GLWidget::GLWidget(int w, int h) : QOpenGLWidget(nullptr)
 {
-    this->setWindowFlag(Qt::WindowType::MSWindowsOwnDC, false);
-    // this->setWindowFlag(Qt::FramelessWindowHint);
-    this->setWindowFlag(Qt::WindowStaysOnTopHint);
     this->setAttribute(Qt::WA_TranslucentBackground);
+    // this->setWindowFlag(Qt::FramelessWindowHint);
+    // this->setAttribute(Qt::WA_TransparentForMouseEvents); /// Will set for the whole widget, I only need part of it...
+    //
+    this->setWindowFlag(Qt::WindowType::MSWindowsOwnDC, false);
+    this->setWindowFlag(Qt::WindowStaysOnTopHint);
     this->setAttribute(Qt::WA_QuitOnClose);
     //    this->setAcceptDrops(true);
     this->show();
 
-    this->setGeometry(0, 0, w, h);
+    // this->setGeometry(0, 0, w, h);
     this->makeCurrent();
     OpenGLHelper::get()->initializeOpenGLFunctions();
     OpenGLHelper::get()->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     OpenGLHelper::get()->glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     OpenGLHelper::get()->glEnable(GL_BLEND);
     OpenGLHelper::get()->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-    menu.connect(&menu, &Menu::selected, &menu, [this](int id) {
-        if (id == 0)
-        {
-            bool muted = MusicPlayer::GetInstance()->isMuted();
-            MusicPlayer::GetInstance()->setmute(!muted);
-            return;
-        }
-        if (id == 1)
-        {
-            //            DWORD retSize = 0;
-            //            AssocQueryStringW(NULL, ASSOCSTR_COMMAND, L".txt", L"open", NULL, &retSize);
-            //            retSize += 1;
-            //            wchar_t *ret = new wchar_t[retSize];
-            //            memset(ret, 0, retSize * sizeof(wchar_t));
-            //            AssocQueryStringW(NULL, ASSOCSTR_COMMAND, L".txt", L"open", ret, &retSize);
-            //            QString str = QString::fromStdWString(ret);
-            //            str.replace("%1", "settings.conf");
-            //            std::wstring ws = str.toStdWString();
-            //            STARTUPINFOW si;
-            //            PROCESS_INFORMATION pi;
-            //            memset(&si, 0, sizeof(si));
-            //            memset(&pi, 0, sizeof(pi));
-            //            si.cb = sizeof(si);
-            //            CreateProcessW(NULL, ws.data(), NULL, NULL, FALSE, NULL, NULL, NULL, &si, &pi);
-            //            CloseHandle(pi.hThread);
-            //            CloseHandle(pi.hProcess);
-        }
-        //        if (id == 2)
-        //        {
-        //            std::thread thread([]() {
-        //                PluginLoader::unload.lock();
-        //                PluginLoader::unloadall();
-        //                ExitProcess(1223);
-        //            });
-        //            thread.detach();
-        //        }
-    });
 }
 void GLWidget::initializeGL()
 {
@@ -139,11 +103,12 @@ void GLWidget::mouseMoveEvent(QMouseEvent *e)
     y = -(e->y() - oldy) * 2.0 / height();
     oldx = e->x();
     oldy = e->y();
+    // this->move(mapToGlobal(e->pos()));
     ApplicationInstance->GetModel()->move(x, y);
 }
 void GLWidget::paintGL()
 {
-    ApplicationInstance->Run();
+    ApplicationInstance->Repaint();
 }
 void GLWidget::clear()
 {

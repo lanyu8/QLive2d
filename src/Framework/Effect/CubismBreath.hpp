@@ -9,7 +9,6 @@
 
 #include "Id/CubismId.hpp"
 #include "Model/CubismModel.hpp"
-#include "Type/csmVector.hpp"
 
 namespace Live2D
 {
@@ -88,7 +87,7 @@ namespace Live2D
                  *
                  * @param[in]   breathParameters    呼吸をひもづけたいパラメータのリスト
                  */
-                void SetParameters(const csmVector<BreathParameterData> &breathParameters);
+                void SetParameters(const QVector<BreathParameterData> &breathParameters);
 
                 /**
                  * @brief 呼吸にひもづいているパラメータの取得
@@ -97,7 +96,7 @@ namespace Live2D
                  *
                  * @return  呼吸にひもづいているパラメータのリスト
                  */
-                const csmVector<BreathParameterData> &GetParameters() const;
+                const QVector<BreathParameterData> &GetParameters() const;
 
                 /**
                  * @brief モデルのパラメータの更新
@@ -124,8 +123,8 @@ namespace Live2D
                  */
                 virtual ~CubismBreath();
 
-                csmVector<BreathParameterData> _breathParameters; ///< 呼吸にひもづいているパラメータのリスト
-                csmFloat32 _currentTime;                          ///< 積算時間[秒]
+                QVector<BreathParameterData> _breathParameters; ///< 呼吸にひもづいているパラメータのリスト
+                csmFloat32 _currentTime;                        ///< 積算時間[秒]
             };
 
         } // namespace Framework

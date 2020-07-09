@@ -21,7 +21,7 @@ namespace Live2D
             /**
              * IDで指定された目のパラメータが、0のときに閉じるなら true 、1の時に閉じるなら false 。
              */
-            const csmBool CloseIfZero = true;
+            const bool CloseIfZero = true;
 
             CubismEyeBlink *CubismEyeBlink::Create(ICubismModelSetting *modelSetting)
             {
@@ -42,9 +42,9 @@ namespace Live2D
                     return;
                 }
 
-                for (csmInt32 i = 0; i < modelSetting->GetEyeBlinkParameterCount(); ++i)
+                for (int i = 0; i < modelSetting->GetEyeBlinkParameterCount(); ++i)
                 {
-                    _parameterIds.PushBack(modelSetting->GetEyeBlinkParameterId(i));
+                    _parameterIds.push_back(modelSetting->GetEyeBlinkParameterId(i));
                 }
             }
 
@@ -54,7 +54,7 @@ namespace Live2D
 
             csmFloat32 CubismEyeBlink::DeterminNextBlinkingTiming() const
             {
-                const csmFloat32 r = static_cast<csmFloat32>(rand()) / RAND_MAX;
+                const csmFloat32 r = static_cast<csmFloat32>(rand()) / (float) RAND_MAX;
 
                 return _userTimeSeconds + (r * (2.0f * _blinkingIntervalSeconds - 1.0f));
             }
@@ -71,12 +71,12 @@ namespace Live2D
                 _openingSeconds = opening;
             }
 
-            void CubismEyeBlink::SetParameterIds(const csmVector<CubismIdHandle> &parameterIds)
+            void CubismEyeBlink::SetParameterIds(const QVector<CubismIdHandle> &parameterIds)
             {
                 _parameterIds = parameterIds;
             }
 
-            const csmVector<CubismIdHandle> &CubismEyeBlink::GetParameterIds() const
+            const QVector<CubismIdHandle> &CubismEyeBlink::GetParameterIds() const
             {
                 return _parameterIds;
             }
@@ -152,7 +152,7 @@ namespace Live2D
                     parameterValue = -parameterValue;
                 }
 
-                for (csmUint32 i = 0; i < _parameterIds.GetSize(); ++i)
+                for (auto i = 0; i < _parameterIds.size(); ++i)
                 {
                     model->SetParameterValue(_parameterIds[i], parameterValue);
                 }

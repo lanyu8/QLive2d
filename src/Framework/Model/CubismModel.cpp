@@ -18,7 +18,7 @@ namespace Live2D
         namespace Framework
         {
 
-            static csmInt32 IsBitSet(const csmUint8 byte, const csmUint8 mask)
+            static int IsBitSet(const csmUint8 byte, const csmUint8 mask)
             {
                 return ((byte & mask) == mask);
             }
@@ -36,34 +36,34 @@ namespace Live2D
             csmFloat32 CubismModel::GetParameterValue(CubismIdHandle parameterId)
             {
                 // 高速化のためにParameterIndexを取得できる機構になっているが、外部からの設定の時は呼び出し頻度が低いため不要
-                const csmInt32 parameterIndex = GetParameterIndex(parameterId);
+                const int parameterIndex = GetParameterIndex(parameterId);
                 return GetParameterValue(parameterIndex);
             }
 
             void CubismModel::SetParameterValue(CubismIdHandle parameteId, csmFloat32 value, csmFloat32 weight)
             {
-                const csmInt32 index = GetParameterIndex(parameteId);
+                const int index = GetParameterIndex(parameteId);
                 SetParameterValue(index, value, weight);
             }
 
             void CubismModel::AddParameterValue(CubismIdHandle parameterId, csmFloat32 value, csmFloat32 weight)
             {
-                const csmInt32 index = GetParameterIndex(parameterId);
+                const int index = GetParameterIndex(parameterId);
                 AddParameterValue(index, value, weight);
             }
 
-            void CubismModel::AddParameterValue(csmInt32 parameterIndex, csmFloat32 value, csmFloat32 weight)
+            void CubismModel::AddParameterValue(int parameterIndex, csmFloat32 value, csmFloat32 weight)
             {
                 SetParameterValue(parameterIndex, (GetParameterValue(parameterIndex) + (value * weight)));
             }
 
             void CubismModel::MultiplyParameterValue(CubismIdHandle parameterId, csmFloat32 value, csmFloat32 weight)
             {
-                const csmInt32 index = GetParameterIndex(parameterId);
+                const int index = GetParameterIndex(parameterId);
                 MultiplyParameterValue(index, value, weight);
             }
 
-            void CubismModel::MultiplyParameterValue(csmInt32 parameterIndex, csmFloat32 value, csmFloat32 weight)
+            void CubismModel::MultiplyParameterValue(int parameterIndex, csmFloat32 value, csmFloat32 weight)
             {
                 SetParameterValue(parameterIndex, (GetParameterValue(parameterIndex) * (1.0f + (value - 1.0f) * weight)));
             }
@@ -80,7 +80,7 @@ namespace Live2D
             void CubismModel::SetPartOpacity(CubismIdHandle partId, csmFloat32 opacity)
             {
                 // 高速化のためにPartIndexを取得できる機構になっているが、外部からの設定の時は呼び出し頻度が低いため不要
-                const csmInt32 index = GetPartIndex(partId);
+                const int index = GetPartIndex(partId);
 
                 if (index < 0)
                 {
@@ -90,9 +90,9 @@ namespace Live2D
                 SetPartOpacity(index, opacity);
             }
 
-            void CubismModel::SetPartOpacity(csmInt32 partIndex, csmFloat32 opacity)
+            void CubismModel::SetPartOpacity(int partIndex, csmFloat32 opacity)
             {
-                if (_notExistPartOpacities.IsExist(partIndex))
+                if (_notExistPartOpacities.contains(partIndex))
                 {
                     _notExistPartOpacities[partIndex] = opacity;
                     return;
@@ -107,7 +107,7 @@ namespace Live2D
             csmFloat32 CubismModel::GetPartOpacity(CubismIdHandle partId)
             {
                 // 高速化のためにPartIndexを取得できる機構になっているが、外部からの設定の時は呼び出し頻度が低いため不要
-                const csmInt32 index = GetPartIndex(partId);
+                const int index = GetPartIndex(partId);
 
                 if (index < 0)
                 {
@@ -117,9 +117,9 @@ namespace Live2D
                 return GetPartOpacity(index);
             }
 
-            csmFloat32 CubismModel::GetPartOpacity(csmInt32 partIndex)
+            csmFloat32 CubismModel::GetPartOpacity(int partIndex)
             {
-                if (_notExistPartOpacities.IsExist(partIndex))
+                if (_notExistPartOpacities.contains(partIndex))
                 {
                     // モデルに存在しないパーツIDの場合、非存在パーツリストから不透明度を返す
                     return _notExistPartOpacities[partIndex];
@@ -131,7 +131,7 @@ namespace Live2D
                 return _partOpacities[partIndex];
             }
 
-            csmInt32 CubismModel::GetParameterCount() const
+            int CubismModel::GetParameterCount() const
             {
                 return Core::csmGetParameterCount(_model);
             }
@@ -151,10 +151,10 @@ namespace Live2D
                 return Core::csmGetParameterMinimumValues(_model)[parameterIndex];
             }
 
-            csmInt32 CubismModel::GetParameterIndex(CubismIdHandle parameterId)
+            int CubismModel::GetParameterIndex(CubismIdHandle parameterId)
             {
-                csmInt32 parameterIndex;
-                const csmInt32 idCount = Core::csmGetParameterCount(_model);
+                int parameterIndex;
+                const int idCount = Core::csmGetParameterCount(_model);
 
                 for (parameterIndex = 0; parameterIndex < idCount; ++parameterIndex)
                 {
@@ -167,23 +167,23 @@ namespace Live2D
                 }
 
                 // モデルに存在していない場合、非存在パラメータIDリスト内を検索し、そのインデックスを返す
-                if (_notExistParameterId.IsExist(parameterId))
+                if (_notExistParameterId.contains(parameterId))
                 {
                     return _notExistParameterId[parameterId];
                 }
 
                 // 非存在パラメータIDリストにない場合、新しく要素を追加する
-                parameterIndex = Core::csmGetParameterCount(_model) + _notExistParameterId.GetSize();
+                parameterIndex = Core::csmGetParameterCount(_model) + _notExistParameterId.size();
 
                 _notExistParameterId[parameterId] = parameterIndex;
-                _notExistParameterValues.AppendKey(parameterIndex);
+                //_notExistParameterValues.AppendKey(parameterIndex);
 
                 return parameterIndex;
             }
 
-            csmFloat32 CubismModel::GetParameterValue(csmInt32 parameterIndex)
+            csmFloat32 CubismModel::GetParameterValue(int parameterIndex)
             {
-                if (_notExistParameterValues.IsExist(parameterIndex))
+                if (_notExistParameterValues.contains(parameterIndex))
                 {
                     return _notExistParameterValues[parameterIndex];
                 }
@@ -194,9 +194,9 @@ namespace Live2D
                 return _parameterValues[parameterIndex];
             }
 
-            void CubismModel::SetParameterValue(csmInt32 parameterIndex, csmFloat32 value, csmFloat32 weight)
+            void CubismModel::SetParameterValue(int parameterIndex, csmFloat32 value, csmFloat32 weight)
             {
-                if (_notExistParameterValues.IsExist(parameterIndex))
+                if (_notExistParameterValues.contains(parameterIndex))
                 {
                     _notExistParameterValues[parameterIndex] =
                         (weight == 1) ? value : (_notExistParameterValues[parameterIndex] * (1 - weight)) + (value * weight);
@@ -252,11 +252,11 @@ namespace Live2D
                 return tmpSizeInPixels.Y / tmpPixelsPerUnit;
             }
 
-            csmInt32 CubismModel::GetDrawableIndex(CubismIdHandle drawableId) const
+            int CubismModel::GetDrawableIndex(CubismIdHandle drawableId) const
             {
-                const csmInt32 drawableCount = Core::csmGetDrawableCount(_model);
+                const int drawableCount = Core::csmGetDrawableCount(_model);
 
-                for (csmInt32 drawableIndex = 0; drawableIndex < drawableCount; ++drawableIndex)
+                for (int drawableIndex = 0; drawableIndex < drawableCount; ++drawableIndex)
                 {
                     if (_drawableIds[drawableIndex] == drawableId)
                     {
@@ -267,15 +267,15 @@ namespace Live2D
                 return -1;
             }
 
-            const csmFloat32 *CubismModel::GetDrawableVertices(csmInt32 drawableIndex) const
+            const csmFloat32 *CubismModel::GetDrawableVertices(int drawableIndex) const
             {
                 return reinterpret_cast<const csmFloat32 *>(GetDrawableVertexPositions(drawableIndex));
             }
 
-            csmInt32 CubismModel::GetPartIndex(CubismIdHandle partId)
+            int CubismModel::GetPartIndex(CubismIdHandle partId)
             {
-                csmInt32 partIndex;
-                const csmInt32 idCount = Core::csmGetPartCount(_model);
+                int partIndex;
+                const int idCount = Core::csmGetPartCount(_model);
 
                 for (partIndex = 0; partIndex < idCount; ++partIndex)
                 {
@@ -285,19 +285,19 @@ namespace Live2D
                     }
                 }
 
-                const csmInt32 partCount = Core::csmGetPartCount(_model);
+                const int partCount = Core::csmGetPartCount(_model);
 
                 // モデルに存在していない場合、非存在パーツIDリスト内にあるかを検索し、そのインデックスを返す
-                if (_notExistPartId.IsExist(partId))
+                if (_notExistPartId.contains(partId))
                 {
                     return _notExistPartId[partId];
                 }
 
                 // 非存在パーツIDリストにない場合、新しく要素を追加する
-                partIndex = partCount + _notExistPartId.GetSize();
+                partIndex = partCount + _notExistPartId.size();
 
                 _notExistPartId[partId] = partIndex;
-                _notExistPartOpacities.AppendKey(partIndex);
+                //_notExistPartOpacities.AppendKey(partIndex);
 
                 return partIndex;
             }
@@ -312,148 +312,145 @@ namespace Live2D
                 _parameterMinimumValues = Core::csmGetParameterMinimumValues(_model);
 
                 {
-                    const csmChar **parameterIds = Core::csmGetParameterIds(_model);
-                    const csmInt32 parameterCount = Core::csmGetParameterCount(_model);
+                    const auto parameterIds = Core::csmGetParameterIds(_model);
+                    const int parameterCount = Core::csmGetParameterCount(_model);
 
-                    _parameterIds.PrepareCapacity(parameterCount);
-                    for (csmInt32 i = 0; i < parameterCount; ++i)
+                    for (int i = 0; i < parameterCount; ++i)
                     {
-                        _parameterIds.PushBack(CubismFramework::GetIdManager()->GetId(parameterIds[i]));
+                        _parameterIds.append(CubismFramework::GetIdManager()->GetId(parameterIds[i]));
                     }
                 }
 
                 {
-                    const csmChar **partIds = Core::csmGetPartIds(_model);
-                    const csmInt32 partCount = Core::csmGetPartCount(_model);
+                    const auto partIds = Core::csmGetPartIds(_model);
+                    const int partCount = Core::csmGetPartCount(_model);
 
-                    _partIds.PrepareCapacity(partCount);
-                    for (csmInt32 i = 0; i < partCount; ++i)
+                    for (int i = 0; i < partCount; ++i)
                     {
-                        _partIds.PushBack(CubismFramework::GetIdManager()->GetId(partIds[i]));
+                        _partIds.append(CubismFramework::GetIdManager()->GetId(partIds[i]));
                     }
                 }
 
                 {
-                    const csmChar **drawableIds = Core::csmGetDrawableIds(_model);
-                    const csmInt32 drawableCount = Core::csmGetDrawableCount(_model);
+                    const auto drawableIds = Core::csmGetDrawableIds(_model);
+                    const int drawableCount = Core::csmGetDrawableCount(_model);
 
-                    _drawableIds.PrepareCapacity(drawableCount);
-                    for (csmInt32 i = 0; i < drawableCount; ++i)
+                    for (int i = 0; i < drawableCount; ++i)
                     {
-                        _drawableIds.PushBack(CubismFramework::GetIdManager()->GetId(drawableIds[i]));
+                        _drawableIds.append(CubismFramework::GetIdManager()->GetId(drawableIds[i]));
                     }
                 }
             }
 
-            CubismIdHandle CubismModel::GetDrawableId(csmInt32 drawableIndex) const
+            CubismIdHandle CubismModel::GetDrawableId(int drawableIndex) const
             {
-                const csmChar **parameterIds = Core::csmGetDrawableIds(_model);
+                const auto parameterIds = Core::csmGetDrawableIds(_model);
                 return CubismFramework::GetIdManager()->GetId(parameterIds[drawableIndex]);
             }
 
-            csmInt32 CubismModel::GetPartCount() const
+            int CubismModel::GetPartCount() const
             {
-                const csmInt32 partCount = Core::csmGetPartCount(_model);
+                const int partCount = Core::csmGetPartCount(_model);
                 return partCount;
             }
 
-            const csmInt32 *CubismModel::GetDrawableRenderOrders() const
+            const int *CubismModel::GetDrawableRenderOrders() const
             {
-                const csmInt32 *renderOrders = Core::csmGetDrawableRenderOrders(_model);
+                const int *renderOrders = Core::csmGetDrawableRenderOrders(_model);
                 return renderOrders;
             }
 
-            csmInt32 CubismModel::GetDrawableCount() const
+            int CubismModel::GetDrawableCount() const
             {
-                const csmInt32 drawableCount = Core::csmGetDrawableCount(_model);
+                const int drawableCount = Core::csmGetDrawableCount(_model);
                 return drawableCount;
             }
 
-            csmInt32 CubismModel::GetDrawableTextureIndices(csmInt32 drawableIndex) const
+            int CubismModel::GetDrawableTextureIndices(int drawableIndex) const
             {
-                const csmInt32 *textureIndices = Core::csmGetDrawableTextureIndices(_model);
+                const int *textureIndices = Core::csmGetDrawableTextureIndices(_model);
                 return textureIndices[drawableIndex];
             }
 
-            csmInt32 CubismModel::GetDrawableVertexIndexCount(csmInt32 drawableIndex) const
+            int CubismModel::GetDrawableVertexIndexCount(int drawableIndex) const
             {
-                const csmInt32 *indexCounts = Core::csmGetDrawableIndexCounts(_model);
+                const int *indexCounts = Core::csmGetDrawableIndexCounts(_model);
                 return indexCounts[drawableIndex];
             }
 
-            csmInt32 CubismModel::GetDrawableVertexCount(csmInt32 drawableIndex) const
+            int CubismModel::GetDrawableVertexCount(int drawableIndex) const
             {
-                const csmInt32 *vertexCounts = Core::csmGetDrawableVertexCounts(_model);
+                const int *vertexCounts = Core::csmGetDrawableVertexCounts(_model);
                 return vertexCounts[drawableIndex];
             }
 
-            const csmUint16 *CubismModel::GetDrawableVertexIndices(csmInt32 drawableIndex) const
+            const csmUint16 *CubismModel::GetDrawableVertexIndices(int drawableIndex) const
             {
                 const csmUint16 **indicesArray = Core::csmGetDrawableIndices(_model);
                 return indicesArray[drawableIndex];
             }
 
-            const Core::csmVector2 *CubismModel::GetDrawableVertexPositions(csmInt32 drawableIndex) const
+            const Core::csmVector2 *CubismModel::GetDrawableVertexPositions(int drawableIndex) const
             {
                 const Core::csmVector2 **verticesArray = Core::csmGetDrawableVertexPositions(_model);
                 return verticesArray[drawableIndex];
             }
 
-            const Core::csmVector2 *CubismModel::GetDrawableVertexUvs(csmInt32 drawableIndex) const
+            const Core::csmVector2 *CubismModel::GetDrawableVertexUvs(int drawableIndex) const
             {
                 const Core::csmVector2 **uvsArray = Core::csmGetDrawableVertexUvs(_model);
                 return uvsArray[drawableIndex];
             }
 
-            csmFloat32 CubismModel::GetDrawableOpacity(csmInt32 drawableIndex) const
+            csmFloat32 CubismModel::GetDrawableOpacity(int drawableIndex) const
             {
                 const csmFloat32 *opacities = Core::csmGetDrawableOpacities(_model);
                 return opacities[drawableIndex];
             }
 
-            csmInt32 CubismModel::GetDrawableCulling(csmInt32 drawableIndex) const
+            int CubismModel::GetDrawableCulling(int drawableIndex) const
             {
                 const Core::csmFlags *constantFlags = Core::csmGetDrawableConstantFlags(_model);
                 return !IsBitSet(constantFlags[drawableIndex], Core::csmIsDoubleSided);
             }
 
-            csmBool CubismModel::GetDrawableDynamicFlagIsVisible(csmInt32 drawableIndex) const
+            bool CubismModel::GetDrawableDynamicFlagIsVisible(int drawableIndex) const
             {
                 const Core::csmFlags *dynamicFlags = Core::csmGetDrawableDynamicFlags(_model);
                 return IsBitSet(dynamicFlags[drawableIndex], Core::csmIsVisible) != 0 ? true : false;
             }
 
-            csmBool CubismModel::GetDrawableDynamicFlagVisibilityDidChange(csmInt32 drawableIndex) const
+            bool CubismModel::GetDrawableDynamicFlagVisibilityDidChange(int drawableIndex) const
             {
                 const Core::csmFlags *dynamicFlags = Core::csmGetDrawableDynamicFlags(_model);
                 return IsBitSet(dynamicFlags[drawableIndex], Core::csmVisibilityDidChange) != 0 ? true : false;
             }
 
-            csmBool CubismModel::GetDrawableDynamicFlagOpacityDidChange(csmInt32 drawableIndex) const
+            bool CubismModel::GetDrawableDynamicFlagOpacityDidChange(int drawableIndex) const
             {
                 const Core::csmFlags *dynamicFlags = Core::csmGetDrawableDynamicFlags(_model);
                 return IsBitSet(dynamicFlags[drawableIndex], Core::csmOpacityDidChange) != 0 ? true : false;
             }
 
-            csmBool CubismModel::GetDrawableDynamicFlagDrawOrderDidChange(csmInt32 drawableIndex) const
+            bool CubismModel::GetDrawableDynamicFlagDrawOrderDidChange(int drawableIndex) const
             {
                 const Core::csmFlags *dynamicFlags = Core::csmGetDrawableDynamicFlags(_model);
                 return IsBitSet(dynamicFlags[drawableIndex], Core::csmDrawOrderDidChange) != 0 ? true : false;
             }
 
-            csmBool CubismModel::GetDrawableDynamicFlagRenderOrderDidChange(csmInt32 drawableIndex) const
+            bool CubismModel::GetDrawableDynamicFlagRenderOrderDidChange(int drawableIndex) const
             {
                 const Core::csmFlags *dynamicFlags = Core::csmGetDrawableDynamicFlags(_model);
                 return IsBitSet(dynamicFlags[drawableIndex], Core::csmRenderOrderDidChange) != 0 ? true : false;
             }
 
-            csmBool CubismModel::GetDrawableDynamicFlagVertexPositionsDidChange(csmInt32 drawableIndex) const
+            bool CubismModel::GetDrawableDynamicFlagVertexPositionsDidChange(int drawableIndex) const
             {
                 const Core::csmFlags *dynamicFlags = Core::csmGetDrawableDynamicFlags(_model);
                 return IsBitSet(dynamicFlags[drawableIndex], Core::csmVertexPositionsDidChange) != 0 ? true : false;
             }
 
-            Rendering::CubismRenderer::CubismBlendMode CubismModel::GetDrawableBlendMode(csmInt32 drawableIndex) const
+            Rendering::CubismRenderer::CubismBlendMode CubismModel::GetDrawableBlendMode(int drawableIndex) const
             {
                 const csmUint8 *constantFlags = Core::csmGetDrawableConstantFlags(_model);
                 return (IsBitSet(constantFlags[drawableIndex], Core::csmBlendAdditive)) ?
@@ -463,35 +460,35 @@ namespace Live2D
                            Rendering::CubismRenderer::CubismBlendMode_Normal;
             }
 
-            csmBool CubismModel::GetDrawableInvertedMask(csmInt32 drawableIndex) const
+            bool CubismModel::GetDrawableInvertedMask(int drawableIndex) const
             {
                 const csmUint8 *constantFlags = Core::csmGetDrawableConstantFlags(_model);
                 return IsBitSet(constantFlags[drawableIndex], Core::csmIsInvertedMask) != 0 ? true : false;
             }
 
-            const csmInt32 **CubismModel::GetDrawableMasks() const
+            const int **CubismModel::GetDrawableMasks() const
             {
-                const csmInt32 **masks = Core::csmGetDrawableMasks(_model);
+                const int **masks = Core::csmGetDrawableMasks(_model);
                 return masks;
             }
 
-            const csmInt32 *CubismModel::GetDrawableMaskCounts() const
+            const int *CubismModel::GetDrawableMaskCounts() const
             {
-                const csmInt32 *maskCounts = Core::csmGetDrawableMaskCounts(_model);
+                const int *maskCounts = Core::csmGetDrawableMaskCounts(_model);
                 return maskCounts;
             }
 
             void CubismModel::LoadParameters()
             {
-                csmInt32 parameterCount = Core::csmGetParameterCount(_model);
-                const csmInt32 savedParameterCount = static_cast<csmInt32>(_savedParameters.GetSize());
+                int parameterCount = Core::csmGetParameterCount(_model);
+                const int savedParameterCount = _savedParameters.size();
 
                 if (parameterCount > savedParameterCount)
                 {
                     parameterCount = savedParameterCount;
                 }
 
-                for (csmInt32 i = 0; i < parameterCount; ++i)
+                for (int i = 0; i < parameterCount; ++i)
                 {
                     _parameterValues[i] = _savedParameters[i];
                 }
@@ -499,10 +496,10 @@ namespace Live2D
 
             void CubismModel::SaveParameters()
             {
-                const csmInt32 parameterCount = Core::csmGetParameterCount(_model);
-                const csmInt32 savedParameterCount = static_cast<csmInt32>(_savedParameters.GetSize());
+                const int parameterCount = Core::csmGetParameterCount(_model);
+                const int savedParameterCount = _savedParameters.size();
 
-                for (csmInt32 i = 0; i < parameterCount; ++i)
+                for (int i = 0; i < parameterCount; ++i)
                 {
                     if (i < savedParameterCount)
                     {
@@ -510,7 +507,7 @@ namespace Live2D
                     }
                     else
                     {
-                        _savedParameters.PushBack(_parameterValues[i], false);
+                        _savedParameters.append(_parameterValues[i]);
                     }
                 }
             }
@@ -520,9 +517,9 @@ namespace Live2D
                 return _model;
             }
 
-            csmBool CubismModel::IsUsingMasking() const
+            bool CubismModel::IsUsingMasking() const
             {
-                for (csmInt32 d = 0; d < Core::csmGetDrawableCount(_model); ++d)
+                for (int d = 0; d < Core::csmGetDrawableCount(_model); ++d)
                 {
                     if (Core::csmGetDrawableMaskCounts(_model)[d] <= 0)
                     {

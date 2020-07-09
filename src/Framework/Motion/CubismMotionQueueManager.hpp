@@ -9,7 +9,6 @@
 
 #include "ACubismMotion.hpp"
 #include "Model/CubismModel.hpp"
-#include "Type/csmVector.hpp"
 
 namespace Live2D
 {
@@ -30,7 +29,7 @@ namespace Live2D
              * @param[in]   eventValue       発火したイベントの文字列データ
              * @param[in]   customData       コールバックに返される登録時に指定されたデータ
              */
-            typedef void (*CubismMotionEventFunction)(const CubismMotionQueueManager *caller, const csmString &eventValue, void *customData);
+            typedef void (*CubismMotionEventFunction)(const CubismMotionQueueManager *caller, const QString &eventValue, void *customData);
 
             /**
              * @brief モーションの識別番号
@@ -78,7 +77,7 @@ namespace Live2D
                  * @return
                  * 開始したモーションの識別番号を返す。個別のモーションが終了したか否かを判定するIsFinished()の引数で使用する。開始できない時は「-1」
                  */
-                CubismMotionQueueEntryHandle StartMotion(ACubismMotion *motion, csmBool autoDelete, csmFloat32 userTimeSeconds);
+                CubismMotionQueueEntryHandle StartMotion(ACubismMotion *motion, bool autoDelete, csmFloat32 userTimeSeconds);
 
                 /**
                  * @brief すべてのモーションの終了の確認
@@ -88,7 +87,7 @@ namespace Live2D
                  * @retval  true    すべて終了している
                  * @retval  false   終了していない
                  */
-                csmBool IsFinished();
+                bool IsFinished();
 
                 /**
                  * @brief 指定したモーションの終了の確認
@@ -99,7 +98,7 @@ namespace Live2D
                  * @retval  true    指定したモーションは終了している
                  * @retval  false   終了していない
                  */
-                csmBool IsFinished(CubismMotionQueueEntryHandle motionQueueEntryNumber);
+                bool IsFinished(CubismMotionQueueEntryHandle motionQueueEntryNumber);
 
                 /**
                  * @brief すべてのモーションの停止
@@ -140,12 +139,12 @@ namespace Live2D
                  * @retval  true    モデルへパラメータ値の反映あり
                  * @retval  false   モデルへパラメータ値の反映なし(モーションの変化なし)
                  */
-                virtual csmBool DoUpdateMotion(CubismModel *model, csmFloat32 userTimeSeconds);
+                virtual bool DoUpdateMotion(CubismModel *model, csmFloat32 userTimeSeconds);
 
                 csmFloat32 _userTimeSeconds; ///< デルタ時間の積算値[秒]
 
               private:
-                csmVector<CubismMotionQueueEntry *> _motions; ///< モーション
+                QVector<CubismMotionQueueEntry *> _motions; ///< モーション
 
                 CubismMotionEventFunction _eventCallback; ///< コールバック関数ポインタ
                 void *_eventCustomData;                   ///< コールバックに戻されるデータ

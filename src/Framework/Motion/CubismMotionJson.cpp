@@ -16,148 +16,146 @@ namespace Live2D
     {
         namespace Framework
         {
-
             namespace
             {
                 // JSON keys
-                const csmChar *Meta = "Meta";
-                const csmChar *Duration = "Duration";
-                const csmChar *Loop = "Loop";
-                const csmChar *CurveCount = "CurveCount";
-                const csmChar *Fps = "Fps";
-                const csmChar *TotalSegmentCount = "TotalSegmentCount";
-                const csmChar *TotalPointCount = "TotalPointCount";
-                const csmChar *Curves = "Curves";
-                const csmChar *Target = "Target";
-                const csmChar *Id = "Id";
-                const csmChar *FadeInTime = "FadeInTime";
-                const csmChar *FadeOutTime = "FadeOutTime";
-                const csmChar *Segments = "Segments";
-                const csmChar *UserData = "UserData";
-                const csmChar *UserDataCount = "UserDataCount";
-                const csmChar *TotalUserDataSize = "TotalUserDataSize";
-                const csmChar *Time = "Time";
-                const csmChar *Value = "Value";
+                const QString Meta = "Meta";
+                const QString Duration = "Duration";
+                const QString Loop = "Loop";
+                const QString CurveCount = "CurveCount";
+                const QString Fps = "Fps";
+                const QString TotalSegmentCount = "TotalSegmentCount";
+                const QString TotalPointCount = "TotalPointCount";
+                const QString Curves = "Curves";
+                const QString Target = "Target";
+                const QString Id = "Id";
+                const QString FadeInTime = "FadeInTime";
+                const QString FadeOutTime = "FadeOutTime";
+                const QString Segments = "Segments";
+                const QString UserData = "UserData";
+                const QString UserDataCount = "UserDataCount";
+                const QString TotalUserDataSize = "TotalUserDataSize";
+                const QString Time = "Time";
+                const QString Value = "Value";
             } // namespace
 
-            CubismMotionJson::CubismMotionJson(const csmByte *buffer, csmSizeInt size)
+            CubismMotionJson::CubismMotionJson(const QByteArray &buffer)
             {
-                _json = Utils::CubismJson::Create(buffer, size);
+                _json = QJsonDocument::fromJson(buffer).object();
             }
 
             CubismMotionJson::~CubismMotionJson()
             {
-                Utils::CubismJson::Delete(_json);
             }
 
             csmFloat32 CubismMotionJson::GetMotionDuration() const
             {
-                return _json->GetRoot()[Meta][Duration].ToFloat();
+                return _json[Meta].toObject()[Duration].toVariant().toFloat();
             }
 
-            csmBool CubismMotionJson::IsMotionLoop() const
+            bool CubismMotionJson::IsMotionLoop() const
             {
-                return _json->GetRoot()[Meta][Loop].ToBoolean();
+                return _json[Meta].toObject()[Loop].toBool();
             }
 
-            csmInt32 CubismMotionJson::GetMotionCurveCount() const
+            int CubismMotionJson::GetMotionCurveCount() const
             {
-                return _json->GetRoot()[Meta][CurveCount].ToInt();
+                return _json[Meta].toObject()[CurveCount].toInt();
             }
 
             csmFloat32 CubismMotionJson::GetMotionFps() const
             {
-                return _json->GetRoot()[Meta][Fps].ToFloat();
+                return _json[Meta].toObject()[Fps].toVariant().toFloat();
             }
 
-            csmInt32 CubismMotionJson::GetMotionTotalSegmentCount() const
+            int CubismMotionJson::GetMotionTotalSegmentCount() const
             {
-                return _json->GetRoot()[Meta][TotalSegmentCount].ToInt();
+                return _json[Meta][TotalSegmentCount].toInt();
             }
 
-            csmInt32 CubismMotionJson::GetMotionTotalPointCount() const
+            int CubismMotionJson::GetMotionTotalPointCount() const
             {
-                return _json->GetRoot()[Meta][TotalPointCount].ToInt();
+                return _json[Meta][TotalPointCount].toInt();
             }
 
-            csmBool CubismMotionJson::IsExistMotionFadeInTime() const
+            bool CubismMotionJson::IsExistMotionFadeInTime() const
             {
-                return !_json->GetRoot()[Meta][FadeInTime].IsNull();
+                return !_json[Meta][FadeInTime].isNull();
             }
 
-            csmBool CubismMotionJson::IsExistMotionFadeOutTime() const
+            bool CubismMotionJson::IsExistMotionFadeOutTime() const
             {
-                return !_json->GetRoot()[Meta][FadeOutTime].IsNull();
+                return !_json[Meta][FadeOutTime].isNull();
             }
 
             csmFloat32 CubismMotionJson::GetMotionFadeInTime() const
             {
-                return _json->GetRoot()[Meta][FadeInTime].ToFloat();
+                return _json[Meta][FadeInTime].toVariant().toFloat();
             }
 
             csmFloat32 CubismMotionJson::GetMotionFadeOutTime() const
             {
-                return _json->GetRoot()[Meta][FadeOutTime].ToFloat();
+                return _json[Meta][FadeOutTime].toVariant().toFloat();
             }
 
-            const csmChar *CubismMotionJson::GetMotionCurveTarget(csmInt32 curveIndex) const
+            const QString CubismMotionJson::GetMotionCurveTarget(int curveIndex) const
             {
-                return _json->GetRoot()[Curves][curveIndex][Target].GetRawString();
+                return _json[Curves].toArray()[curveIndex].toObject()[Target].toString();
             }
 
-            CubismIdHandle CubismMotionJson::GetMotionCurveId(csmInt32 curveIndex) const
+            CubismIdHandle CubismMotionJson::GetMotionCurveId(int curveIndex) const
             {
-                return CubismFramework::GetIdManager()->GetId(_json->GetRoot()[Curves][curveIndex][Id].GetRawString());
+                return CubismFramework::GetIdManager()->GetId(_json[Curves].toArray()[curveIndex].toObject()[Id].toString());
             }
 
-            csmBool CubismMotionJson::IsExistMotionCurveFadeInTime(csmInt32 curveIndex) const
+            bool CubismMotionJson::IsExistMotionCurveFadeInTime(int curveIndex) const
             {
-                return !_json->GetRoot()[Curves][curveIndex][FadeInTime].IsNull();
+                return !_json[Curves].toArray()[curveIndex].toObject()[FadeInTime].isNull();
             }
 
-            csmBool CubismMotionJson::IsExistMotionCurveFadeOutTime(csmInt32 curveIndex) const
+            bool CubismMotionJson::IsExistMotionCurveFadeOutTime(int curveIndex) const
             {
-                return !_json->GetRoot()[Curves][curveIndex][FadeOutTime].IsNull();
+                return !_json[Curves].toArray()[curveIndex].toObject()[FadeOutTime].isNull();
             }
 
-            csmFloat32 CubismMotionJson::GetMotionCurveFadeInTime(csmInt32 curveIndex) const
+            csmFloat32 CubismMotionJson::GetMotionCurveFadeInTime(int curveIndex) const
             {
-                return _json->GetRoot()[Curves][curveIndex][FadeInTime].ToFloat();
+                return _json[Curves].toArray()[curveIndex].toObject()[FadeInTime].toVariant().toFloat();
             }
 
-            csmFloat32 CubismMotionJson::GetMotionCurveFadeOutTime(csmInt32 curveIndex) const
+            csmFloat32 CubismMotionJson::GetMotionCurveFadeOutTime(int curveIndex) const
             {
-                return _json->GetRoot()[Curves][curveIndex][FadeOutTime].ToFloat();
+                return _json[Curves].toArray()[curveIndex].toObject()[FadeOutTime].toVariant().toFloat();
             }
 
-            csmInt32 CubismMotionJson::GetMotionCurveSegmentCount(csmInt32 curveIndex) const
+            int CubismMotionJson::GetMotionCurveSegmentCount(int curveIndex) const
             {
-                return static_cast<csmInt32>(_json->GetRoot()[Curves][curveIndex][Segments].GetVector()->GetSize());
+                return _json[Curves].toArray()[curveIndex].toObject()[Segments].toArray().size();
             }
 
-            csmFloat32 CubismMotionJson::GetMotionCurveSegment(csmInt32 curveIndex, csmInt32 segmentIndex) const
+            csmFloat32 CubismMotionJson::GetMotionCurveSegment(int curveIndex, int segmentIndex) const
             {
-                return _json->GetRoot()[Curves][curveIndex][Segments][segmentIndex].ToFloat();
+                return _json[Curves].toArray()[curveIndex].toObject()[Segments].toArray()[segmentIndex].toVariant().toFloat();
             }
 
-            csmInt32 CubismMotionJson::GetEventCount() const
+            int CubismMotionJson::GetEventCount() const
             {
-                return _json->GetRoot()[Meta][UserDataCount].ToInt();
+                return _json[Meta][UserDataCount].toInt();
             }
 
-            csmInt32 CubismMotionJson::GetTotalEventValueSize() const
+            int CubismMotionJson::GetTotalEventValueSize() const
             {
-                return _json->GetRoot()[Meta][TotalUserDataSize].ToInt();
+                return _json[Meta][TotalUserDataSize].toInt();
             }
 
-            csmFloat32 CubismMotionJson::GetEventTime(csmInt32 userDataIndex) const
+            csmFloat32 CubismMotionJson::GetEventTime(int userDataIndex) const
             {
-                return _json->GetRoot()[UserData][userDataIndex][Time].ToFloat();
+                return _json[UserData].toArray()[userDataIndex].toObject()[Time].toVariant().toFloat();
             }
 
-            const csmChar *CubismMotionJson::GetEventValue(csmInt32 userDataIndex) const
+            const QString CubismMotionJson::GetEventValue(int userDataIndex) const
             {
-                return _json->GetRoot()[UserData][userDataIndex][Value].GetRawString();
+                return _json[UserData].toArray()[userDataIndex].toObject()[Value].toString();
             }
 
         } // namespace Framework

@@ -36,7 +36,7 @@ namespace Live2D
                 {
                     ModelUserDataType TargetType; ///< ユーザデータターゲットタイプ
                     CubismIdHandle TargetId;      ///< ユーザデータターゲットのID
-                    csmString Value;              ///< ユーザデータ
+                    QString Value;                ///< ユーザデータ
                 };
 
                 /**
@@ -48,7 +48,7 @@ namespace Live2D
                  * @param[in]   size        バッファのサイズ
                  * @return      作成されたインスタンス
                  */
-                static CubismModelUserData *Create(const csmByte *buffer, csmSizeInt size);
+                static CubismModelUserData *Create(const QByteArray &buffer);
 
                 /**
                  * @brief インスタンスの破棄
@@ -71,9 +71,9 @@ namespace Live2D
                  *
                  * ArtMeshのユーザデータのリストの取得する。
                  *
-                 * @return      csmVectorのユーザデータリスト
+                 * @return      QVectorのユーザデータリスト
                  */
-                const csmVector<const CubismModelUserDataNode *> &GetArtMeshUserDatas() const;
+                const QVector<const CubismModelUserDataNode *> &GetArtMeshUserDatas() const;
 
               private:
                 /**
@@ -84,10 +84,10 @@ namespace Live2D
                  * @param[in]   buffer          userdata3.jsonが読み込まれいるバッファ
                  * @param[in]   size            バッファのサイズ
                  */
-                void ParseUserData(const csmByte *buffer, csmSizeInt size);
+                void ParseUserData(const QByteArray &buffer);
 
-                csmVector<const CubismModelUserDataNode *> _userDataNodes;        ///< ユーザデータ構造体配列
-                csmVector<const CubismModelUserDataNode *> _artMeshUserDataNodes; ///< 閲覧リスト保持
+                QVector<const CubismModelUserDataNode *> _userDataNodes;        ///< ユーザデータ構造体配列
+                QVector<const CubismModelUserDataNode *> _artMeshUserDataNodes; ///< 閲覧リスト保持
             };
         } // namespace Framework
     }     // namespace Cubism

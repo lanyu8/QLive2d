@@ -32,53 +32,53 @@ namespace Live2D
 #endif
 
                 // JSON keys
-                // const csmChar *Version = "Version";
-                const csmChar *FileReferences = "FileReferences";
-                const csmChar *Groups = "Groups";
-                const csmChar *Layout = "Layout";
-                const csmChar *HitAreas = "HitAreas";
+                // const QString &Version = "Version";
+                constexpr auto FileReferences = "FileReferences";
+                constexpr auto Groups = "Groups";
+                constexpr auto Layout = "Layout";
+                constexpr auto HitAreas = "HitAreas";
 
-                const csmChar *Moc = "Moc";
-                const csmChar *Textures = "Textures";
-                const csmChar *Physics = "Physics";
-                const csmChar *Pose = "Pose";
-                const csmChar *Expressions = "Expressions";
-                const csmChar *Motions = "Motions";
+                constexpr auto Moc = "Moc";
+                constexpr auto Textures = "Textures";
+                constexpr auto Physics = "Physics";
+                constexpr auto Pose = "Pose";
+                constexpr auto Expressions = "Expressions";
+                constexpr auto Motions = "Motions";
 
-                const csmChar *UserData = "UserData";
-                const csmChar *Name = "Name";
-                const csmChar *FilePath = "File";
-                const csmChar *Id = "Id";
-                const csmChar *Ids = "Ids";
-                // const csmChar *Target = "Target";
+                constexpr auto UserData = "UserData";
+                constexpr auto Name = "Name";
+                constexpr auto FilePath = "File";
+                constexpr auto Id = "Id";
+                constexpr auto Ids = "Ids";
+                // const QString &Target = "Target";
 
                 // Motions
-                // const csmChar *Idle = "Idle";
-                // const csmChar *TapBody = "TapBody";
-                // const csmChar *PinchIn = "PinchIn";
-                // const csmChar *PinchOut = "PinchOut";
-                // const csmChar *Shake = "Shake";
-                // const csmChar *FlickHead = "FlickHead";
-                // const csmChar *Parameter = "Parameter";
+                // const QString &Idle = "Idle";
+                // const QString &TapBody = "TapBody";
+                // const QString &PinchIn = "PinchIn";
+                // const QString &PinchOut = "PinchOut";
+                // const QString &Shake = "Shake";
+                // const QString &FlickHead = "FlickHead";
+                // const QString &Parameter = "Parameter";
 
-                const csmChar *SoundPath = "Sound";
-                const csmChar *FadeInTime = "FadeInTime";
-                const csmChar *FadeOutTime = "FadeOutTime";
+                constexpr auto SoundPath = "Sound";
+                constexpr auto FadeInTime = "FadeInTime";
+                constexpr auto FadeOutTime = "FadeOutTime";
 
                 // Layout
-                // const csmChar *CenterX = "CenterX";
-                // const csmChar *CenterY = "CenterY";
-                // const csmChar *X = "X";
-                // const csmChar *Y = "Y";
-                // const csmChar *Width = "Width";
-                // const csmChar *Height = "Height";
+                // const QString &CenterX = "CenterX";
+                // const QString &CenterY = "CenterY";
+                // const QString &X = "X";
+                // const QString &Y = "Y";
+                // const QString &Width = "Width";
+                // const QString &Height = "Height";
 
-                const csmChar *LipSync = "LipSync";
-                const csmChar *EyeBlink = "EyeBlink";
+                constexpr auto LipSync = "LipSync";
+                constexpr auto EyeBlink = "EyeBlink";
 
-                // const csmChar *InitParameter = "init_param";
-                // const csmChar *InitPartsVisible = "init_parts_visible";
-                // const csmChar *Val = "val";
+                // const QString &InitParameter = "init_param";
+                // const QString &InitPartsVisible = "init_parts_visible";
+                // const QString &Val = "val";
 
 #if defined(__clang__)
     #pragma clang diagnostic pop
@@ -86,76 +86,76 @@ namespace Live2D
             } // namespace
 
             // キーが存在するかどうかのチェック
-            csmBool CubismModelSettingJson::IsExistModelFile() const
+            bool CubismModelSettingJson::IsExistModelFile() const
             {
-                Utils::Value &node = (*_jsonValue[FrequentNode_Moc]);
-                return !node.IsNull() && !node.IsError();
+                const auto &node = frequentJsonValues[FrequentNode_Moc];
+                return !node.isUndefined() && !node.isNull();
             }
-            csmBool CubismModelSettingJson::IsExistTextureFiles() const
+            bool CubismModelSettingJson::IsExistTextureFiles() const
             {
-                Utils::Value &node = (*_jsonValue[FrequentNode_Textures]);
-                return !node.IsNull() && !node.IsError();
+                const auto &node = frequentJsonValues[FrequentNode_Textures];
+                return !node.isUndefined() && !node.isNull();
             }
-            csmBool CubismModelSettingJson::IsExistHitAreas() const
+            bool CubismModelSettingJson::IsExistHitAreas() const
             {
-                Utils::Value &node = (*_jsonValue[FrequentNode_HitAreas]);
-                return !node.IsNull() && !node.IsError();
+                const auto &node = (frequentJsonValues[FrequentNode_HitAreas]);
+                return !node.isUndefined() && !node.isNull();
             }
-            csmBool CubismModelSettingJson::IsExistPhysicsFile() const
+            bool CubismModelSettingJson::IsExistPhysicsFile() const
             {
-                Utils::Value &node = (*_jsonValue[FrequentNode_Physics]);
-                return !node.IsNull() && !node.IsError();
+                const auto &node = (frequentJsonValues[FrequentNode_Physics]);
+                return !node.isUndefined() && !node.isNull();
             }
-            csmBool CubismModelSettingJson::IsExistPoseFile() const
+            bool CubismModelSettingJson::IsExistPoseFile() const
             {
-                Utils::Value &node = (*_jsonValue[FrequentNode_Pose]);
-                return !node.IsNull() && !node.IsError();
+                const auto &node = (frequentJsonValues[FrequentNode_Pose]);
+                return !node.isUndefined() && !node.isNull();
             }
-            csmBool CubismModelSettingJson::IsExistExpressionFile() const
+            bool CubismModelSettingJson::IsExistExpressionFile() const
             {
-                Utils::Value &node = (*_jsonValue[FrequentNode_Expressions]);
-                return !node.IsNull() && !node.IsError();
+                const auto &node = (frequentJsonValues[FrequentNode_Expressions]);
+                return !node.isUndefined() && !node.isNull();
             }
-            csmBool CubismModelSettingJson::IsExistMotionGroups() const
+            bool CubismModelSettingJson::IsExistMotionGroups() const
             {
-                Utils::Value &node = (*_jsonValue[FrequentNode_Motions]);
-                return !node.IsNull() && !node.IsError();
+                const auto &node = frequentJsonValues[FrequentNode_Motions];
+                return !node.isUndefined() && !node.isNull();
             }
-            csmBool CubismModelSettingJson::IsExistMotionGroupName(const csmChar *groupName) const
+            bool CubismModelSettingJson::IsExistMotionGroupName(const QString &groupName) const
             {
-                Utils::Value &node = (*_jsonValue[FrequentNode_Motions])[groupName];
-                return !node.IsNull() && !node.IsError();
+                const auto node = (frequentJsonValues[FrequentNode_Motions]).toObject()[groupName];
+                return !node.isUndefined() && !node.isNull();
             }
-            csmBool CubismModelSettingJson::IsExistMotionSoundFile(const csmChar *groupName, csmInt32 index) const
+            bool CubismModelSettingJson::IsExistMotionSoundFile(const QString &groupName, int index) const
             {
-                Utils::Value &node = (*_jsonValue[FrequentNode_Motions])[groupName][index][SoundPath];
-                return !node.IsNull() && !node.IsError();
+                const auto node = (frequentJsonValues[FrequentNode_Motions]).toObject()[groupName].toArray()[index].toObject()[SoundPath];
+                return !node.isUndefined() && !node.isNull();
             }
-            csmBool CubismModelSettingJson::IsExistMotionFadeIn(const csmChar *groupName, csmInt32 index) const
+            bool CubismModelSettingJson::IsExistMotionFadeIn(const QString &groupName, int index) const
             {
-                Utils::Value &node = (*_jsonValue[FrequentNode_Motions])[groupName][index][FadeInTime];
-                return !node.IsNull() && !node.IsError();
+                const auto node = (frequentJsonValues[FrequentNode_Motions]).toObject()[groupName].toArray()[index].toObject()[FadeInTime];
+                return !node.isUndefined() && !node.isNull();
             }
-            csmBool CubismModelSettingJson::IsExistMotionFadeOut(const csmChar *groupName, csmInt32 index) const
+            bool CubismModelSettingJson::IsExistMotionFadeOut(const QString &groupName, int index) const
             {
-                Utils::Value &node = (*_jsonValue[FrequentNode_Motions])[groupName][index][FadeOutTime];
-                return !node.IsNull() && !node.IsError();
+                const auto node = (frequentJsonValues[FrequentNode_Motions]).toObject()[groupName].toArray()[index].toObject()[FadeOutTime];
+                return !node.isUndefined() && !node.isNull();
             }
-            csmBool CubismModelSettingJson::IsExistUserDataFile() const
+            bool CubismModelSettingJson::IsExistUserDataFile() const
             {
-                return !_json->GetRoot()[FileReferences][UserData].IsNull();
+                return !_json[FileReferences][UserData].isNull();
             }
 
-            csmBool CubismModelSettingJson::IsExistEyeBlinkParameters() const
+            bool CubismModelSettingJson::IsExistEyeBlinkParameters() const
             {
-                if (_jsonValue[FrequentNode_Groups]->IsNull() || _jsonValue[FrequentNode_Groups]->IsError())
+                if (frequentJsonValues[FrequentNode_Groups].isNull() || frequentJsonValues[FrequentNode_Groups].isUndefined())
                 {
                     return false;
                 }
 
-                for (csmInt32 i = 0; i < _jsonValue[FrequentNode_Groups]->GetSize(); ++i)
+                for (int i = 0; i < frequentJsonValues[FrequentNode_Groups].toArray().size(); ++i)
                 {
-                    if (strcmp((*_jsonValue[FrequentNode_Groups])[i][Name].GetRawString(), EyeBlink) == 0)
+                    if (frequentJsonValues[FrequentNode_Groups].toArray()[i].toObject()[Name].toString() == EyeBlink)
                     {
                         return true;
                     }
@@ -163,16 +163,16 @@ namespace Live2D
                 return false;
             }
 
-            csmBool CubismModelSettingJson::IsExistLipSyncParameters() const
+            bool CubismModelSettingJson::IsExistLipSyncParameters() const
             {
-                if (_jsonValue[FrequentNode_Groups]->IsNull() || _jsonValue[FrequentNode_Groups]->IsError())
+                if (frequentJsonValues[FrequentNode_Groups].isNull() || frequentJsonValues[FrequentNode_Groups].isUndefined())
                 {
                     return false;
                 }
 
-                for (csmInt32 i = 0; i < _jsonValue[FrequentNode_Groups]->GetSize(); ++i)
+                for (int i = 0; i < frequentJsonValues[FrequentNode_Groups].toArray().size(); ++i)
                 {
-                    if (strcmp((*_jsonValue[FrequentNode_Groups])[i][Name].GetRawString(), LipSync) == 0)
+                    if (frequentJsonValues[FrequentNode_Groups].toArray()[i].toObject()[Name].toString() == LipSync)
                     {
                         return true;
                     }
@@ -180,210 +180,212 @@ namespace Live2D
                 return false;
             }
 
-            CubismModelSettingJson::CubismModelSettingJson(const csmByte *buffer, csmSizeInt size)
+            CubismModelSettingJson::CubismModelSettingJson(const QByteArray &buffer)
             {
-                _json = Utils::CubismJson::Create(buffer, size);
+                _json = QJsonDocument::fromJson(buffer).object();
 
-                if (_json)
-                {
-                    _jsonValue.Clear();
+                frequentJsonValues.clear();
 
-                    // 順番はenum FrequentNodeと一致させる
-                    _jsonValue.PushBack(&(_json->GetRoot()[Groups]));
-                    _jsonValue.PushBack(&(_json->GetRoot()[FileReferences][Moc]));
-                    _jsonValue.PushBack(&(_json->GetRoot()[FileReferences][Motions]));
-                    _jsonValue.PushBack(&(_json->GetRoot()[FileReferences][Expressions]));
-                    _jsonValue.PushBack(&(_json->GetRoot()[FileReferences][Textures]));
-                    _jsonValue.PushBack(&(_json->GetRoot()[FileReferences][Physics]));
-                    _jsonValue.PushBack(&(_json->GetRoot()[FileReferences][Pose]));
-                    _jsonValue.PushBack(&(_json->GetRoot()[HitAreas]));
-                }
+                // 順番はenum FrequentNodeと一致させる
+                //
+                frequentJsonValues = { (_json[Groups]),
+                                       (_json[FileReferences].toObject()[Moc]),
+                                       (_json[FileReferences].toObject()[Motions]),
+                                       (_json[FileReferences].toObject()[Expressions]),
+                                       (_json[FileReferences].toObject()[Textures]),
+                                       (_json[FileReferences].toObject()[Physics]),
+                                       (_json[FileReferences].toObject()[Pose]),
+                                       (_json[HitAreas]) };
             }
 
             CubismModelSettingJson::~CubismModelSettingJson()
             {
-                Utils::CubismJson::Delete(_json);
             }
 
-            Utils::CubismJson *CubismModelSettingJson::GetJsonPointer() const
-            {
-                return _json;
-            }
-
-            const csmChar *CubismModelSettingJson::GetModelFileName()
+            const QString CubismModelSettingJson::GetModelFileName() const
             {
                 if (!IsExistModelFile())
                     return "";
-                return (*_jsonValue[FrequentNode_Moc]).GetRawString();
+                return frequentJsonValues[FrequentNode_Moc].toString();
             }
 
             // テクスチャについて
-            csmInt32 CubismModelSettingJson::GetTextureCount()
+            int CubismModelSettingJson::GetTextureCount() const
             {
                 if (!IsExistTextureFiles())
                     return 0;
-                return (*_jsonValue[FrequentNode_Textures]).GetSize();
+                return (frequentJsonValues[FrequentNode_Textures]).toArray().size();
             }
 
-            const csmChar *CubismModelSettingJson::GetTextureDirectory()
+            const QString CubismModelSettingJson::GetTextureDirectory() const
             {
-                return (*_jsonValue[FrequentNode_Textures]).GetRawString();
+                return (frequentJsonValues[FrequentNode_Textures]).toString();
             }
 
-            const csmChar *CubismModelSettingJson::GetTextureFileName(csmInt32 index)
+            const QString CubismModelSettingJson::GetTextureFileName(int index) const
             {
-                return (*_jsonValue[FrequentNode_Textures])[index].GetRawString();
+                return (frequentJsonValues[FrequentNode_Textures]).toArray()[index].toString();
             }
 
             // あたり判定について
-            csmInt32 CubismModelSettingJson::GetHitAreasCount()
+            int CubismModelSettingJson::GetHitAreasCount() const
             {
                 if (!IsExistHitAreas())
                     return 0;
-                return (*_jsonValue[FrequentNode_HitAreas]).GetSize();
+                return (frequentJsonValues[FrequentNode_HitAreas]).toArray().size();
             }
 
-            CubismIdHandle CubismModelSettingJson::GetHitAreaId(csmInt32 index)
+            CubismIdHandle CubismModelSettingJson::GetHitAreaId(int index) const
             {
-                return CubismFramework::GetIdManager()->GetId((*_jsonValue[FrequentNode_HitAreas])[index][Id].GetRawString());
+                return CubismFramework::GetIdManager()->GetId(
+                    (frequentJsonValues[FrequentNode_HitAreas]).toArray()[index].toObject()[Id].toString());
             }
 
-            const csmChar *CubismModelSettingJson::GetHitAreaName(csmInt32 index)
+            const QString CubismModelSettingJson::GetHitAreaName(int index) const
             {
-                return (*_jsonValue[FrequentNode_HitAreas])[index][Name].GetRawString();
+                return (frequentJsonValues[FrequentNode_HitAreas]).toArray()[index].toObject()[Name].toString();
             }
 
             // 物理演算、パーツ切り替え、表情ファイルについて
-            const csmChar *CubismModelSettingJson::GetPhysicsFileName()
+            const QString CubismModelSettingJson::GetPhysicsFileName() const
             {
                 if (!IsExistPhysicsFile())
                     return "";
-                return (*_jsonValue[FrequentNode_Physics]).GetRawString();
+                return (frequentJsonValues[FrequentNode_Physics]).toString();
             }
 
-            const csmChar *CubismModelSettingJson::GetPoseFileName()
+            const QString CubismModelSettingJson::GetPoseFileName() const
             {
                 if (!IsExistPoseFile())
                     return "";
-                return (*_jsonValue[FrequentNode_Pose]).GetRawString();
+                return (frequentJsonValues[FrequentNode_Pose]).toString();
             }
 
-            csmInt32 CubismModelSettingJson::GetExpressionCount()
+            int CubismModelSettingJson::GetExpressionCount() const
             {
                 if (!IsExistExpressionFile())
                     return 0;
-                return (*_jsonValue[FrequentNode_Expressions]).GetSize();
+                return (frequentJsonValues[FrequentNode_Expressions]).toArray().size();
             }
 
-            const csmChar *CubismModelSettingJson::GetExpressionName(csmInt32 index)
+            const QString CubismModelSettingJson::GetExpressionName(int index) const
             {
-                return (*_jsonValue[FrequentNode_Expressions])[index][Name].GetRawString();
+                return (frequentJsonValues[FrequentNode_Expressions]).toArray()[index].toObject()[Name].toString();
             }
 
-            const csmChar *CubismModelSettingJson::GetExpressionFileName(csmInt32 index)
+            const QString CubismModelSettingJson::GetExpressionFileName(int index) const
             {
-                return (*_jsonValue[FrequentNode_Expressions])[index][FilePath].GetRawString();
+                return (frequentJsonValues[FrequentNode_Expressions]).toArray()[index].toObject()[FilePath].toString();
             }
 
             // モーションについて
-            csmInt32 CubismModelSettingJson::GetMotionGroupCount()
+            int CubismModelSettingJson::GetMotionGroupCount() const
             {
                 if (!IsExistMotionGroups())
                 {
                     return 0;
                 }
-                return (*_jsonValue[FrequentNode_Motions]).GetKeys().GetSize();
+                return (frequentJsonValues[FrequentNode_Motions]).toArray().size();
             }
 
-            const csmChar *CubismModelSettingJson::GetMotionGroupName(csmInt32 index)
+            const QString CubismModelSettingJson::GetMotionGroupName(int index) const
             {
                 if (!IsExistMotionGroups())
                 {
-                    return NULL;
+                    return {};
                 }
-                return (*_jsonValue[FrequentNode_Motions]).GetKeys()[index].GetRawString();
+                return (frequentJsonValues[FrequentNode_Motions]).toObject().keys()[index];
             }
 
-            csmInt32 CubismModelSettingJson::GetMotionCount(const csmChar *groupName)
+            int CubismModelSettingJson::GetMotionCount(const QString &groupName) const
             {
                 if (!IsExistMotionGroupName(groupName))
                     return 0;
-                return (*_jsonValue[FrequentNode_Motions])[groupName].GetSize();
+                return (frequentJsonValues[FrequentNode_Motions]).toObject()[groupName].toArray().size();
             }
 
-            const csmChar *CubismModelSettingJson::GetMotionFileName(const csmChar *groupName, csmInt32 index)
+            const QString CubismModelSettingJson::GetMotionFileName(const QString &groupName, int index) const
             {
                 if (!IsExistMotionGroupName(groupName))
                     return "";
-                return (*_jsonValue[FrequentNode_Motions])[groupName][index][FilePath].GetRawString();
+                return (frequentJsonValues[FrequentNode_Motions]).toObject()[groupName].toArray()[index].toObject()[FilePath].toString();
             }
 
-            const csmChar *CubismModelSettingJson::GetMotionSoundFileName(const csmChar *groupName, csmInt32 index)
+            const QString CubismModelSettingJson::GetMotionSoundFileName(const QString &groupName, int index) const
             {
                 if (!IsExistMotionSoundFile(groupName, index))
                     return "";
-                return (*_jsonValue[FrequentNode_Motions])[groupName][index][SoundPath].GetRawString();
+                return (frequentJsonValues[FrequentNode_Motions]).toObject()[groupName].toArray()[index].toObject()[SoundPath].toString();
             }
 
-            csmFloat32 CubismModelSettingJson::GetMotionFadeInTimeValue(const csmChar *groupName, csmInt32 index)
+            csmFloat32 CubismModelSettingJson::GetMotionFadeInTimeValue(const QString &groupName, int index) const
             {
                 if (!IsExistMotionFadeIn(groupName, index))
                     return -1.0f;
-                return (*_jsonValue[FrequentNode_Motions])[groupName][index][FadeInTime].ToFloat();
+                return (frequentJsonValues[FrequentNode_Motions])
+                    .toObject()[groupName]
+                    .toArray()[index]
+                    .toObject()[FadeInTime]
+                    .toVariant()
+                    .toFloat();
             }
 
-            csmFloat32 CubismModelSettingJson::GetMotionFadeOutTimeValue(const csmChar *groupName, csmInt32 index)
+            csmFloat32 CubismModelSettingJson::GetMotionFadeOutTimeValue(const QString &groupName, int index) const
             {
                 if (!IsExistMotionFadeOut(groupName, index))
                     return -1.0f;
-                return (*_jsonValue[FrequentNode_Motions])[groupName][index][FadeOutTime].ToFloat();
+                return (frequentJsonValues[FrequentNode_Motions])
+                    .toObject()[groupName]
+                    .toArray()[index]
+                    .toObject()[FadeOutTime]
+                    .toVariant()
+                    .toFloat();
             }
 
-            const csmChar *CubismModelSettingJson::GetUserDataFile()
+            const QString CubismModelSettingJson::GetUserDataFile() const
             {
                 if (!IsExistUserDataFile())
                 {
                     return "";
                 }
-                return _json->GetRoot()[FileReferences][UserData].GetRawString();
+                return _json[FileReferences].toObject()[UserData].toString();
             }
 
-            csmBool CubismModelSettingJson::GetLayoutMap(csmMap<csmString, csmFloat32> &outLayoutMap)
+            bool CubismModelSettingJson::GetLayoutMap(QMap<QString, csmFloat32> &outLayoutMap) const
             {
-                csmMap<csmString, Utils::Value *> *map = _json->GetRoot()[Layout].GetMap();
-                if (map == NULL)
+                auto /* csmMap<QString, Utils::Value *>*/ map = _json[Layout].toVariant().toMap();
+                if (map.isEmpty())
                 {
                     return false;
                 }
-                csmMap<csmString, Utils::Value *>::const_iterator map_ite;
-                csmBool ret = false;
-                for (map_ite = map->Begin(); map_ite != map->End(); ++map_ite)
+                bool ret = false;
+                for (auto map_ite = map.begin(); map_ite != map.end(); ++map_ite)
                 {
-                    outLayoutMap[map_ite->First] = map_ite->Second->ToFloat();
+                    outLayoutMap[map_ite.key()] = map_ite.value().toFloat();
                     ret = true;
                 }
                 return ret;
             }
 
-            csmInt32 CubismModelSettingJson::GetEyeBlinkParameterCount()
+            int CubismModelSettingJson::GetEyeBlinkParameterCount() const
             {
                 if (!IsExistEyeBlinkParameters())
                 {
                     return 0;
                 }
 
-                csmInt32 num = 0;
-                for (csmInt32 i = 0; i < _jsonValue[FrequentNode_Groups]->GetSize(); i++)
+                int num = 0;
+                for (int i = 0; i < frequentJsonValues[FrequentNode_Groups].toArray().size(); i++)
                 {
-                    Utils::Value &refI = (*_jsonValue[FrequentNode_Groups])[i];
-                    if (refI.IsNull() || refI.IsError())
+                    const QJsonValue refI = frequentJsonValues[FrequentNode_Groups].toArray()[i];
+                    if (refI.isNull() || refI.isUndefined())
                     {
                         continue;
                     }
 
-                    if (strcmp(refI[Name].GetRawString(), EyeBlink) == 0)
+                    if (refI.toObject()[Name].toString() == EyeBlink)
                     {
-                        num = refI[Ids].GetVector()->GetSize();
+                        num = refI.toObject()[Ids].toArray().size();
                         break;
                     }
                 }
@@ -391,48 +393,48 @@ namespace Live2D
                 return num;
             }
 
-            CubismIdHandle CubismModelSettingJson::GetEyeBlinkParameterId(csmInt32 index)
+            CubismIdHandle CubismModelSettingJson::GetEyeBlinkParameterId(int index) const
             {
                 if (!IsExistEyeBlinkParameters())
                 {
                     return NULL;
                 }
 
-                for (csmInt32 i = 0; i < _jsonValue[FrequentNode_Groups]->GetSize(); i++)
+                for (int i = 0; i < frequentJsonValues[FrequentNode_Groups].toArray().size(); i++)
                 {
-                    Utils::Value &refI = (*_jsonValue[FrequentNode_Groups])[i];
-                    if (refI.IsNull() || refI.IsError())
+                    const QJsonValue refI = frequentJsonValues[FrequentNode_Groups].toArray()[i];
+                    if (refI.isNull() || refI.isUndefined())
                     {
                         continue;
                     }
 
-                    if (strcmp(refI[Name].GetRawString(), EyeBlink) == 0)
+                    if (refI.toObject()[Name].toString() == EyeBlink)
                     {
-                        return CubismFramework::GetIdManager()->GetId(refI[Ids][index].GetRawString());
+                        return CubismFramework::GetIdManager()->GetId(refI.toObject()[Ids].toArray()[index].toString());
                     }
                 }
                 return NULL;
             }
 
-            csmInt32 CubismModelSettingJson::GetLipSyncParameterCount()
+            int CubismModelSettingJson::GetLipSyncParameterCount() const
             {
                 if (!IsExistLipSyncParameters())
                 {
                     return 0;
                 }
 
-                csmInt32 num = 0;
-                for (csmInt32 i = 0; i < _jsonValue[FrequentNode_Groups]->GetSize(); i++)
+                int num = 0;
+                for (int i = 0; i < frequentJsonValues[FrequentNode_Groups].toArray().size(); i++)
                 {
-                    Utils::Value &refI = (*_jsonValue[FrequentNode_Groups])[i];
-                    if (refI.IsNull() || refI.IsError())
+                    const QJsonValue refI = frequentJsonValues[FrequentNode_Groups].toArray()[i];
+                    if (refI.isNull() || refI.isUndefined())
                     {
                         continue;
                     }
 
-                    if (strcmp(refI[Name].GetRawString(), LipSync) == 0)
+                    if (refI.toObject()[Name].toString() == LipSync)
                     {
-                        num = refI[Ids].GetVector()->GetSize();
+                        num = refI.toObject()[Ids].toArray().size();
                         break;
                     }
                 }
@@ -440,24 +442,24 @@ namespace Live2D
                 return num;
             }
 
-            CubismIdHandle CubismModelSettingJson::GetLipSyncParameterId(csmInt32 index)
+            CubismIdHandle CubismModelSettingJson::GetLipSyncParameterId(int index) const
             {
                 if (!IsExistLipSyncParameters())
                 {
                     return NULL;
                 }
 
-                for (csmInt32 i = 0; i < _jsonValue[FrequentNode_Groups]->GetSize(); i++)
+                for (int i = 0; i < frequentJsonValues[FrequentNode_Groups].toArray().size(); i++)
                 {
-                    Utils::Value &refI = (*_jsonValue[FrequentNode_Groups])[i];
-                    if (refI.IsNull() || refI.IsError())
+                    const QJsonValue refI = frequentJsonValues[FrequentNode_Groups].toArray()[i];
+                    if (refI.isNull() || refI.isUndefined())
                     {
                         continue;
                     }
 
-                    if (strcmp(refI[Name].GetRawString(), LipSync) == 0)
+                    if (refI.toObject()[Name].toString() == LipSync)
                     {
-                        return CubismFramework::GetIdManager()->GetId(refI[Ids][index].GetRawString());
+                        return CubismFramework::GetIdManager()->GetId(refI.toObject()[Ids].toArray()[index].toString());
                     }
                 }
                 return NULL;

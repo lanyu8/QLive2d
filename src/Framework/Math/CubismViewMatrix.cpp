@@ -74,12 +74,12 @@ namespace Live2D
                 return _maxTop;
             }
 
-            csmBool CubismViewMatrix::IsMaxScale() const
+            bool CubismViewMatrix::IsMaxScale() const
             {
                 return GetScaleX() >= _maxScale;
             }
 
-            csmBool CubismViewMatrix::IsMinScale() const
+            bool CubismViewMatrix::IsMinScale() const
             {
                 return GetScaleX() <= _minScale;
             }

@@ -57,7 +57,7 @@ namespace Live2D
                  * @retval  true    初期化されている
                  * @retval  false   初期化されていない
                  */
-                virtual csmBool IsInitialized();
+                virtual bool IsInitialized();
 
                 /**
                  * @brief 初期化状態の設定
@@ -66,7 +66,7 @@ namespace Live2D
                  *
                  * @param[in]   v   初期化状態
                  */
-                virtual void IsInitialized(csmBool v);
+                virtual void IsInitialized(bool v);
 
                 /**
                  * @brief 更新状態の取得
@@ -76,7 +76,7 @@ namespace Live2D
                  * @retval  true    更新されている
                  * @retval  false   更新されていない
                  */
-                virtual csmBool IsUpdating();
+                virtual bool IsUpdating();
 
                 /**
                  * @brief 更新状態の設定
@@ -85,7 +85,7 @@ namespace Live2D
                  *
                  * @param[in]   v   更新状態
                  */
-                virtual void IsUpdating(csmBool v);
+                virtual void IsUpdating(bool v);
 
                 /**
                  * @brief マウスドラッグ情報の設定
@@ -143,7 +143,7 @@ namespace Live2D
                  * @param[in]   buffer  moc3ファイルが読み込まれているバッファ
                  * @param[in]   size    バッファのサイズ
                  */
-                virtual void LoadModel(const csmByte *buffer, csmSizeInt size);
+                virtual void LoadModel(const QByteArray &buffer);
 
                 /**
                  * @brief モーションデータの読み込み
@@ -156,7 +156,7 @@ namespace Live2D
                  * @param[in]   onFinishedMotionHandler     モーション再生終了時に呼び出されるコールバック関数。NULLの場合、呼び出されない。
                  * @return  モーションクラス
                  */
-                virtual ACubismMotion *LoadMotion(const csmByte *buffer, csmSizeInt size, const csmChar *name,
+                virtual ACubismMotion *LoadMotion(const QByteArray &buffer, const QString &name,
                                                   ACubismMotion::FinishedMotionCallback onFinishedMotionHandler = NULL);
 
                 /**
@@ -168,7 +168,7 @@ namespace Live2D
                  * @param[in]   size    バッファのサイズ
                  * @param[in]   name    表情の名前
                  */
-                virtual ACubismMotion *LoadExpression(const csmByte *buffer, csmSizeInt size, const csmChar *name);
+                virtual ACubismMotion *LoadExpression(const QByteArray &buffer, const QString &name);
 
                 /**
                  * @brief ポーズデータの読み込み
@@ -178,7 +178,7 @@ namespace Live2D
                  * @param[in]   buffer  pose3.jsonが読み込まれているバッファ
                  * @param[in]   size    バッファのサイズ
                  */
-                virtual void LoadPose(const csmByte *buffer, csmSizeInt size);
+                virtual void LoadPose(const QByteArray &buffer);
 
                 /**
                  * @brief 物理演算データの読み込み
@@ -188,7 +188,7 @@ namespace Live2D
                  * @param[in]   buffer  physics3.jsonが読み込まれているバッファ
                  * @param[in]   size    バッファのサイズ
                  */
-                virtual void LoadPhysics(const csmByte *buffer, csmSizeInt size);
+                virtual void LoadPhysics(const QByteArray &buffer);
 
                 /**
                  * @brief モデルに付属するユーザーデータを読み込む
@@ -198,7 +198,7 @@ namespace Live2D
                  * @param[in]   buffer  userdata3.jsonが読み込まれているバッファ
                  * @param[in]   size    バッファのサイズ
                  */
-                virtual void LoadUserData(const csmByte *buffer, csmSizeInt size);
+                virtual void LoadUserData(const QByteArray &buffer);
 
                 /**
                  * @brief あたり判定の取得
@@ -211,7 +211,7 @@ namespace Live2D
                  * @retval  true    ヒットしている
                  * @retval  false   ヒットしていない
                  */
-                virtual csmBool IsHit(CubismIdHandle drawableId, csmFloat32 pointX, csmFloat32 pointY);
+                virtual bool IsHit(CubismIdHandle drawableId, csmFloat32 pointX, csmFloat32 pointY);
 
                 /**
                  * @brief モデルの取得
@@ -260,7 +260,7 @@ namespace Live2D
                  *
                  * @param[in]    eventValue    発火したイベントの文字列データ
                  */
-                virtual void MotionEventFired(const csmString &eventValue);
+                virtual void MotionEventFired(const QString &eventValue);
 
                 /**
                  * @brief  イベント用のCallback
@@ -272,7 +272,7 @@ namespace Live2D
                  * @param[in]    eventValue          発火したイベントの文字列データ
                  * @param[in]    customData          CubismUserModelを継承したインスタンスを想定
                  */
-                static void CubismDefaultMotionEventCallback(const CubismMotionQueueManager *caller, const csmString &eventValue,
+                static void CubismDefaultMotionEventCallback(const CubismMotionQueueManager *caller, const QString &eventValue,
                                                              void *customData);
 
               protected:
@@ -289,17 +289,17 @@ namespace Live2D
                 CubismPhysics *_physics;                 ///< 物理演算
                 CubismModelUserData *_modelUserData;     ///< ユーザデータ
 
-                csmBool _initialized;         ///< 初期化されたかどうか
-                csmBool _updating;            ///< 更新されたかどうか
+                bool _initialized;         ///< 初期化されたかどうか
+                bool _updating;            ///< 更新されたかどうか
                 csmFloat32 _opacity;          ///< 不透明度
-                csmBool _lipSync;             ///< リップシンクするかどうか
+                bool _lipSync;             ///< リップシンクするかどうか
                 csmFloat32 _lastLipSyncValue; ///< 最後のリップシンクの制御値
                 csmFloat32 _dragX;            ///< マウスドラッグのX位置
                 csmFloat32 _dragY;            ///< マウスドラッグのY位置
                 csmFloat32 _accelerationX;    ///< X軸方向の加速度
                 csmFloat32 _accelerationY;    ///< Y軸方向の加速度
                 csmFloat32 _accelerationZ;    ///< Z軸方向の加速度
-                csmBool _debugMode;           ///< デバッグモードかどうか
+                bool _debugMode;           ///< デバッグモードかどうか
 
               private:
                 Rendering::CubismRenderer *_renderer; ///< レンダラ

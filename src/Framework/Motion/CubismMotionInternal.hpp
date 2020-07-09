@@ -83,8 +83,8 @@ namespace Live2D
                 }
 
                 csmMotionSegmentEvaluationFunction Evaluate; ///< 使用する評価関数
-                csmInt32 BasePointIndex;                     ///< 最初のセグメントへのインデックス
-                csmInt32 SegmentType;                        ///< セグメントの種類
+                int BasePointIndex;                     ///< 最初のセグメントへのインデックス
+                int SegmentType;                        ///< セグメントの種類
             };
 
             /**
@@ -101,8 +101,8 @@ namespace Live2D
 
                 CubismMotionCurveTarget Type; ///< カーブの種類
                 CubismIdHandle Id;            ///< カーブのID
-                csmInt32 SegmentCount;        ///< セグメントの個数
-                csmInt32 BaseSegmentIndex;    ///< 最初のセグメントのインデックス
+                int SegmentCount;        ///< セグメントの個数
+                int BaseSegmentIndex;    ///< 最初のセグメントのインデックス
                 csmFloat32 FadeInTime;        ///< フェードインにかかる時間[秒]
                 csmFloat32 FadeOutTime;       ///< フェードアウトにかかる時間[秒]
             };
@@ -119,7 +119,7 @@ namespace Live2D
                 }
 
                 csmFloat32 FireTime;
-                csmString Value;
+                QString Value;
             };
 
             /**
@@ -136,12 +136,12 @@ namespace Live2D
                 csmFloat32 Duration;                     ///< モーションの長さ[秒]
                 csmInt16 Loop;                           ///< ループするかどうか
                 csmInt16 CurveCount;                     ///< カーブの個数
-                csmInt32 EventCount;                     ///< UserDataの個数
+                int EventCount;                     ///< UserDataの個数
                 csmFloat32 Fps;                          ///< フレームレート
-                csmVector<CubismMotionCurve> Curves;     ///< カーブのリスト
-                csmVector<CubismMotionSegment> Segments; ///< セグメントのリスト
-                csmVector<CubismMotionPoint> Points;     ///< ポイントのリスト
-                csmVector<CubismMotionEvent> Events;     ///< イベントのリスト
+                QVector<CubismMotionCurve> Curves;     ///< カーブのリスト
+                QVector<CubismMotionSegment> Segments; ///< セグメントのリスト
+                QVector<CubismMotionPoint> Points;     ///< ポイントのリスト
+                QVector<CubismMotionEvent> Events;     ///< イベントのリスト
             };
 
         } // namespace Framework

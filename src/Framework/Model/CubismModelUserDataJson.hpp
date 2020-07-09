@@ -30,7 +30,7 @@ namespace Live2D
                  * @param[in]   buffer  userdata3.jsonが読み込まれているバッファ
                  * @param[in]   size    バッファのサイズ
                  */
-                CubismModelUserDataJson(const csmByte *buffer, csmSizeInt size);
+                CubismModelUserDataJson(const QByteArray &buffer);
 
                 /**
                  * @brief デストラクタ
@@ -46,7 +46,7 @@ namespace Live2D
                  *
                  * @return  ユーザデータの個数
                  */
-                csmInt32 GetUserDataCount() const;
+                int GetUserDataCount() const;
 
                 /**
                  * @brief ユーザデータ総文字列数の取得
@@ -55,7 +55,7 @@ namespace Live2D
                  *
                  * @return  ユーザデータ総文字列数
                  */
-                csmInt32 GetTotalUserDataSize() const;
+                int GetTotalUserDataSize() const;
 
                 /**
                  * @brief ユーザデータのタイプの取得
@@ -66,7 +66,7 @@ namespace Live2D
                  *
                  * @return      ユーザデータのタイプ
                  */
-                csmString GetUserDataTargetType(csmInt32 i) const;
+                QString GetUserDataTargetType(int i) const;
 
                 /**
                  * @brief ユーザデータのターゲットIDの取得
@@ -77,7 +77,7 @@ namespace Live2D
                  *
                  * @return      ユーザデータターゲットID
                  */
-                CubismIdHandle GetUserDataId(csmInt32 i) const;
+                CubismIdHandle GetUserDataId(int i) const;
 
                 /**
                  * @brief ユーザデータの文字列の取得
@@ -88,10 +88,10 @@ namespace Live2D
                  *
                  * @return      ユーザデータ
                  */
-                const csmChar *GetUserDataValue(csmInt32 i) const;
+                const QString GetUserDataValue(int i) const;
 
               private:
-                Utils::CubismJson *_json;
+                Utils::CubismJson _json;
             };
 
         } // namespace Framework

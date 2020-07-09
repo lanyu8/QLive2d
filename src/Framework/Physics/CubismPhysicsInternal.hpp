@@ -100,12 +100,12 @@ namespace Live2D
              */
             struct CubismPhysicsSubRig
             {
-                csmInt32 InputCount;                              ///< 入力の個数
-                csmInt32 OutputCount;                             ///< 出力の個数
-                csmInt32 ParticleCount;                           ///< 物理点の個数
-                csmInt32 BaseInputIndex;                          ///< 入力の最初のインデックス
-                csmInt32 BaseOutputIndex;                         ///< 出力の最初のインデックス
-                csmInt32 BaseParticleIndex;                       ///< 物理点の最初のインデックス
+                int InputCount;                              ///< 入力の個数
+                int OutputCount;                             ///< 出力の個数
+                int ParticleCount;                           ///< 物理点の個数
+                int BaseInputIndex;                          ///< 入力の最初のインデックス
+                int BaseOutputIndex;                         ///< 出力の最初のインデックス
+                int BaseParticleIndex;                       ///< 物理点の最初のインデックス
                 CubismPhysicsNormalization NormalizationPosition; ///< 正規化された位置
                 CubismPhysicsNormalization NormalizationAngle;    ///< 正規化された角度
             };
@@ -130,7 +130,7 @@ namespace Live2D
                                                                   csmFloat32 parameterMinimumValue, csmFloat32 parameterMaximumValue,
                                                                   csmFloat32 parameterDefaultValue,
                                                                   CubismPhysicsNormalization *normalizationPosition,
-                                                                  CubismPhysicsNormalization *normalizationAngle, csmInt32 isInverted,
+                                                                  CubismPhysicsNormalization *normalizationAngle, int isInverted,
                                                                   csmFloat32 weight);
 
             /**
@@ -144,8 +144,8 @@ namespace Live2D
              * @param[in]       parentGravity   重力
              * @return  値
              */
-            typedef csmFloat32 (*PhysicsValueGetter)(CubismVector2 translation, CubismPhysicsParticle *particles, csmInt32 particleIndex,
-                                                     csmInt32 isInverted, CubismVector2 parentGravity);
+            typedef csmFloat32 (*PhysicsValueGetter)(CubismVector2 translation, CubismPhysicsParticle *particles, int particleIndex,
+                                                     int isInverted, CubismVector2 parentGravity);
 
             /**
              * @brief 物理演算のスケールの取得関数の宣言
@@ -166,7 +166,7 @@ namespace Live2D
             struct CubismPhysicsInput
             {
                 CubismPhysicsParameter Source;                                     ///< 入力元のパラメータ
-                csmInt32 SourceParameterIndex;                                     ///< 入力元のパラメータのインデックス
+                int SourceParameterIndex;                                     ///< 入力元のパラメータのインデックス
                 csmFloat32 Weight;                                                 ///< 重み
                 csmInt16 Type;                                                     ///< 入力の種類
                 csmInt16 Reflect;                                                  ///< 値が反転されているかどうか
@@ -181,8 +181,8 @@ namespace Live2D
             struct CubismPhysicsOutput
             {
                 CubismPhysicsParameter Destination; ///< 出力先のパラメータ
-                csmInt32 DestinationParameterIndex; ///< 出力先のパラメータのインデックス
-                csmInt32 VertexIndex;               ///< 振り子のインデックス
+                int DestinationParameterIndex; ///< 出力先のパラメータのインデックス
+                int VertexIndex;               ///< 振り子のインデックス
                 CubismVector2 TranslationScale;     ///< 移動値のスケール
                 csmFloat32 AngleScale;              ///< 角度のスケール
                 csmFloat32 Weight;                  /// 重み
@@ -201,11 +201,11 @@ namespace Live2D
              */
             struct CubismPhysicsRig
             {
-                csmInt32 SubRigCount;                       ///< 物理演算の物理点の個数
-                csmVector<CubismPhysicsSubRig> Settings;    ///< 物理演算の物理点の管理のリスト
-                csmVector<CubismPhysicsInput> Inputs;       ///< 物理演算の入力のリスト
-                csmVector<CubismPhysicsOutput> Outputs;     ///< 物理演算の出力のリスト
-                csmVector<CubismPhysicsParticle> Particles; ///< 物理演算の物理点のリスト
+                int SubRigCount;                       ///< 物理演算の物理点の個数
+                QVector<CubismPhysicsSubRig> Settings;    ///< 物理演算の物理点の管理のリスト
+                QVector<CubismPhysicsInput> Inputs;       ///< 物理演算の入力のリスト
+                QVector<CubismPhysicsOutput> Outputs;     ///< 物理演算の出力のリスト
+                QVector<CubismPhysicsParticle> Particles; ///< 物理演算の物理点のリスト
                 CubismVector2 Gravity;                      ///< 重力
                 CubismVector2 Wind;                         ///< 風
             };

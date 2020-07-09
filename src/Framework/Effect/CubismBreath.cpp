@@ -34,12 +34,12 @@ namespace Live2D
             {
             }
 
-            void CubismBreath::SetParameters(const csmVector<BreathParameterData> &breathParameters)
+            void CubismBreath::SetParameters(const QVector<BreathParameterData> &breathParameters)
             {
                 _breathParameters = breathParameters;
             }
 
-            const csmVector<CubismBreath::BreathParameterData> &CubismBreath::GetParameters() const
+            const QVector<CubismBreath::BreathParameterData> &CubismBreath::GetParameters() const
             {
                 return _breathParameters;
             }
@@ -50,7 +50,7 @@ namespace Live2D
 
                 const csmFloat32 t = _currentTime * 2.0f * 3.14159f;
 
-                for (csmUint32 i = 0; i < _breathParameters.GetSize(); ++i)
+                for (auto i = 0; i < _breathParameters.size(); ++i)
                 {
                     BreathParameterData *data = &_breathParameters[i];
 

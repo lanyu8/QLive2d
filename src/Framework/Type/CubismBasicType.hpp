@@ -12,6 +12,8 @@
  *
  */
 
+#include <QChar>
+#include <QVector>
 #include <cstddef>
 
 namespace Live2D
@@ -40,12 +42,7 @@ namespace Live2D
             typedef float csmFloat32; ///< 32ビット浮動小数点数型
 
             typedef unsigned int csmSizeInt; ///< size_t型
-
-#ifdef _MSC_VER
-            typedef ::size_t csmSizeType;
-#else
             typedef std::size_t csmSizeType;
-#endif
 
         } // namespace Framework
     }     // namespace Cubism

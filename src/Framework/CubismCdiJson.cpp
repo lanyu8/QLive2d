@@ -18,106 +18,105 @@ namespace Live2D
             namespace
             {
                 // JSON keys
-                // const csmChar *Version = "Version";
-                const csmChar *Parameters = "Parameters";
-                const csmChar *ParameterGroups = "ParameterGroups";
-                const csmChar *Parts = "Parts";
-                const csmChar *Id = "Id";
-                const csmChar *GroupId = "GroupId";
-                const csmChar *Name = "Name";
+                // const QString &Version = "Version";
+                const QString Parameters = "Parameters";
+                const QString ParameterGroups = "ParameterGroups";
+                const QString Parts = "Parts";
+                const QString Id = "Id";
+                const QString GroupId = "GroupId";
+                const QString Name = "Name";
             } // namespace
 
-            CubismCdiJson::CubismCdiJson(const csmByte *buffer, csmSizeInt size)
+            CubismCdiJson::CubismCdiJson(const QByteArray &buffer)
             {
-                _json = Utils::CubismJson::Create(buffer, size);
+                _json = QJsonDocument::fromJson(buffer).object();
             }
 
             CubismCdiJson::~CubismCdiJson()
             {
-                Utils::CubismJson::Delete(_json);
             }
 
             // キーが存在するかどうかのチェック
-            csmBool CubismCdiJson::IsExistParameters() const
+            bool CubismCdiJson::IsExistParameters() const
             {
-                Utils::Value &node = (_json->GetRoot()[Parameters]);
-                return !node.IsNull() && !node.IsError();
+                const auto &node = _json[Parameters];
+                return !node.isNull() && !node.isUndefined();
             }
 
-            csmBool CubismCdiJson::IsExistParameterGroups() const
+            bool CubismCdiJson::IsExistParameterGroups() const
             {
-                Utils::Value &node = (_json->GetRoot()[ParameterGroups]);
-                return !node.IsNull() && !node.IsError();
+                const auto &node = _json[ParameterGroups];
+                return !node.isNull() && !node.isUndefined();
             }
 
-            csmBool CubismCdiJson::IsExistParts() const
+            bool CubismCdiJson::IsExistParts() const
             {
-                Utils::Value &node = (_json->GetRoot()[Parts]);
-                return !node.IsNull() && !node.IsError();
+                const auto &node = _json[Parts];
+                return !node.isNull() && !node.isUndefined();
             }
 
             // パラメータについて
-            csmInt32 CubismCdiJson::GetParametersCount()
+            int CubismCdiJson::GetParametersCount()
             {
                 if (!IsExistParameters())
                     return 0;
-                return _json->GetRoot()[Parameters].GetSize();
+                return _json[Parameters].toArray().size();
             }
 
-            const csmChar *CubismCdiJson::GetParametersId(csmInt32 index)
+            const QString CubismCdiJson::GetParametersId(int index)
             {
-                return _json->GetRoot()[Parameters][index][Id].GetRawString();
+                return _json[Parameters].toArray()[index].toObject()[Id].toString();
             }
 
-            const csmChar *CubismCdiJson::GetParametersGroupId(csmInt32 index)
+            const QString CubismCdiJson::GetParametersGroupId(int index)
             {
-                return _json->GetRoot()[Parameters][index][GroupId].GetRawString();
+                return _json[Parameters].toArray()[index].toObject()[GroupId].toString();
             }
 
-            const csmChar *CubismCdiJson::GetParametersName(csmInt32 index)
+            const QString CubismCdiJson::GetParametersName(int index)
             {
-                return _json->GetRoot()[Parameters][index][Name].GetRawString();
+                return _json[Parameters].toArray()[index].toObject()[Name].toString();
             }
 
             // パラメータグループについて
-            csmInt32 CubismCdiJson::GetParameterGroupsCount()
+            int CubismCdiJson::GetParameterGroupsCount()
             {
                 if (!IsExistParameterGroups())
                     return 0;
-                return _json->GetRoot()[ParameterGroups].GetSize();
+                return _json[ParameterGroups].toArray().size();
             }
 
-            const csmChar *CubismCdiJson::GetParameterGroupsId(csmInt32 index)
+            const QString CubismCdiJson::GetParameterGroupsId(int index)
             {
-                return _json->GetRoot()[ParameterGroups][index][Id].GetRawString();
+                return _json[ParameterGroups].toArray()[index].toObject()[Id].toString();
             }
 
-            const csmChar *CubismCdiJson::GetParameterGroupsGroupId(csmInt32 index)
+            const QString CubismCdiJson::GetParameterGroupsGroupId(int index)
             {
-                return _json->GetRoot()[ParameterGroups][index][GroupId].GetRawString();
+                return _json[ParameterGroups].toArray()[index].toObject()[GroupId].toString();
             }
 
-            const csmChar *CubismCdiJson::GetParameterGroupsName(csmInt32 index)
+            const QString CubismCdiJson::GetParameterGroupsName(int index)
             {
-                return _json->GetRoot()[ParameterGroups][index][Name].GetRawString();
+                return _json[ParameterGroups].toArray()[index].toObject()[Name].toString();
             }
 
             // パーツについて
-            csmInt32 CubismCdiJson::GetPartsCount()
+            int CubismCdiJson::GetPartsCount()
             {
                 if (!IsExistParts())
                     return 0;
-                return _json->GetRoot()[Parts].GetSize();
+                return _json[Parts].toArray().size();
             }
 
-            const csmChar *CubismCdiJson::GetPartsId(csmInt32 index)
+            const QString CubismCdiJson::GetPartsId(int index)
             {
-                return _json->GetRoot()[Parts][index][Id].GetRawString();
+                return _json[Parts].toArray()[index].toObject()[Id].toString();
             }
 
-            const csmChar *CubismCdiJson::GetPartsName(csmInt32 index)
+            const QString CubismCdiJson::GetPartsName(int index)
             {
-                return _json->GetRoot()[Parts][index][Name].GetRawString();
+                return _json[Parts].toArray()[index].toObject()[Name].toString();
             }
 
         } // namespace Framework

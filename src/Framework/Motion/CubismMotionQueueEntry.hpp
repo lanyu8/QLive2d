@@ -9,7 +9,6 @@
 
 #include "ACubismMotion.hpp"
 #include "Model/CubismUserModel.hpp"
-#include "Type/csmVector.hpp"
 
 namespace Live2D
 {
@@ -64,7 +63,7 @@ namespace Live2D
                  * @retval  true    モーションが終了した
                  * @retval  false   終了していない
                  */
-                csmBool IsFinished() const;
+                bool IsFinished() const;
 
                 /**
                  * @brief モーションの開始の確認
@@ -74,7 +73,7 @@ namespace Live2D
                  * @retval  true    モーションが開始した
                  * @retval  false   終了していない
                  */
-                csmBool IsStarted() const;
+                bool IsStarted() const;
 
                 /**
                  * @brief モーションの開始時刻の取得
@@ -137,7 +136,7 @@ namespace Live2D
                  *
                  * @param[in]   f   trueならモーションの終了
                  */
-                void IsFinished(csmBool f);
+                void IsFinished(bool f);
 
                 /**
                  * @brief モーションの開始の設定
@@ -146,7 +145,7 @@ namespace Live2D
                  *
                  * @param[in]   f   trueならモーションの開始
                  */
-                void IsStarted(csmBool f);
+                void IsStarted(bool f);
 
                 /**
                  * @brief モーションの有効性の確認
@@ -156,7 +155,7 @@ namespace Live2D
                  * @retval  true    モーションは有効
                  * @retval  false   モーションは無効
                  */
-                csmBool IsAvailable() const;
+                bool IsAvailable() const;
 
                 /**
                  * @brief モーションの有効性の設定
@@ -165,7 +164,7 @@ namespace Live2D
                  *
                  * @param[in]   v   trueならモーションは有効
                  */
-                void IsAvailable(csmBool v);
+                void IsAvailable(bool v);
 
                 /**
                  * @brief モーションの状態の設定
@@ -214,12 +213,12 @@ namespace Live2D
                 void SetLastCheckEventTime(csmFloat32 checkTime);
 
               private:
-                csmBool _autoDelete;    ///< 自動削除
+                bool _autoDelete;       ///< 自動削除
                 ACubismMotion *_motion; ///< モーション
 
-                csmBool _available;                 ///< 有効化フラグ
-                csmBool _finished;                  ///< 終了フラグ
-                csmBool _started;                   ///< 開始フラグ（0.9.00以降）
+                bool _available;                    ///< 有効化フラグ
+                bool _finished;                     ///< 終了フラグ
+                bool _started;                      ///< 開始フラグ（0.9.00以降）
                 csmFloat32 _startTimeSeconds;       ///<  モーション再生開始時刻[秒]
                 csmFloat32 _fadeInStartTimeSeconds; ///<  フェードイン開始時刻（ループの時は初回のみ）[秒]
                 csmFloat32 _endTimeSeconds;         ///< 終了予定時刻[秒]

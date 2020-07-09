@@ -21,8 +21,7 @@ namespace Live2D
         {
             namespace Utils
             {
-
-                void CubismDebug::Print(CubismFramework::Option::LogLevel logLevel, const csmChar *format, ...)
+                void CubismDebug::Print(CubismFramework::Option::LogLevel logLevel, const QString &format, ...)
                 {
                     // オプションで設定されたログ出力レベルを下回る場合はログに出さない
                     if (logLevel < CubismFramework::GetLoggingLevel())
@@ -33,22 +32,22 @@ namespace Live2D
                     if (!logPrint)
                         return;
 
-                    csmChar buffer[256];
+                    char buffer[256];
                     va_list va;
                     va_start(va, format);
 #ifdef _WINDOWS
                     vsnprintf_s(buffer, sizeof(buffer), _TRUNCATE, format, va);
 #else
-                    vsnprintf(buffer, sizeof(buffer), format, va);
+                    vsnprintf(buffer, sizeof(buffer), format.toStdString().c_str(), va);
 #endif
                     va_end(va);
 
                     logPrint(buffer);
                 }
 
-                void CubismDebug::DumpBytes(CubismFramework::Option::LogLevel logLevel, const csmUint8 *data, csmInt32 length)
+                void CubismDebug::DumpBytes(CubismFramework::Option::LogLevel logLevel, const csmUint8 *data, int length)
                 {
-                    for (csmInt32 i = 0; i < length; i++)
+                    for (int i = 0; i < length; i++)
                     {
                         if (i % 16 == 0 && i > 0)
                             Print(logLevel, "\n");

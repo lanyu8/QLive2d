@@ -57,7 +57,6 @@ SOURCES += \
     $$PWD/src/Framework/Rendering/OpenGL/CubismOffscreenSurface_OpenGLES2.cpp \
     $$PWD/src/Framework/Rendering/OpenGL/CubismRenderer_OpenGLES2.cpp \
     $$PWD/src/Framework/Type/csmRectF.cpp \
-    $$PWD/src/Framework/Type/csmString.cpp \
     $$PWD/src/Framework/Utils/CubismDebug.cpp \
     $$PWD/src/Framework/Utils/CubismJson.cpp \
     $$PWD/src/Framework/Utils/CubismString.cpp \
@@ -111,8 +110,7 @@ HEADERS += \
     $$PWD/src/Framework/Type/CubismBasicType.hpp \
     $$PWD/src/Framework/Type/csmMap.hpp \
     $$PWD/src/Framework/Type/csmRectF.hpp \
-    $$PWD/src/Framework/Type/csmString.hpp \
-    $$PWD/src/Framework/Type/csmVector.hpp \
+    $$PWD/src/Framework/Type/QVector.hpp \
     $$PWD/src/Framework/Utils/CubismDebug.hpp \
     $$PWD/src/Framework/Utils/CubismJson.hpp \
     $$PWD/src/Framework/Utils/CubismString.hpp \

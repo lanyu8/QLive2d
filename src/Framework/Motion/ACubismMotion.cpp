@@ -133,7 +133,7 @@ namespace Live2D
                 this->_offsetSeconds = offsetSeconds;
             }
 
-            const csmVector<const csmString *> &ACubismMotion::GetFiredEvent(csmFloat32 beforeCheckTimeSeconds, csmFloat32 motionTimeSeconds)
+            const QVector<const QString *> &ACubismMotion::GetFiredEvent(csmFloat32 beforeCheckTimeSeconds, csmFloat32 motionTimeSeconds)
             {
                 Q_UNUSED(beforeCheckTimeSeconds)
                 Q_UNUSED(motionTimeSeconds)

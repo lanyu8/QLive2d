@@ -47,7 +47,7 @@ namespace Live2D
                  * @param[in]   size        バッファのサイズ
                  * @return  作成されたインスタンス
                  */
-                static CubismPhysics *Create(const csmByte *buffer, csmSizeInt size);
+                static CubismPhysics *Create(const QByteArray &buffer);
 
                 /**
                  * @brief インスタンスの破棄
@@ -113,7 +113,7 @@ namespace Live2D
                  * @param[in]   physicsJson     physics3.jsonが読み込まれいるバッファ
                  * @param[in]   size            バッファのサイズ
                  */
-                void Parse(const csmByte *physicsJson, csmSizeInt size);
+                void Parse(const QByteArray &buffer);
 
                 /**
                  * @brief 初期化

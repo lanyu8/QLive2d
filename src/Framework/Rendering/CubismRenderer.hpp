@@ -143,7 +143,7 @@ namespace Live2D
                      * @brief  乗算済みαの有効・無効をセットする。<br>
                      *          有効にするならtrue, 無効にするならfalseをセットする。
                      */
-                    void IsPremultipliedAlpha(csmBool enable);
+                    void IsPremultipliedAlpha(bool enable);
 
                     /**
                      * @brief  乗算済みαの有効・無効を取得する。
@@ -151,13 +151,13 @@ namespace Live2D
                      * @retval  true    ->  乗算済みα有効
                      * @retval  false   ->  乗算済みα無効
                      */
-                    csmBool IsPremultipliedAlpha() const;
+                    bool IsPremultipliedAlpha() const;
 
                     /**
                      * @brief  カリング（片面描画）の有効・無効をセットする。<br>
                      *          有効にするならtrue, 無効にするならfalseをセットする。
                      */
-                    void IsCulling(csmBool culling);
+                    void IsCulling(bool culling);
 
                     /**
                      * @brief  カリング（片面描画）の有効・無効を取得する。
@@ -165,7 +165,7 @@ namespace Live2D
                      * @retval  true    ->  カリング有効
                      * @retval  false   ->  カリング無効
                      */
-                    csmBool IsCulling() const;
+                    bool IsCulling() const;
 
                     /**
                      * @brief   テクスチャの異方性フィルタリングのパラメータをセットする<br>
@@ -196,12 +196,12 @@ namespace Live2D
                      *           trueの場合、パーツ描画の前にその都度必要なマスクを描き直す。
                      *           レンダリング品質は高いが描画処理負荷は増す。
                      */
-                    void UseHighPrecisionMask(csmBool high);
+                    void UseHighPrecisionMask(bool high);
 
                     /**
                      * @brief   マスク描画の方式を取得する。
                      */
-                    csmBool IsUsingHighPrecisionMask();
+                    bool IsUsingHighPrecisionMask();
 
                   protected:
                     /**
@@ -235,9 +235,9 @@ namespace Live2D
                      * @param[in]   invertedMask          ->  マスク使用時のマスクの反転使用
                      *
                      */
-                    virtual void DrawMesh(csmInt32 textureNo, csmInt32 indexCount, csmInt32 vertexCount, csmUint16 *indexArray,
+                    virtual void DrawMesh(int textureNo, int indexCount, int vertexCount, csmUint16 *indexArray,
                                           csmFloat32 *vertexArray, csmFloat32 *uvArray, csmFloat32 opacity, CubismBlendMode colorBlendMode,
-                                          csmBool invertedMask) = 0;
+                                          bool invertedMask) = 0;
 
                     /**
                      * @brief   モデル描画直前のレンダラのステートを保持する
@@ -256,12 +256,12 @@ namespace Live2D
 
                     CubismMatrix44 _mvpMatrix4x4;   ///< Model-View-Projection 行列
                     CubismTextureColor _modelColor; ///< モデル自体のカラー(RGBA)
-                    csmBool _isCulling;             ///< カリングが有効ならtrue
-                    csmBool _isPremultipliedAlpha;  ///< 乗算済みαならtrue
+                    bool _isCulling;             ///< カリングが有効ならtrue
+                    bool _isPremultipliedAlpha;  ///< 乗算済みαならtrue
                     csmFloat32 _anisotropy;         ///< テクスチャの異方性フィルタリングのパラメータ
                     CubismModel *_model;            ///< レンダリング対象のモデル
 
-                    csmBool _useHighPrecisionMask; ///< falseの場合、マスクを纏めて描画する trueの場合、マスクはパーツ描画ごとに書き直す
+                    bool _useHighPrecisionMask; ///< falseの場合、マスクを纏めて描画する trueの場合、マスクはパーツ描画ごとに書き直す
                 };
 
             } // namespace Rendering

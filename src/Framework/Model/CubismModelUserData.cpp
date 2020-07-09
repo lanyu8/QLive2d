@@ -19,27 +19,27 @@ namespace Live2D
 
             namespace
             {
-                const Live2D::Cubism::Framework::csmChar *ArtMesh = "ArtMesh";
+                const QString &ArtMesh = "ArtMesh";
             }
 
             CubismModelUserData::~CubismModelUserData()
             {
-                for (csmUint32 i = 0; i < _userDataNodes.GetSize(); ++i)
+                for (auto i = 0; i < _userDataNodes.size(); ++i)
                 {
                     CSM_DELETE(const_cast<CubismModelUserDataNode *>(_userDataNodes[i]));
                 }
             }
 
-            const csmVector<const CubismModelUserData::CubismModelUserDataNode *> &CubismModelUserData::GetArtMeshUserDatas() const
+            const QVector<const CubismModelUserData::CubismModelUserDataNode *> &CubismModelUserData::GetArtMeshUserDatas() const
             {
                 return _artMeshUserDataNodes;
             }
 
-            CubismModelUserData *CubismModelUserData::Create(const csmByte *buffer, const csmSizeInt size)
+            CubismModelUserData *CubismModelUserData::Create(const QByteArray &buffer)
             {
                 CubismModelUserData *ret = CSM_NEW CubismModelUserData();
 
-                ret->ParseUserData(buffer, size);
+                ret->ParseUserData(buffer);
 
                 return ret;
             }
@@ -49,9 +49,9 @@ namespace Live2D
                 CSM_DELETE_SELF(CubismModelUserData, modelUserData);
             }
 
-            void CubismModelUserData::ParseUserData(const csmByte *buffer, const csmSizeInt size)
+            void CubismModelUserData::ParseUserData(const QByteArray &buffer)
             {
-                CubismModelUserDataJson *json = CSM_NEW CubismModelUserDataJson(buffer, size);
+                CubismModelUserDataJson *json = CSM_NEW CubismModelUserDataJson(buffer);
 
                 const ModelUserDataType typeOfArtMesh = CubismFramework::GetIdManager()->GetId(ArtMesh);
 
@@ -63,11 +63,11 @@ namespace Live2D
                     addNode->TargetId = json->GetUserDataId(i);
                     addNode->TargetType = CubismFramework::GetIdManager()->GetId(json->GetUserDataTargetType(i));
                     addNode->Value = json->GetUserDataValue(i);
-                    _userDataNodes.PushBack(addNode);
+                    _userDataNodes.append(addNode);
 
                     if (addNode->TargetType == typeOfArtMesh)
                     {
-                        _artMeshUserDataNodes.PushBack(addNode);
+                        _artMeshUserDataNodes.append(addNode);
                     }
                 }
 

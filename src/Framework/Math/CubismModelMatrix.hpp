@@ -167,7 +167,7 @@ namespace Live2D
                  *
                  * @param[in]   layout  レイアウト情報
                  */
-                void SetupFromLayout(csmMap<csmString, csmFloat32> &layout);
+                void SetupFromLayout(QMap<QString, csmFloat32> &layout);
 
               private:
                 csmFloat32 _width;  ///< 横幅

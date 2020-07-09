@@ -10,8 +10,6 @@
 #include "ICubismModelSetting.hpp"
 #include "Id/CubismId.hpp"
 #include "Model/CubismModel.hpp"
-#include "Type/csmVector.hpp"
-
 namespace Live2D
 {
     namespace Cubism
@@ -89,7 +87,7 @@ namespace Live2D
                  *
                  * @param[in]   parameterIds    パラメータIDのリスト
                  */
-                void SetParameterIds(const csmVector<CubismIdHandle> &parameterIds);
+                void SetParameterIds(const QVector<CubismIdHandle> &parameterIds);
 
                 /**
                  * @brief まばたきさせるパラメータIDのリストの取得
@@ -98,7 +96,7 @@ namespace Live2D
                  *
                  * @return   パラメータIDのリスト
                  */
-                const csmVector<CubismIdHandle> &GetParameterIds() const;
+                const QVector<CubismIdHandle> &GetParameterIds() const;
 
                 /**
                  * @brief モデルのパラメータの更新
@@ -136,15 +134,15 @@ namespace Live2D
                  */
                 csmFloat32 DeterminNextBlinkingTiming() const;
 
-                csmInt32 _blinkingState;                 ///< 現在の状態
-                csmVector<CubismIdHandle> _parameterIds; ///< 操作対象のパラメータのIDのリスト
-                csmFloat32 _nextBlinkingTime;            ///< 次のまばたきの時刻[秒]
-                csmFloat32 _stateStartTimeSeconds;       ///< 現在の状態が開始した時刻[秒]
-                csmFloat32 _blinkingIntervalSeconds;     ///< まばたきの間隔[秒]
-                csmFloat32 _closingSeconds;              ///< まぶたを閉じる動作の所要時間[秒]
-                csmFloat32 _closedSeconds;               ///< まぶたを閉じている動作の所要時間[秒]
-                csmFloat32 _openingSeconds;              ///< まぶたを開く動作の所要時間[秒]
-                csmFloat32 _userTimeSeconds;             ///< デルタ時間の積算値[秒]
+                int _blinkingState;                    ///< 現在の状態
+                QVector<CubismIdHandle> _parameterIds; ///< 操作対象のパラメータのIDのリスト
+                csmFloat32 _nextBlinkingTime;          ///< 次のまばたきの時刻[秒]
+                csmFloat32 _stateStartTimeSeconds;     ///< 現在の状態が開始した時刻[秒]
+                csmFloat32 _blinkingIntervalSeconds;   ///< まばたきの間隔[秒]
+                csmFloat32 _closingSeconds;            ///< まぶたを閉じる動作の所要時間[秒]
+                csmFloat32 _closedSeconds;             ///< まぶたを閉じている動作の所要時間[秒]
+                csmFloat32 _openingSeconds;            ///< まぶたを開く動作の所要時間[秒]
+                csmFloat32 _userTimeSeconds;           ///< デルタ時間の積算値[秒]
             };
 
         } // namespace Framework

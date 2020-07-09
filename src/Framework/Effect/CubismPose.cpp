@@ -24,10 +24,10 @@ namespace Live2D
                 const csmFloat32 DefaultFadeInSeconds = 0.5f;
 
                 // Pose.jsonのタグ
-                const csmChar *FadeIn = "FadeInTime";
-                const csmChar *Link = "Link";
-                const csmChar *Groups = "Groups";
-                const csmChar *Id = "Id";
+                const QString FadeIn = "FadeInTime";
+                const QString Link = "Link";
+                const QString Groups = "Groups";
+                const QString Id = "Id";
             } // namespace
 
             CubismPose::PartData::PartData()
@@ -42,9 +42,9 @@ namespace Live2D
             {
                 PartId = v.PartId;
 
-                for (csmVector<PartData>::const_iterator ite = v.Link.Begin(); ite != v.Link.End(); ++ite)
+                for (QVector<PartData>::const_iterator ite = v.Link.begin(); ite != v.Link.end(); ++ite)
                 {
-                    Link.PushBack(*ite);
+                    Link.append(*ite);
                 }
             }
 
@@ -52,9 +52,9 @@ namespace Live2D
             {
                 PartId = v.PartId;
 
-                for (csmVector<PartData>::const_iterator ite = v.Link.Begin(); ite != v.Link.End(); ++ite)
+                for (QVector<PartData>::const_iterator ite = v.Link.begin(); ite != v.Link.end(); ++ite)
                 {
-                    Link.PushBack(*ite);
+                    Link.append(*ite);
                 }
 
                 return (*this);
@@ -76,16 +76,16 @@ namespace Live2D
             {
             }
 
-            CubismPose *CubismPose::Create(const csmByte *pose3json, csmSizeInt size)
+            CubismPose *CubismPose::Create(const QByteArray &data)
             {
                 CubismPose *ret = CSM_NEW CubismPose();
-                Utils::CubismJson *json = Utils::CubismJson::Create(pose3json, size);
-                Utils::Value &root = json->GetRoot();
+                QJsonDocument d = QJsonDocument::fromJson(data);
+                Utils::CubismJson root = d.object();
 
                 // フェード時間の指定
-                if (!root[FadeIn].IsNull())
+                if (!root[FadeIn].isNull())
                 {
-                    ret->_fadeTimeSeconds = root[FadeIn].ToFloat(DefaultFadeInSeconds);
+                    ret->_fadeTimeSeconds = root[FadeIn].toDouble(DefaultFadeInSeconds);
 
                     if (ret->_fadeTimeSeconds < 0.0f)
                     {
@@ -94,49 +94,49 @@ namespace Live2D
                 }
 
                 // パーツグループ
-                Utils::Value &poseListInfo = root[Groups];
-                const csmInt32 poseCount = poseListInfo.GetSize();
+                const auto poseListInfo = root[Groups].toArray();
+                const int poseCount = poseListInfo.size();
 
-                for (csmInt32 poseIndex = 0; poseIndex < poseCount; ++poseIndex)
+                for (int poseIndex = 0; poseIndex < poseCount; ++poseIndex)
                 {
-                    Utils::Value &idListInfo = poseListInfo[poseIndex];
-                    const csmInt32 idCount = idListInfo.GetSize();
-                    csmInt32 groupCount = 0;
+                    const auto idListInfo = poseListInfo[poseIndex].toArray();
+                    const int idCount = idListInfo.size();
+                    int groupCount = 0;
 
-                    for (csmInt32 groupIndex = 0; groupIndex < idCount; ++groupIndex)
+                    for (int groupIndex = 0; groupIndex < idCount; ++groupIndex)
                     {
-                        Utils::Value &partInfo = idListInfo[groupIndex];
+                        const auto partInfo = idListInfo[groupIndex].toObject();
                         PartData partData;
-                        const CubismIdHandle parameterId = CubismFramework::GetIdManager()->GetId(partInfo[Id].GetRawString());
+                        const CubismIdHandle parameterId = CubismFramework::GetIdManager()->GetId(partInfo[Id].toString());
 
                         partData.PartId = parameterId;
 
                         // リンクするパーツの設定
-                        if (!partInfo[Link].IsNull())
+                        if (!partInfo[Link].isUndefined())
                         {
-                            Utils::Value &linkListInfo = partInfo[Link];
-                            const csmInt32 linkCount = linkListInfo.GetSize();
+                            const auto linkListInfo = partInfo[Link].toArray();
+                            const int linkCount = linkListInfo.size();
 
-                            for (csmInt32 linkIndex = 0; linkIndex < linkCount; ++linkIndex)
+                            for (int linkIndex = 0; linkIndex < linkCount; ++linkIndex)
                             {
                                 PartData linkPart;
-                                const CubismIdHandle linkId = CubismFramework::GetIdManager()->GetId(linkListInfo[linkIndex].GetString());
+                                const CubismIdHandle linkId = CubismFramework::GetIdManager()->GetId(linkListInfo[linkIndex].toString());
 
                                 linkPart.PartId = linkId;
 
-                                partData.Link.PushBack(linkPart);
+                                partData.Link.append(linkPart);
                             }
                         }
 
-                        ret->_partGroups.PushBack(partData);
+                        ret->_partGroups.append(partData);
 
                         ++groupCount;
                     }
 
-                    ret->_partGroupCounts.PushBack(groupCount);
+                    ret->_partGroupCounts.append(groupCount);
                 }
 
-                Utils::CubismJson::Delete(json);
+                // Utils::CubismJson::Delete(json);
 
                 return ret;
             }
@@ -148,18 +148,18 @@ namespace Live2D
 
             void CubismPose::Reset(CubismModel *model)
             {
-                csmInt32 beginIndex = 0;
+                int beginIndex = 0;
 
-                for (csmUint32 i = 0; i < _partGroupCounts.GetSize(); ++i)
+                for (auto i = 0; i < _partGroupCounts.size(); ++i)
                 {
-                    const csmInt32 groupCount = _partGroupCounts[i];
+                    const int groupCount = _partGroupCounts[i];
 
-                    for (csmInt32 j = beginIndex; j < beginIndex + groupCount; ++j)
+                    for (int j = beginIndex; j < beginIndex + groupCount; ++j)
                     {
                         _partGroups[j].Initialize(model);
 
-                        const csmInt32 partsIndex = _partGroups[j].PartIndex;
-                        const csmInt32 paramIndex = _partGroups[j].ParameterIndex;
+                        const int partsIndex = _partGroups[j].PartIndex;
+                        const int paramIndex = _partGroups[j].ParameterIndex;
 
                         if (partsIndex < 0)
                         {
@@ -169,7 +169,7 @@ namespace Live2D
                         model->SetPartOpacity(partsIndex, (j == beginIndex ? 1.0f : 0.0f));
                         model->SetParameterValue(paramIndex, (j == beginIndex ? 1.0f : 0.0f));
 
-                        for (csmUint32 k = 0; k < _partGroups[j].Link.GetSize(); ++k)
+                        for (auto k = 0; k < _partGroups[j].Link.size(); ++k)
                         {
                             _partGroups[j].Link[k].Initialize(model);
                         }
@@ -181,22 +181,22 @@ namespace Live2D
 
             void CubismPose::CopyPartOpacities(CubismModel *model)
             {
-                for (csmUint32 groupIndex = 0; groupIndex < _partGroups.GetSize(); ++groupIndex)
+                for (auto groupIndex = 0; groupIndex < _partGroups.size(); ++groupIndex)
                 {
                     PartData &partData = _partGroups[groupIndex];
 
-                    if (partData.Link.GetSize() == 0)
+                    if (partData.Link.size() == 0)
                     {
                         continue; // 連動するパラメータはない
                     }
 
-                    const csmInt32 partIndex = _partGroups[groupIndex].PartIndex;
+                    const int partIndex = _partGroups[groupIndex].PartIndex;
                     const csmFloat32 opacity = model->GetPartOpacity(partIndex);
 
-                    for (csmUint32 linkIndex = 0; linkIndex < partData.Link.GetSize(); ++linkIndex)
+                    for (auto linkIndex = 0; linkIndex < partData.Link.size(); ++linkIndex)
                     {
                         PartData &linkPart = partData.Link[linkIndex];
-                        const csmInt32 linkPartIndex = linkPart.PartIndex;
+                        const int linkPartIndex = linkPart.PartIndex;
 
                         if (linkPartIndex < 0)
                         {
@@ -208,19 +208,19 @@ namespace Live2D
                 }
             }
 
-            void CubismPose::DoFade(CubismModel *model, csmFloat32 deltaTimeSeconds, csmInt32 beginIndex, csmInt32 partGroupCount)
+            void CubismPose::DoFade(CubismModel *model, csmFloat32 deltaTimeSeconds, int beginIndex, int partGroupCount)
             {
-                csmInt32 visiblePartIndex = -1;
+                int visiblePartIndex = -1;
                 csmFloat32 newOpacity = 1.0f;
 
                 const csmFloat32 Phi = 0.5f;
                 const csmFloat32 BackOpacityThreshold = 0.15f;
 
                 // 現在、表示状態になっているパーツを取得
-                for (csmInt32 i = beginIndex; i < beginIndex + partGroupCount; ++i)
+                for (int i = beginIndex; i < beginIndex + partGroupCount; ++i)
                 {
-                    const csmInt32 partIndex = _partGroups[i].PartIndex;
-                    const csmInt32 paramIndex = _partGroups[i].ParameterIndex;
+                    const int partIndex = _partGroups[i].PartIndex;
+                    const int paramIndex = _partGroups[i].ParameterIndex;
 
                     if (model->GetParameterValue(paramIndex) > Epsilon)
                     {
@@ -249,9 +249,9 @@ namespace Live2D
                 }
 
                 //  表示パーツ、非表示パーツの不透明度を設定する
-                for (csmInt32 i = beginIndex; i < beginIndex + partGroupCount; ++i)
+                for (int i = beginIndex; i < beginIndex + partGroupCount; ++i)
                 {
-                    const csmInt32 partsIndex = _partGroups[i].PartIndex;
+                    const int partsIndex = _partGroups[i].PartIndex;
 
                     //  表示パーツの設定
                     if (visiblePartIndex == i)
@@ -308,11 +308,11 @@ namespace Live2D
                     deltaTimeSeconds = 0.0f;
                 }
 
-                csmInt32 beginIndex = 0;
+                int beginIndex = 0;
 
-                for (csmUint32 i = 0; i < _partGroupCounts.GetSize(); i++)
+                for (auto i = 0; i < _partGroupCounts.size(); i++)
                 {
-                    const csmInt32 partGroupCount = _partGroupCounts[i];
+                    const int partGroupCount = _partGroupCounts[i];
 
                     DoFade(model, deltaTimeSeconds, beginIndex, partGroupCount);
 

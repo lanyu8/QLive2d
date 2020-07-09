@@ -42,21 +42,21 @@ namespace Live2D
                  *
                  * @return Mocファイルの名前
                  */
-                virtual const csmChar *GetModelFileName() = 0;
+                virtual const QString GetModelFileName() const = 0;
 
                 /**
                  * @brief  モデルが使用するテクスチャの数を取得する
                  *
                  * @return テクスチャの数
                  */
-                virtual csmInt32 GetTextureCount() = 0;
+                virtual int GetTextureCount() const = 0;
 
                 /**
                  * @brief  テクスチャが配置されたディレクトリの名前を取得する
                  *
                  * @return テクスチャが配置されたディレクトリの名前
                  */
-                virtual const csmChar *GetTextureDirectory() = 0;
+                virtual const QString GetTextureDirectory() const = 0;
 
                 /**
                  * @brief  モデルが使用するテクスチャの名前を取得する
@@ -64,14 +64,14 @@ namespace Live2D
                  * @param[in]   index    配列のインデックス値
                  * @return      テクスチャの名前
                  */
-                virtual const csmChar *GetTextureFileName(csmInt32 index) = 0;
+                virtual const QString GetTextureFileName(int index) const = 0;
 
                 /**
                  * @brief        モデルに設定された当たり判定の数を取得する
                  *
                  * @return       モデルに設定された当たり判定の数
                  */
-                virtual csmInt32 GetHitAreasCount() = 0;
+                virtual int GetHitAreasCount() const = 0;
 
                 /**
                  * @brief        当たり判定に設定されたIDを取得する
@@ -79,7 +79,7 @@ namespace Live2D
                  * @param[in]    index   配列のインデックス値
                  * @return       当たり判定に設定されたID
                  */
-                virtual CubismIdHandle GetHitAreaId(csmInt32 index) = 0;
+                virtual CubismIdHandle GetHitAreaId(int index) const = 0;
 
                 /**
                  * @brief        当たり判定に設定された名前を取得する
@@ -87,28 +87,28 @@ namespace Live2D
                  * @param[in]    index   配列のインデックス値
                  * @return       当たり判定に設定された名前
                  */
-                virtual const csmChar *GetHitAreaName(csmInt32 index) = 0;
+                virtual const QString GetHitAreaName(int index) const = 0;
 
                 /**
                  * @brief        物理演算設定ファイルの名前を取得する
                  *
                  * @return       物理演算設定ファイルの名前
                  */
-                virtual const csmChar *GetPhysicsFileName() = 0;
+                virtual const QString GetPhysicsFileName() const = 0;
 
                 /**
                  * @brief        パーツ切り替え設定ファイルの名前を取得する
                  *
                  * @return       パーツ切り替え設定ファイルの名前
                  */
-                virtual const csmChar *GetPoseFileName() = 0;
+                virtual const QString GetPoseFileName() const = 0;
 
                 /**
                  * @brief        表情設定ファイルの数を取得する
                  *
                  * @return       表情設定ファイルの数
                  */
-                virtual csmInt32 GetExpressionCount() = 0;
+                virtual int GetExpressionCount() const = 0;
 
                 /**
                  * @brief        表情設定ファイルを識別する名前（別名）を取得する
@@ -116,7 +116,7 @@ namespace Live2D
                  * @param[in]    index   配列のインデックス値
                  * @return       表情の名前
                  */
-                virtual const csmChar *GetExpressionName(csmInt32 index) = 0;
+                virtual const QString GetExpressionName(int index) const = 0;
 
                 /**
                  * @brief        表情設定ファイルの名前を取得する
@@ -124,14 +124,14 @@ namespace Live2D
                  * @param[in]    index   配列のインデックス値
                  * @return       表情設定ファイルの名前
                  */
-                virtual const csmChar *GetExpressionFileName(csmInt32 index) = 0;
+                virtual const QString GetExpressionFileName(int index) const = 0;
 
                 /**
                  * @brief        モーショングループの数を取得する
                  *
                  * @return       モーショングループの数
                  */
-                virtual csmInt32 GetMotionGroupCount() = 0;
+                virtual int GetMotionGroupCount() const = 0;
 
                 /**
                  * @brief        モーショングループの名前を取得する
@@ -139,7 +139,7 @@ namespace Live2D
                  * @param[in]    index   配列のインデックス値
                  * @return       モーショングループの名前
                  */
-                virtual const csmChar *GetMotionGroupName(csmInt32 index) = 0;
+                virtual const QString GetMotionGroupName(int index) const = 0;
 
                 /**
                  * @brief        モーショングループに含まれるモーションの数を取得する
@@ -147,7 +147,7 @@ namespace Live2D
                  * @param[in]    groupName      モーショングループの名前
                  * @return       モーショングループの名前
                  */
-                virtual csmInt32 GetMotionCount(const csmChar *groupName) = 0;
+                virtual int GetMotionCount(const QString &groupName) const = 0;
 
                 /**
                  * @brief        グループ名とインデックス値からモーションファイルの名前を取得する
@@ -156,7 +156,7 @@ namespace Live2D
                  * @param[in]    index          配列のインデックス値
                  * @return       モーションファイルの名前
                  */
-                virtual const csmChar *GetMotionFileName(const csmChar *groupName, csmInt32 index) = 0;
+                virtual const QString GetMotionFileName(const QString &groupName, int index) const = 0;
 
                 /**
                  * @brief        モーションに対応するサウンドファイルの名前を取得する
@@ -165,7 +165,7 @@ namespace Live2D
                  * @param[in]    index          配列のインデックス値
                  * @return       サウンドファイルの名前
                  */
-                virtual const csmChar *GetMotionSoundFileName(const csmChar *groupName, csmInt32 index) = 0;
+                virtual const QString GetMotionSoundFileName(const QString &groupName, int index) const = 0;
 
                 /**
                  * @brief        モーション開始時のフェードイン処理時間を取得する
@@ -174,7 +174,7 @@ namespace Live2D
                  * @param[in]    index          配列のインデックス値
                  * @return       フェードイン処理時間[秒]
                  */
-                virtual csmFloat32 GetMotionFadeInTimeValue(const csmChar *groupName, csmInt32 index) = 0;
+                virtual csmFloat32 GetMotionFadeInTimeValue(const QString &groupName, int index) const = 0;
 
                 /**
                  * @brief        モーション終了時のフェードアウト処理時間を取得する
@@ -183,14 +183,14 @@ namespace Live2D
                  * @param[in]    index          配列のインデックス値
                  * @return       フェードアウト処理時間[秒]
                  */
-                virtual csmFloat32 GetMotionFadeOutTimeValue(const csmChar *groupName, csmInt32 index) = 0;
+                virtual csmFloat32 GetMotionFadeOutTimeValue(const QString &groupName, int index) const = 0;
 
                 /**
                  * @brief        ユーザデータのファイル名を取得する
                  *
                  * @return       ユーザデータのファイル名
                  */
-                virtual const csmChar *GetUserDataFile() = 0;
+                virtual const QString GetUserDataFile() const = 0;
 
                 /**
                  * @brief        レイアウト情報を取得する
@@ -199,14 +199,14 @@ namespace Live2D
                  * @retval       true  -> レイアウト情報が存在する
                  * @retval       false -> レイアウト情報が存在しない
                  */
-                virtual csmBool GetLayoutMap(csmMap<csmString, csmFloat32> &outLayoutMap) = 0;
+                virtual bool GetLayoutMap(QMap<QString, csmFloat32> &outLayoutMap) const = 0;
 
                 /**
                  * @brief        目パチに関連付けられたパラメータの数を取得する
                  *
                  * @return       目パチに関連付けられたパラメータの数
                  */
-                virtual csmInt32 GetEyeBlinkParameterCount() = 0;
+                virtual int GetEyeBlinkParameterCount() const = 0;
 
                 /**
                  * @brief        目パチに関連付けられたパラメータのIDを取得する
@@ -214,14 +214,14 @@ namespace Live2D
                  * @param[in]    index          配列のインデックス値
                  * @return       パラメータID
                  */
-                virtual CubismIdHandle GetEyeBlinkParameterId(csmInt32 index) = 0;
+                virtual CubismIdHandle GetEyeBlinkParameterId(int index) const = 0;
 
                 /**
                  * @brief        リップシンクに関連付けられたパラメータの数を取得する
                  *
                  * @return       リップシンクに関連付けられたパラメータの数
                  */
-                virtual csmInt32 GetLipSyncParameterCount() = 0;
+                virtual int GetLipSyncParameterCount() const = 0;
 
                 /**
                  * @brief        リップシンクに関連付けられたパラメータのIDを取得する
@@ -229,7 +229,7 @@ namespace Live2D
                  * @param[in]    index          配列のインデックス値
                  * @return       パラメータID
                  */
-                virtual CubismIdHandle GetLipSyncParameterId(csmInt32 index) = 0;
+                virtual CubismIdHandle GetLipSyncParameterId(int index) const = 0;
             };
         } // namespace Framework
     }     // namespace Cubism

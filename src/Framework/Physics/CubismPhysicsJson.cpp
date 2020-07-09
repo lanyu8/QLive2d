@@ -20,220 +20,219 @@ namespace Live2D
             namespace
             {
                 // JSON keys
-                const csmChar *Position = "Position";
-                const csmChar *X = "X";
-                const csmChar *Y = "Y";
-                const csmChar *Angle = "Angle";
-                const csmChar *Type = "Type";
-                const csmChar *Id = "Id";
+                const QString Position = "Position";
+                const QString X = "X";
+                const QString Y = "Y";
+                const QString Angle = "Angle";
+                const QString Type = "Type";
+                const QString Id = "Id";
 
                 // Meta
-                const csmChar *Meta = "Meta";
-                const csmChar *EffectiveForces = "EffectiveForces";
-                const csmChar *TotalInputCount = "TotalInputCount";
-                const csmChar *TotalOutputCount = "TotalOutputCount";
-                const csmChar *PhysicsSettingCount = "PhysicsSettingCount";
-                const csmChar *Gravity = "Gravity";
-                const csmChar *Wind = "Wind";
-                const csmChar *VertexCount = "VertexCount";
+                const QString Meta = "Meta";
+                const QString EffectiveForces = "EffectiveForces";
+                const QString TotalInputCount = "TotalInputCount";
+                const QString TotalOutputCount = "TotalOutputCount";
+                const QString PhysicsSettingCount = "PhysicsSettingCount";
+                const QString Gravity = "Gravity";
+                const QString Wind = "Wind";
+                const QString VertexCount = "VertexCount";
 
                 // PhysicsSettings
-                const csmChar *PhysicsSettings = "PhysicsSettings";
-                const csmChar *Normalization = "Normalization";
-                const csmChar *Minimum = "Minimum";
-                const csmChar *Maximum = "Maximum";
-                const csmChar *Default = "Default";
-                const csmChar *Reflect = "Reflect";
-                const csmChar *Weight = "Weight";
+                const QString PhysicsSettings = "PhysicsSettings";
+                const QString Normalization = "Normalization";
+                const QString Minimum = "Minimum";
+                const QString Maximum = "Maximum";
+                const QString Default = "Default";
+                const QString Reflect = "Reflect";
+                const QString Weight = "Weight";
 
                 // Input
-                const csmChar *Input = "Input";
-                const csmChar *Source = "Source";
+                const QString Input = "Input";
+                const QString Source = "Source";
 
                 // Output
-                const csmChar *Output = "Output";
-                const csmChar *Scale = "Scale";
-                const csmChar *VertexIndex = "VertexIndex";
-                const csmChar *Destination = "Destination";
+                const QString Output = "Output";
+                const QString Scale = "Scale";
+                const QString VertexIndex = "VertexIndex";
+                const QString Destination = "Destination";
 
                 // Particle
-                const csmChar *Vertices = "Vertices";
-                const csmChar *Mobility = "Mobility";
-                const csmChar *Delay = "Delay";
-                const csmChar *Radius = "Radius";
-                const csmChar *Acceleration = "Acceleration";
+                const QString Vertices = "Vertices";
+                const QString Mobility = "Mobility";
+                const QString Delay = "Delay";
+                const QString Radius = "Radius";
+                const QString Acceleration = "Acceleration";
             } // namespace
 
-            CubismPhysicsJson::CubismPhysicsJson(const csmByte *buffer, csmSizeInt size)
+            CubismPhysicsJson::CubismPhysicsJson(const QByteArray &buffer)
             {
-                _json = Utils::CubismJson::Create(buffer, size);
+                _json = QJsonDocument::fromJson(buffer).object();
             }
 
             CubismPhysicsJson::~CubismPhysicsJson()
             {
-                Utils::CubismJson::Delete(_json);
             }
 
             CubismVector2 CubismPhysicsJson::GetGravity() const
             {
                 CubismVector2 ret;
-                ret.X = _json->GetRoot()[Meta][EffectiveForces][Gravity][X].ToFloat();
-                ret.Y = _json->GetRoot()[Meta][EffectiveForces][Gravity][Y].ToFloat();
+                ret.X = _json[Meta][EffectiveForces][Gravity][X].toVariant().toFloat();
+                ret.Y = _json[Meta][EffectiveForces][Gravity][Y].toVariant().toFloat();
                 return ret;
             }
 
             CubismVector2 CubismPhysicsJson::GetWind() const
             {
                 CubismVector2 ret;
-                ret.X = _json->GetRoot()[Meta][EffectiveForces][Wind][X].ToFloat();
-                ret.Y = _json->GetRoot()[Meta][EffectiveForces][Wind][Y].ToFloat();
+                ret.X = _json[Meta][EffectiveForces][Wind][X].toVariant().toFloat();
+                ret.Y = _json[Meta][EffectiveForces][Wind][Y].toVariant().toFloat();
                 return ret;
             }
 
-            csmInt32 CubismPhysicsJson::GetSubRigCount() const
+            int CubismPhysicsJson::GetSubRigCount() const
             {
-                return _json->GetRoot()[Meta][PhysicsSettingCount].ToInt();
+                return _json[Meta][PhysicsSettingCount].toInt();
             }
 
-            csmInt32 CubismPhysicsJson::GetTotalInputCount() const
+            int CubismPhysicsJson::GetTotalInputCount() const
             {
-                return _json->GetRoot()[Meta][TotalInputCount].ToInt();
+                return _json[Meta][TotalInputCount].toInt();
             }
 
-            csmInt32 CubismPhysicsJson::GetTotalOutputCount() const
+            int CubismPhysicsJson::GetTotalOutputCount() const
             {
-                return _json->GetRoot()[Meta][TotalOutputCount].ToInt();
+                return _json[Meta][TotalOutputCount].toInt();
             }
 
-            csmInt32 CubismPhysicsJson::GetVertexCount() const
+            int CubismPhysicsJson::GetVertexCount() const
             {
-                return _json->GetRoot()[Meta][VertexCount].ToInt();
+                return _json[Meta][VertexCount].toInt();
             }
 
             // Input
-            csmFloat32 CubismPhysicsJson::GetNormalizationPositionMinimumValue(csmInt32 physicsSettingIndex) const
+            csmFloat32 CubismPhysicsJson::GetNormalizationPositionMinimumValue(int physicsSettingIndex) const
             {
-                return _json->GetRoot()[PhysicsSettings][physicsSettingIndex][Normalization][Position][Minimum].ToFloat();
+                return _json[PhysicsSettings][physicsSettingIndex][Normalization][Position][Minimum].toVariant().toFloat();
             }
 
-            csmFloat32 CubismPhysicsJson::GetNormalizationPositionMaximumValue(csmInt32 physicsSettingIndex) const
+            csmFloat32 CubismPhysicsJson::GetNormalizationPositionMaximumValue(int physicsSettingIndex) const
             {
-                return _json->GetRoot()[PhysicsSettings][physicsSettingIndex][Normalization][Position][Maximum].ToFloat();
+                return _json[PhysicsSettings][physicsSettingIndex][Normalization][Position][Maximum].toVariant().toFloat();
             }
 
-            csmFloat32 CubismPhysicsJson::GetNormalizationPositionDefaultValue(csmInt32 physicsSettingIndex) const
+            csmFloat32 CubismPhysicsJson::GetNormalizationPositionDefaultValue(int physicsSettingIndex) const
             {
-                return _json->GetRoot()[PhysicsSettings][physicsSettingIndex][Normalization][Position][Default].ToFloat();
+                return _json[PhysicsSettings][physicsSettingIndex][Normalization][Position][Default].toVariant().toFloat();
             }
 
-            csmFloat32 CubismPhysicsJson::GetNormalizationAngleMinimumValue(csmInt32 physicsSettingIndex) const
+            csmFloat32 CubismPhysicsJson::GetNormalizationAngleMinimumValue(int physicsSettingIndex) const
             {
-                return _json->GetRoot()[PhysicsSettings][physicsSettingIndex][Normalization][Angle][Minimum].ToFloat();
+                return _json[PhysicsSettings][physicsSettingIndex][Normalization][Angle][Minimum].toVariant().toFloat();
             }
 
-            csmFloat32 CubismPhysicsJson::GetNormalizationAngleMaximumValue(csmInt32 physicsSettingIndex) const
+            csmFloat32 CubismPhysicsJson::GetNormalizationAngleMaximumValue(int physicsSettingIndex) const
             {
-                return _json->GetRoot()[PhysicsSettings][physicsSettingIndex][Normalization][Angle][Maximum].ToFloat();
+                return _json[PhysicsSettings][physicsSettingIndex][Normalization][Angle][Maximum].toVariant().toFloat();
             }
 
-            csmFloat32 CubismPhysicsJson::GetNormalizationAngleDefaultValue(csmInt32 physicsSettingIndex) const
+            csmFloat32 CubismPhysicsJson::GetNormalizationAngleDefaultValue(int physicsSettingIndex) const
             {
-                return _json->GetRoot()[PhysicsSettings][physicsSettingIndex][Normalization][Angle][Default].ToFloat();
+                return _json[PhysicsSettings][physicsSettingIndex][Normalization][Angle][Default].toVariant().toFloat();
             }
 
-            csmInt32 CubismPhysicsJson::GetInputCount(csmInt32 physicsSettingIndex) const
+            int CubismPhysicsJson::GetInputCount(int physicsSettingIndex) const
             {
-                return static_cast<csmInt32>(_json->GetRoot()[PhysicsSettings][physicsSettingIndex][Input].GetVector()->GetSize());
+                return static_cast<int>(_json[PhysicsSettings][physicsSettingIndex][Input].toArray().size());
             }
 
-            csmFloat32 CubismPhysicsJson::GetInputWeight(csmInt32 physicsSettingIndex, csmInt32 inputIndex) const
+            csmFloat32 CubismPhysicsJson::GetInputWeight(int physicsSettingIndex, int inputIndex) const
             {
-                return _json->GetRoot()[PhysicsSettings][physicsSettingIndex][Input][inputIndex][Weight].ToFloat();
+                return _json[PhysicsSettings][physicsSettingIndex][Input][inputIndex][Weight].toVariant().toFloat();
             }
 
-            csmBool CubismPhysicsJson::GetInputReflect(csmInt32 physicsSettingIndex, csmInt32 inputIndex) const
+            bool CubismPhysicsJson::GetInputReflect(int physicsSettingIndex, int inputIndex) const
             {
-                return _json->GetRoot()[PhysicsSettings][physicsSettingIndex][Input][inputIndex][Reflect].ToBoolean();
+                return _json[PhysicsSettings][physicsSettingIndex][Input][inputIndex][Reflect].toBool();
             }
 
-            const csmChar *CubismPhysicsJson::GetInputType(csmInt32 physicsSettingIndex, csmInt32 inputIndex) const
+            const QString CubismPhysicsJson::GetInputType(int physicsSettingIndex, int inputIndex) const
             {
-                return _json->GetRoot()[PhysicsSettings][physicsSettingIndex][Input][inputIndex][Type].GetRawString();
+                return _json[PhysicsSettings][physicsSettingIndex][Input][inputIndex][Type].toString();
             }
 
-            CubismIdHandle CubismPhysicsJson::GetInputSourceId(csmInt32 physicsSettingIndex, csmInt32 inputIndex) const
+            CubismIdHandle CubismPhysicsJson::GetInputSourceId(int physicsSettingIndex, int inputIndex) const
             {
                 return CubismFramework::GetIdManager()->GetId(
-                    _json->GetRoot()[PhysicsSettings][physicsSettingIndex][Input][inputIndex][Source][Id].GetRawString());
+                    _json[PhysicsSettings][physicsSettingIndex][Input][inputIndex][Source][Id].toString());
             }
 
             // Output
-            csmInt32 CubismPhysicsJson::GetOutputCount(csmInt32 physicsSettingIndex) const
+            int CubismPhysicsJson::GetOutputCount(int physicsSettingIndex) const
             {
-                return static_cast<csmInt32>(_json->GetRoot()[PhysicsSettings][physicsSettingIndex][Output].GetVector()->GetSize());
+                return static_cast<int>(_json[PhysicsSettings][physicsSettingIndex][Output].toArray().size());
             }
 
-            csmInt32 CubismPhysicsJson::GetOutputVertexIndex(csmInt32 physicsSettingIndex, csmInt32 outputIndex) const
+            int CubismPhysicsJson::GetOutputVertexIndex(int physicsSettingIndex, int outputIndex) const
             {
-                return _json->GetRoot()[PhysicsSettings][physicsSettingIndex][Output][outputIndex][VertexIndex].ToInt();
+                return _json[PhysicsSettings][physicsSettingIndex][Output][outputIndex][VertexIndex].toInt();
             }
 
-            csmFloat32 CubismPhysicsJson::GetOutputAngleScale(csmInt32 physicsSettingIndex, csmInt32 outputIndex) const
+            csmFloat32 CubismPhysicsJson::GetOutputAngleScale(int physicsSettingIndex, int outputIndex) const
             {
-                return _json->GetRoot()[PhysicsSettings][physicsSettingIndex][Output][outputIndex][Scale].ToFloat();
+                return _json[PhysicsSettings][physicsSettingIndex][Output][outputIndex][Scale].toVariant().toFloat();
             }
 
-            csmFloat32 CubismPhysicsJson::GetOutputWeight(csmInt32 physicsSettingIndex, csmInt32 outputIndex) const
+            csmFloat32 CubismPhysicsJson::GetOutputWeight(int physicsSettingIndex, int outputIndex) const
             {
-                return _json->GetRoot()[PhysicsSettings][physicsSettingIndex][Output][outputIndex][Weight].ToFloat();
+                return _json[PhysicsSettings][physicsSettingIndex][Output][outputIndex][Weight].toVariant().toFloat();
             }
 
-            CubismIdHandle CubismPhysicsJson::GetOutputsDestinationId(csmInt32 physicsSettingIndex, csmInt32 outputIndex) const
+            CubismIdHandle CubismPhysicsJson::GetOutputsDestinationId(int physicsSettingIndex, int outputIndex) const
             {
                 return CubismFramework::GetIdManager()->GetId(
-                    _json->GetRoot()[PhysicsSettings][physicsSettingIndex][Output][outputIndex][Destination][Id].GetRawString());
+                    _json[PhysicsSettings][physicsSettingIndex][Output][outputIndex][Destination][Id].toString());
             }
 
-            const csmChar *CubismPhysicsJson::GetOutputType(csmInt32 physicsSettingIndex, csmInt32 outputIndex) const
+            const QString CubismPhysicsJson::GetOutputType(int physicsSettingIndex, int outputIndex) const
             {
-                return _json->GetRoot()[PhysicsSettings][physicsSettingIndex][Output][outputIndex][Type].GetRawString();
+                return _json[PhysicsSettings][physicsSettingIndex][Output][outputIndex][Type].toString();
             }
 
-            csmBool CubismPhysicsJson::GetOutputReflect(csmInt32 physicsSettingIndex, csmInt32 outputIndex) const
+            bool CubismPhysicsJson::GetOutputReflect(int physicsSettingIndex, int outputIndex) const
             {
-                return _json->GetRoot()[PhysicsSettings][physicsSettingIndex][Output][outputIndex][Reflect].ToBoolean();
+                return _json[PhysicsSettings][physicsSettingIndex][Output][outputIndex][Reflect].toBool();
             }
 
             // Particle
-            csmInt32 CubismPhysicsJson::GetParticleCount(csmInt32 physicsSettingIndex) const
+            int CubismPhysicsJson::GetParticleCount(int physicsSettingIndex) const
             {
-                return static_cast<csmInt32>(_json->GetRoot()[PhysicsSettings][physicsSettingIndex][Vertices].GetVector()->GetSize());
+                return static_cast<int>(_json[PhysicsSettings][physicsSettingIndex][Vertices].toArray().size());
             }
 
-            csmFloat32 CubismPhysicsJson::GetParticleMobility(csmInt32 physicsSettingIndex, csmInt32 vertexIndex) const
+            csmFloat32 CubismPhysicsJson::GetParticleMobility(int physicsSettingIndex, int vertexIndex) const
             {
-                return _json->GetRoot()[PhysicsSettings][physicsSettingIndex][Vertices][vertexIndex][Mobility].ToFloat();
+                return _json[PhysicsSettings][physicsSettingIndex][Vertices][vertexIndex][Mobility].toVariant().toFloat();
             }
 
-            csmFloat32 CubismPhysicsJson::GetParticleDelay(csmInt32 physicsSettingIndex, csmInt32 vertexIndex) const
+            csmFloat32 CubismPhysicsJson::GetParticleDelay(int physicsSettingIndex, int vertexIndex) const
             {
-                return _json->GetRoot()[PhysicsSettings][physicsSettingIndex][Vertices][vertexIndex][Delay].ToFloat();
+                return _json[PhysicsSettings][physicsSettingIndex][Vertices][vertexIndex][Delay].toVariant().toFloat();
             }
 
-            csmFloat32 CubismPhysicsJson::GetParticleAcceleration(csmInt32 physicsSettingIndex, csmInt32 vertexIndex) const
+            csmFloat32 CubismPhysicsJson::GetParticleAcceleration(int physicsSettingIndex, int vertexIndex) const
             {
-                return _json->GetRoot()[PhysicsSettings][physicsSettingIndex][Vertices][vertexIndex][Acceleration].ToFloat();
+                return _json[PhysicsSettings][physicsSettingIndex][Vertices][vertexIndex][Acceleration].toVariant().toFloat();
             }
 
-            csmFloat32 CubismPhysicsJson::GetParticleRadius(csmInt32 physicsSettingIndex, csmInt32 vertexIndex) const
+            csmFloat32 CubismPhysicsJson::GetParticleRadius(int physicsSettingIndex, int vertexIndex) const
             {
-                return _json->GetRoot()[PhysicsSettings][physicsSettingIndex][Vertices][vertexIndex][Radius].ToFloat();
+                return _json[PhysicsSettings][physicsSettingIndex][Vertices][vertexIndex][Radius].toVariant().toFloat();
             }
 
-            CubismVector2 CubismPhysicsJson::GetParticlePosition(csmInt32 physicsSettingIndex, csmInt32 vertexIndex) const
+            CubismVector2 CubismPhysicsJson::GetParticlePosition(int physicsSettingIndex, int vertexIndex) const
             {
-                return CubismVector2(_json->GetRoot()[PhysicsSettings][physicsSettingIndex][Vertices][vertexIndex][Position][X].ToFloat(),
-                                     _json->GetRoot()[PhysicsSettings][physicsSettingIndex][Vertices][vertexIndex][Position][Y].ToFloat());
+                return CubismVector2(_json[PhysicsSettings][physicsSettingIndex][Vertices][vertexIndex][Position][X].toVariant().toFloat(),
+                                     _json[PhysicsSettings][physicsSettingIndex][Vertices][vertexIndex][Position][Y].toVariant().toFloat());
             }
         } // namespace Framework
     }     // namespace Cubism

@@ -10,7 +10,6 @@
 #include "ACubismMotion.hpp"
 #include "Id/CubismId.hpp"
 #include "Type/CubismBasicType.hpp"
-#include "Type/csmVector.hpp"
 
 namespace Live2D
 {
@@ -40,7 +39,7 @@ namespace Live2D
                  * @param[in]   onFinishedMotionHandler     モーション再生終了時に呼び出されるコールバック関数。NULLの場合、呼び出されない。
                  * @return  作成されたインスタンス
                  */
-                static CubismMotion *Create(const csmByte *buffer, csmSizeInt size, FinishedMotionCallback onFinishedMotionHandler = NULL);
+                static CubismMotion *Create(const QByteArray &buffer, FinishedMotionCallback onFinishedMotionHandler = NULL);
 
                 /**
                  * @brief モデルのパラメータの更新の実行
@@ -62,7 +61,7 @@ namespace Live2D
                  *
                  * @param[in]   loop    ループ情報
                  */
-                void IsLoop(csmBool loop);
+                void IsLoop(bool loop);
 
                 /**
                  * @brief ループ情報の取得
@@ -72,7 +71,7 @@ namespace Live2D
                  * @retval  true    ループする
                  * @retval  false   ループしない
                  */
-                csmBool IsLoop() const;
+                bool IsLoop() const;
 
                 /**
                  * @brief ループ時のフェードイン情報の設定
@@ -81,7 +80,7 @@ namespace Live2D
                  *
                  * @param[in]   loopFadeIn  ループ時のフェードイン情報
                  */
-                void IsLoopFadeIn(csmBool loopFadeIn);
+                void IsLoopFadeIn(bool loopFadeIn);
 
                 /**
                  * @brief ループ時のフェードイン情報の取得
@@ -91,7 +90,7 @@ namespace Live2D
                  * @retval  true    する
                  * @retval  false   しない
                  */
-                csmBool IsLoopFadeIn() const;
+                bool IsLoopFadeIn() const;
 
                 /**
                  * @brief モーションの長さの取得
@@ -159,7 +158,7 @@ namespace Live2D
                  * @param[in]   eyeBlinkParameterIds    自動まばたきがかかっているパラメータIDのリスト
                  * @param[in]   lipSyncParameterIds     リップシンクがかかっているパラメータIDのリスト
                  */
-                void SetEffectIds(const csmVector<CubismIdHandle> &eyeBlinkParameterIds, const csmVector<CubismIdHandle> &lipSyncParameterIds);
+                void SetEffectIds(const QVector<CubismIdHandle> &eyeBlinkParameterIds, const QVector<CubismIdHandle> &lipSyncParameterIds);
 
                 /**
                  * @brief モデルのパラメータ更新
@@ -170,7 +169,7 @@ namespace Live2D
                  * @param[in]   beforeCheckTimeSeconds   前回のイベントチェック時間[秒]
                  * @param[in]   motionTimeSeconds        今回の再生時間[秒]
                  */
-                virtual const csmVector<const csmString *> &GetFiredEvent(csmFloat32 beforeCheckTimeSeconds, csmFloat32 motionTimeSeconds);
+                virtual const QVector<const QString *> &GetFiredEvent(csmFloat32 beforeCheckTimeSeconds, csmFloat32 motionTimeSeconds);
 
               private:
                 /**
@@ -199,20 +198,20 @@ namespace Live2D
                  * @param[in]   motionJson  motion3.jsonが読み込まれているバッファ
                  * @param[in]   size        バッファのサイズ
                  */
-                void Parse(const csmByte *motionJson, const csmSizeInt size);
+                void Parse(const QByteArray &buffer);
 
                 csmFloat32 _sourceFrameRate;     ///< ロードしたファイルのFPS。記述が無ければデフォルト値15fpsとなる
                 csmFloat32 _loopDurationSeconds; ///< mtnファイルで定義される一連のモーションの長さ
-                csmBool _isLoop;                 ///< ループするか?
-                csmBool _isLoopFadeIn;  ///< ループ時にフェードインが有効かどうかのフラグ。初期値では有効。
+                bool _isLoop;                    ///< ループするか?
+                bool _isLoopFadeIn;     ///< ループ時にフェードインが有効かどうかのフラグ。初期値では有効。
                 csmFloat32 _lastWeight; ///< 最後に設定された重み
 
                 CubismMotionData *_motionData; ///< 実際のモーションデータ本体
 
-                csmVector<CubismIdHandle> _eyeBlinkParameterIds; ///< 自動まばたきを適用するパラメータIDハンドルのリスト。
-                                                                 ///< モデル（モデルセッティング）とパラメータを対応付ける。
-                csmVector<CubismIdHandle> _lipSyncParameterIds; ///< リップシンクを適用するパラメータIDハンドルのリスト。
-                                                                ///< モデル（モデルセッティング）とパラメータを対応付ける。
+                QVector<CubismIdHandle> _eyeBlinkParameterIds; ///< 自動まばたきを適用するパラメータIDハンドルのリスト。
+                                                               ///< モデル（モデルセッティング）とパラメータを対応付ける。
+                QVector<CubismIdHandle> _lipSyncParameterIds; ///< リップシンクを適用するパラメータIDハンドルのリスト。
+                                                              ///< モデル（モデルセッティング）とパラメータを対応付ける。
 
                 CubismIdHandle _modelCurveIdEyeBlink; ///< モデルが持つ自動まばたき用パラメータIDのハンドル。  モデルとモーションを対応付ける。
                 CubismIdHandle _modelCurveIdLipSync; ///< モデルが持つリップシンク用パラメータIDのハンドル。  モデルとモーションを対応付ける。

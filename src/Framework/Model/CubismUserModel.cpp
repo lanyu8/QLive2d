@@ -59,9 +59,9 @@ namespace Live2D
                 _accelerationZ = z;
             }
 
-            void CubismUserModel::LoadModel(const csmByte *buffer, csmSizeInt size)
+            void CubismUserModel::LoadModel(const QByteArray &buffer)
             {
-                _moc = CubismMoc::Create(buffer, size);
+                _moc = CubismMoc::Create(buffer);
                 _model = _moc->CreateModel();
                 _model->SaveParameters();
 
@@ -74,35 +74,35 @@ namespace Live2D
                 _modelMatrix = CSM_NEW CubismModelMatrix(_model->GetCanvasWidth(), _model->GetCanvasHeight());
             }
 
-            ACubismMotion *CubismUserModel::LoadExpression(const csmByte *buffer, csmSizeInt size, const csmChar *)
+            ACubismMotion *CubismUserModel::LoadExpression(const QByteArray &buffer, const QString &)
             {
-                return CubismExpressionMotion::Create(buffer, size);
+                return CubismExpressionMotion::Create(buffer);
             }
 
-            void CubismUserModel::LoadPose(const csmByte *buffer, csmSizeInt size)
+            void CubismUserModel::LoadPose(const QByteArray &buffer)
             {
-                _pose = CubismPose::Create(buffer, size);
+                _pose = CubismPose::Create(buffer);
             }
 
-            void CubismUserModel::LoadPhysics(const csmByte *buffer, csmSizeInt size)
+            void CubismUserModel::LoadPhysics(const QByteArray &buffer)
             {
-                _physics = CubismPhysics::Create(buffer, size);
+                _physics = CubismPhysics::Create(buffer);
             }
 
-            void CubismUserModel::LoadUserData(const csmByte *buffer, csmSizeInt size)
+            void CubismUserModel::LoadUserData(const QByteArray &buffer)
             {
-                _modelUserData = CubismModelUserData::Create(buffer, size);
+                _modelUserData = CubismModelUserData::Create(buffer);
             }
-            csmBool CubismUserModel::IsHit(CubismIdHandle drawableId, csmFloat32 pointX, csmFloat32 pointY)
+            bool CubismUserModel::IsHit(CubismIdHandle drawableId, csmFloat32 pointX, csmFloat32 pointY)
             {
-                const csmInt32 drawIndex = _model->GetDrawableIndex(drawableId);
+                const int drawIndex = _model->GetDrawableIndex(drawableId);
 
                 if (drawIndex < 0)
                 {
                     return false; // 存在しない場合はfalse
                 }
 
-                const csmInt32 count = _model->GetDrawableVertexCount(drawIndex);
+                const int count = _model->GetDrawableVertexCount(drawIndex);
                 const csmFloat32 *vertices = _model->GetDrawableVertices(drawIndex);
 
                 csmFloat32 left = vertices[0];
@@ -110,7 +110,7 @@ namespace Live2D
                 csmFloat32 top = vertices[1];
                 csmFloat32 bottom = vertices[1];
 
-                for (csmInt32 j = 1; j < count; ++j)
+                for (int j = 1; j < count; ++j)
                 {
                     csmFloat32 x = vertices[Constant::VertexOffset + j * Constant::VertexStep];
                     csmFloat32 y = vertices[Constant::VertexOffset + j * Constant::VertexStep + 1];
@@ -142,10 +142,10 @@ namespace Live2D
                 return ((left <= tx) && (tx <= right) && (top <= ty) && (ty <= bottom));
             }
 
-            ACubismMotion *CubismUserModel::LoadMotion(const csmByte *buffer, csmSizeInt size, const csmChar *,
+            ACubismMotion *CubismUserModel::LoadMotion(const QByteArray &buffer, const QString &,
                                                        ACubismMotion::FinishedMotionCallback onFinishedMotionHandler)
             {
-                return CubismMotion::Create(buffer, size, onFinishedMotionHandler);
+                return CubismMotion::Create(buffer, onFinishedMotionHandler);
             }
 
             void CubismUserModel::SetDragging(csmFloat32 x, csmFloat32 y)
@@ -158,22 +158,22 @@ namespace Live2D
                 return _modelMatrix;
             }
 
-            csmBool CubismUserModel::IsInitialized()
+            bool CubismUserModel::IsInitialized()
             {
                 return _initialized;
             }
 
-            void CubismUserModel::IsInitialized(csmBool v)
+            void CubismUserModel::IsInitialized(bool v)
             {
                 _initialized = v;
             }
 
-            csmBool CubismUserModel::IsUpdating()
+            bool CubismUserModel::IsUpdating()
             {
                 return _updating;
             }
 
-            void CubismUserModel::IsUpdating(csmBool v)
+            void CubismUserModel::IsUpdating(bool v)
             {
                 _updating = v;
             }
@@ -214,8 +214,7 @@ namespace Live2D
                 }
             }
 
-            void CubismUserModel::CubismDefaultMotionEventCallback(const CubismMotionQueueManager *, const csmString &eventValue,
-                                                                   void *customData)
+            void CubismUserModel::CubismDefaultMotionEventCallback(const CubismMotionQueueManager *, const QString &eventValue, void *customData)
             {
                 CubismUserModel *model = reinterpret_cast<CubismUserModel *>(customData);
                 if (model != NULL)
@@ -224,9 +223,9 @@ namespace Live2D
                 }
             }
 
-            void CubismUserModel::MotionEventFired(const csmString &eventValue)
+            void CubismUserModel::MotionEventFired(const QString &eventValue)
             {
-                CubismLogInfo("%s", eventValue.GetRawString());
+                CubismLogInfo("%s", eventValue.toStdString().c_str());
             }
 
         } // namespace Framework

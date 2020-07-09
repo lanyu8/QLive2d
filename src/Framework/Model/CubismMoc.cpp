@@ -16,14 +16,14 @@ namespace Live2D
         namespace Framework
         {
 
-            CubismMoc *CubismMoc::Create(const csmByte *mocBytes, csmSizeInt size)
+            CubismMoc *CubismMoc::Create(const QByteArray &buffer)
             {
                 CubismMoc *cubismMoc = NULL;
 
-                void *alignedBuffer = CSM_MALLOC_ALLIGNED(size, Core::csmAlignofMoc);
-                memcpy(alignedBuffer, mocBytes, size);
+                void *alignedBuffer = CSM_MALLOC_ALLIGNED(buffer.size(), Core::csmAlignofMoc);
+                memcpy(alignedBuffer, buffer.data(), buffer.size());
 
-                Core::csmMoc *moc = Core::csmReviveMocInPlace(alignedBuffer, size);
+                Core::csmMoc *moc = Core::csmReviveMocInPlace(alignedBuffer, buffer.size());
 
                 if (moc)
                 {

@@ -33,7 +33,7 @@ namespace Live2D
                  * @param[in]   buffer  motion3.jsonが読み込まれているバッファ
                  * @param[in]   size    バッファのサイズ
                  */
-                CubismMotionJson(const csmByte *buffer, csmSizeInt size);
+                CubismMotionJson(const QByteArray &buffer);
 
                 /**
                  * @brief デストラクタ
@@ -59,7 +59,7 @@ namespace Live2D
                  * @retval  true    ループする
                  * @retval  false   ループしない
                  */
-                csmBool IsMotionLoop() const;
+                bool IsMotionLoop() const;
 
                 /**
                  * @brief モーションカーブの個数の取得
@@ -68,7 +68,7 @@ namespace Live2D
                  *
                  * @return モーションカーブの個数
                  */
-                csmInt32 GetMotionCurveCount() const;
+                int GetMotionCurveCount() const;
 
                 /**
                  * @brief モーションのフレームレートの取得
@@ -86,7 +86,7 @@ namespace Live2D
                  *
                  * @return モーションのセグメントの総合計
                  */
-                csmInt32 GetMotionTotalSegmentCount() const;
+                int GetMotionTotalSegmentCount() const;
 
                 /**
                  * @brief モーションのカーブの制御点の総合計の取得
@@ -95,7 +95,7 @@ namespace Live2D
                  *
                  * @return モーションのカーブの制御点の総合計
                  */
-                csmInt32 GetMotionTotalPointCount() const;
+                int GetMotionTotalPointCount() const;
 
                 /**
                  * @brief モーションのフェードイン時間の存在
@@ -105,7 +105,7 @@ namespace Live2D
                  * @retval  true    存在する
                  * @retval  false   存在しない
                  */
-                csmBool IsExistMotionFadeInTime() const;
+                bool IsExistMotionFadeInTime() const;
 
                 /**
                  * @brief モーションのフェードアウト時間の存在
@@ -115,7 +115,7 @@ namespace Live2D
                  * @retval  true    存在する
                  * @retval  false   存在しない
                  */
-                csmBool IsExistMotionFadeOutTime() const;
+                bool IsExistMotionFadeOutTime() const;
 
                 /**
                  * @brief モーションのフェードイン時間の取得
@@ -143,7 +143,7 @@ namespace Live2D
                  * @param[in]   curveIndex   カーブのインデックス
                  * @return カーブの種類
                  */
-                const csmChar *GetMotionCurveTarget(csmInt32 curveIndex) const;
+                const QString GetMotionCurveTarget(int curveIndex) const;
 
                 /**
                  * @brief モーションのカーブのIDの取得
@@ -153,7 +153,7 @@ namespace Live2D
                  * @param[in]   curveIndex   カーブのインデックス
                  * @return カーブのID
                  */
-                CubismIdHandle GetMotionCurveId(csmInt32 curveIndex) const;
+                CubismIdHandle GetMotionCurveId(int curveIndex) const;
 
                 /**
                  * @brief モーションのカーブのフェードイン時間の存在
@@ -164,7 +164,7 @@ namespace Live2D
                  * @retval  true    存在する
                  * @retval  false   存在しない
                  */
-                csmBool IsExistMotionCurveFadeInTime(csmInt32 curveIndex) const;
+                bool IsExistMotionCurveFadeInTime(int curveIndex) const;
 
                 /**
                  * @brief モーションのカーブのフェードアウト時間の存在
@@ -175,7 +175,7 @@ namespace Live2D
                  * @retval  true    存在する
                  * @retval  false   存在しない
                  */
-                csmBool IsExistMotionCurveFadeOutTime(csmInt32 curveIndex) const;
+                bool IsExistMotionCurveFadeOutTime(int curveIndex) const;
 
                 /**
                  * @brief モーションのカーブのフェードイン時間の取得
@@ -185,7 +185,7 @@ namespace Live2D
                  * @param[in]   curveIndex   カーブのインデックス
                  * @return  フェードイン時間[秒]
                  */
-                csmFloat32 GetMotionCurveFadeInTime(csmInt32 curveIndex) const;
+                csmFloat32 GetMotionCurveFadeInTime(int curveIndex) const;
 
                 /**
                  * @brief モーションのカーブのフェードアウト時間の取得
@@ -195,7 +195,7 @@ namespace Live2D
                  * @param[in]   curveIndex   カーブのインデックス
                  * @return  フェードアウト時間[秒]
                  */
-                csmFloat32 GetMotionCurveFadeOutTime(csmInt32 curveIndex) const;
+                csmFloat32 GetMotionCurveFadeOutTime(int curveIndex) const;
 
                 /**
                  * @brief モーションのカーブのセグメントの個数の取得
@@ -205,7 +205,7 @@ namespace Live2D
                  * @param[in]   curveIndex   カーブのインデックス
                  * @return  モーションのカーブのセグメントの個数
                  */
-                csmInt32 GetMotionCurveSegmentCount(csmInt32 curveIndex) const;
+                int GetMotionCurveSegmentCount(int curveIndex) const;
 
                 /**
                  * @brief モーションのカーブのセグメントの値の取得
@@ -216,7 +216,7 @@ namespace Live2D
                  * @param[in]   segmentIndex    セグメントのインデックス
                  * @return  セグメントの値
                  */
-                csmFloat32 GetMotionCurveSegment(csmInt32 curveIndex, csmInt32 segmentIndex) const;
+                csmFloat32 GetMotionCurveSegment(int curveIndex, int segmentIndex) const;
 
                 /**
                  * @brief イベントの個数の取得
@@ -225,7 +225,7 @@ namespace Live2D
                  *
                  * @return  イベントの個数
                  */
-                csmInt32 GetEventCount() const;
+                int GetEventCount() const;
 
                 /**
                  * @brief イベントの総文字数の取得
@@ -234,7 +234,7 @@ namespace Live2D
                  *
                  * @return  イベントの総文字数
                  */
-                csmInt32 GetTotalEventValueSize() const;
+                int GetTotalEventValueSize() const;
 
                 /**
                  * @brief イベントの時間の取得
@@ -244,7 +244,7 @@ namespace Live2D
                  * @param[in]   userDataIndex イベントのインデックス
                  * @return  イベントの時間[秒]
                  */
-                csmFloat32 GetEventTime(csmInt32 userDataIndex) const;
+                csmFloat32 GetEventTime(int userDataIndex) const;
 
                 /**
                  * @brief イベントの取得
@@ -254,10 +254,10 @@ namespace Live2D
                  * @param[in]   userDataIndex    イベントのインデックス
                  * @return  イベントの文字列
                  */
-                const csmChar *GetEventValue(csmInt32 userDataIndex) const;
+                const QString GetEventValue(int userDataIndex) const;
 
               private:
-                Utils::CubismJson *_json; ///< motion3.jsonデータ
+                Utils::CubismJson _json; ///< motion3.jsonデータ
             };
 
         } // namespace Framework

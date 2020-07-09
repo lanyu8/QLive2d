@@ -10,7 +10,6 @@
 #include "CubismFramework.hpp"
 #include "Type/csmMap.hpp"
 #include "Type/csmRectF.hpp"
-#include "Type/csmVector.hpp"
 
 #include <float.h>
 
@@ -85,7 +84,7 @@ namespace Live2D
                      *  @param  displayBufferHeight    作成するバッファ高さ
                      *  @param  colorBuffer            0以外の場合、ピクセル格納領域としてcolorBufferを使用する
                      */
-                    csmBool CreateOffscreenFrame(csmUint32 displayBufferWidth, csmUint32 displayBufferHeight, GLuint colorBuffer = 0);
+                    bool CreateOffscreenFrame(csmUint32 displayBufferWidth, csmUint32 displayBufferHeight, GLuint colorBuffer = 0);
 
                     /**
                      * @brief   CubismOffscreenFrameの削除
@@ -110,7 +109,7 @@ namespace Live2D
                     /**
                      * @brief   現在有効かどうか
                      */
-                    csmBool IsValid() const;
+                    bool IsValid() const;
 
                   private:
                     GLuint _renderTexture; ///< レンダリングターゲットとしてのアドレス

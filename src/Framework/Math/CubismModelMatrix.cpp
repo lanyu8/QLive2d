@@ -7,7 +7,7 @@
 
 #include "CubismModelMatrix.hpp"
 
-#include "Type/csmString.hpp"
+#include <QString>
 
 namespace Live2D
 {
@@ -76,23 +76,23 @@ namespace Live2D
                 Scale(scaleX, scaleY);
             }
 
-            void CubismModelMatrix::SetupFromLayout(csmMap<csmString, csmFloat32> &layout)
+            void CubismModelMatrix::SetupFromLayout(QMap<QString, csmFloat32> &layout)
             {
-                const csmChar *KeyWidth = "width";
-                const csmChar *KeyHeight = "height";
-                const csmChar *KeyX = "x";
-                const csmChar *KeyY = "y";
-                const csmChar *KeyCenterX = "center_x";
-                const csmChar *KeyCenterY = "center_y";
-                const csmChar *KeyTop = "top";
-                const csmChar *KeyBottom = "bottom";
-                const csmChar *KeyLeft = "left";
-                const csmChar *KeyRight = "right";
+                const QString &KeyWidth = "width";
+                const QString &KeyHeight = "height";
+                const QString &KeyX = "x";
+                const QString &KeyY = "y";
+                const QString &KeyCenterX = "center_x";
+                const QString &KeyCenterY = "center_y";
+                const QString &KeyTop = "top";
+                const QString &KeyBottom = "bottom";
+                const QString &KeyLeft = "left";
+                const QString &KeyRight = "right";
 
-                for (csmMap<csmString, csmFloat32>::const_iterator ite = layout.Begin(); ite != layout.End(); ++ite)
+                for (auto ite = layout.begin(); ite != layout.end(); ++ite)
                 {
-                    const csmString key = ite->First;
-                    const csmFloat32 value = ite->Second;
+                    const QString key = ite.key();
+                    const csmFloat32 value = ite.value();
 
                     if (key == KeyWidth)
                     {
@@ -104,10 +104,10 @@ namespace Live2D
                     }
                 }
 
-                for (csmMap<csmString, csmFloat32>::const_iterator ite = layout.Begin(); ite != layout.End(); ++ite)
+                for (auto ite = layout.begin(); ite != layout.end(); ++ite)
                 {
-                    const csmString key = ite->First;
-                    const csmFloat32 value = ite->Second;
+                    const QString key = ite.key();
+                    const csmFloat32 value = ite.value();
 
                     if (key == KeyX)
                     {

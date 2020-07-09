@@ -8,8 +8,6 @@
 #pragma once
 
 #include "CubismFramework.hpp"
-#include "Type/csmVector.hpp"
-
 namespace Live2D
 {
     namespace Cubism
@@ -156,7 +154,7 @@ namespace Live2D
                  * @param[in]   beforeCheckTimeSeconds   前回のイベントチェック時間[秒]
                  * @param[in]   motionTimeSeconds        今回の再生時間[秒]
                  */
-                virtual const csmVector<const csmString *> &GetFiredEvent(csmFloat32 beforeCheckTimeSeconds, csmFloat32 motionTimeSeconds);
+                virtual const QVector<const QString *> &GetFiredEvent(csmFloat32 beforeCheckTimeSeconds, csmFloat32 motionTimeSeconds);
 
                 /**
                  * @brief モーション再生終了コールバックの登録
@@ -211,7 +209,7 @@ namespace Live2D
                 csmFloat32 _weight;         ///< モーションの重み
                 csmFloat32 _offsetSeconds;  ///< モーション再生の開始時刻[秒]
 
-                csmVector<const csmString *> _firedEventValues;
+                QVector<const QString *> _firedEventValues;
 
                 // モーション再生終了コールバック関数
                 FinishedMotionCallback _onFinishedMotion;
