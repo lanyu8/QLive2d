@@ -22,6 +22,7 @@
 #include <Utils/CubismString.hpp>
 #include <fstream>
 #include <vector>
+
 using namespace Live2D::Cubism::Framework;
 using namespace Live2D::Cubism::Framework::DefaultParameterId;
 
@@ -55,7 +56,7 @@ void Model::LoadAssets(const QString &dir, const QString &fileName)
     _modelHomeDir = dir;
     // csmSizeInt size;
     const QString path = QString(dir) + fileName;
-    AppUtils::FileContent buffer;
+    AppUtils::FileContent_t buffer;
     AppUtils::readFileContent(path, buffer);
     ICubismModelSetting *setting = new CubismModelSettingJson(buffer);
     buffer.clear();
@@ -69,7 +70,7 @@ void Model::SetupModel(ICubismModelSetting *setting)
     _updating = true;
     _initialized = false;
     _modelSetting = setting;
-    AppUtils::FileContent buffer;
+    AppUtils::FileContent_t buffer;
 
     if (!_modelSetting->GetModelFileName().isEmpty())
     {
@@ -192,7 +193,7 @@ void Model::PreloadMotionGroup(const QString &group)
         auto name = group + "_" + QString::number(i); // Utils::CubismString::GetFormatedString("%s_%d", group, i);
         auto path = _modelHomeDir + _modelSetting->GetMotionFileName(group, i);
 
-        AppUtils::FileContent buffer;
+        AppUtils::FileContent_t buffer;
         // csmSizeInt size;
 
         AppUtils::readFileContent(path, buffer);
@@ -352,7 +353,7 @@ CubismMotionQueueEntryHandle Model::StartMotion(const QString &group, int no, in
         QString path = fileName;
         path = _modelHomeDir + path;
 
-        AppUtils::FileContent buffer;
+        AppUtils::FileContent_t buffer;
         // csmSizeInt size;
         AppUtils::readFileContent(path, buffer);
         motion = static_cast<CubismMotion *>(LoadMotion(buffer, NULL, onFinishedMotionHandler));

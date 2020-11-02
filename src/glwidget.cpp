@@ -17,6 +17,8 @@
 //#include <Windows.h>
 GLWidget::GLWidget(int w, int h) : QOpenGLWidget(nullptr)
 {
+    Q_UNUSED(w)
+    Q_UNUSED(h)
     this->setAttribute(Qt::WA_TranslucentBackground);
     // this->setWindowFlag(Qt::FramelessWindowHint);
     // this->setAttribute(Qt::WA_TransparentForMouseEvents); /// Will set for the whole widget, I only need part of it...

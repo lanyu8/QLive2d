@@ -14,7 +14,7 @@ namespace Live2D::Cubism::Framework
     struct CubismId
     {
         friend class CubismIdManager;
-        const QString &GetString() const;
+        const QString GetString() const;
 
       private:
         CubismId();

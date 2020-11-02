@@ -52,7 +52,7 @@ namespace Live2D
                 return !(_id == c._id);
             }
 
-            const QString &CubismId::GetString() const
+            const QString CubismId::GetString() const
             {
                 return _id;
             }

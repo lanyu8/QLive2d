@@ -215,9 +215,8 @@ namespace Live2D
                     value = Core::csmGetParameterMinimumValues(_model)[parameterIndex];
                 }
 
-                _parameterValues[parameterIndex] = (weight == 1) ? value :
-                                                                   _parameterValues[parameterIndex] =
-                                                                       (_parameterValues[parameterIndex] * (1 - weight)) + (value * weight);
+                const auto val1 = _parameterValues[parameterIndex] = (_parameterValues[parameterIndex] * (1 - weight)) + (value * weight);
+                _parameterValues[parameterIndex] = (weight == 1) ? value : val1;
             }
 
             csmFloat32 CubismModel::GetCanvasWidth() const

@@ -2,7 +2,7 @@
 
 #include <QFile>
 
-bool AppUtils::readFileContent(const QString &filePath, FileContent &result)
+bool AppUtils::readFileContent(const QString &filePath, FileContent_t &result)
 {
     bool ok = false;
     QFile file(filePath);

@@ -27,11 +27,11 @@ namespace Live2D
             namespace
             {
 
-                const QString &EffectNameEyeBlink = "EyeBlink";
-                const QString &EffectNameLipSync = "LipSync";
-                const QString &TargetNameModel = "Model";
-                const QString &TargetNameParameter = "Parameter";
-                const QString &TargetNamePartOpacity = "PartOpacity";
+                const auto EffectNameEyeBlink = "EyeBlink";
+                const auto EffectNameLipSync = "LipSync";
+                const auto TargetNameModel = "Model";
+                const auto TargetNameParameter = "Parameter";
+                const auto TargetNamePartOpacity = "PartOpacity";
 
                 CubismMotionPoint LerpPoints(const CubismMotionPoint a, const CubismMotionPoint b, const csmFloat32 t)
                 {

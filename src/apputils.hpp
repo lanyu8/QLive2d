@@ -5,11 +5,12 @@
 #include <QTime>
 #include <iostream>
 #include <string>
+
 class AppUtils
 {
   public:
-    typedef QByteArray FileContent;
-    static bool readFileContent(const QString &filePath, FileContent &result);
+    typedef QByteArray FileContent_t;
+    static bool readFileContent(const QString &filePath, FileContent_t &result);
     inline static Csm::csmFloat32 GetDeltaTime()
     {
         return static_cast<Csm::csmFloat32>(s_deltaTime);
