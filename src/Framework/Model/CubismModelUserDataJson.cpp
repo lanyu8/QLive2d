@@ -19,13 +19,13 @@ namespace Live2D
 
             namespace
             {
-                const QString &Meta = "Meta";
-                const QString &UserDataCount = "UserDataCount";
-                const QString &TotalUserDataSize = "TotalUserDataSize";
-                const QString &UserData = "UserData";
-                const QString &Target = "Target";
-                const QString &Id = "Id";
-                const QString &Value = "Value";
+                constexpr auto Meta = "Meta";
+                constexpr auto UserDataCount = "UserDataCount";
+                constexpr auto TotalUserDataSize = "TotalUserDataSize";
+                constexpr auto UserData = "UserData";
+                constexpr auto Target = "Target";
+                constexpr auto Id = "Id";
+                constexpr auto Value = "Value";
             } // namespace
             CubismModelUserDataJson::CubismModelUserDataJson(const QByteArray &buffer)
             {
@@ -38,27 +38,28 @@ namespace Live2D
 
             int CubismModelUserDataJson::GetUserDataCount() const
             {
-                return _json[Meta].toObject()[UserDataCount].toInt();
+                return QJsonIO::GetValue(_json, Meta, UserDataCount).toInt();
             }
 
             int CubismModelUserDataJson::GetTotalUserDataSize() const
             {
-                return _json[Meta].toObject()[TotalUserDataSize].toInt();
+                return QJsonIO::GetValue(_json, Meta, TotalUserDataSize).toInt();
             }
 
             QString CubismModelUserDataJson::GetUserDataTargetType(const int i) const
             {
-                return _json[UserData].toArray()[i].toObject()[Target].toString();
+                return QJsonIO::GetValue(_json, UserData, i, Target).toString();
             }
 
             CubismIdHandle CubismModelUserDataJson::GetUserDataId(const int i) const
             {
-                return CubismFramework::GetIdManager()->GetId(_json[UserData].toArray()[i].toObject()[Id].toString());
+                const auto str = QJsonIO::GetValue(_json, UserData, i, Id).toString();
+                return CubismFramework::GetIdManager()->GetId(str);
             }
 
             const QString CubismModelUserDataJson::GetUserDataValue(const int i) const
             {
-                return _json[UserData].toArray()[i].toObject()[Value].toString();
+                return QJsonIO::GetValue(_json, UserData, i, Value).toString();
             }
 
         } // namespace Framework

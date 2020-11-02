@@ -4,7 +4,7 @@
 #include <iostream>
 
 inline const QString ResourcesPath = "Resources/";
-inline const QString ModelDir = "Haru";
+inline const QString ModelDir = "Hiyori";
 inline const QString MotionGroupIdle = "Idle";
 //
 inline const int ModelDirSize = sizeof(ModelDir) / sizeof(QString &);

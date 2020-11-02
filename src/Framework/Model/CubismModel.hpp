@@ -18,7 +18,6 @@ namespace Live2D
     {
         namespace Framework
         {
-
             class CubismMoc;
 
             /**

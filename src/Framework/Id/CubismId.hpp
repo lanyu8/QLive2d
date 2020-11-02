@@ -14,20 +14,36 @@ namespace Live2D::Cubism::Framework
     struct CubismId
     {
         friend class CubismIdManager;
-        const QString GetString() const;
+        const QString GetString() const
+        {
+            return _id;
+        }
 
       private:
-        CubismId();
-        CubismId(const QString &);
-        ~CubismId();
+        CubismId(){};
+        CubismId(const QString &str) : _id(str){};
+        CubismId(const CubismId &c) : _id(c._id){};
 
-        CubismId(const CubismId &c);
-        CubismId &operator=(const CubismId &c);
+        ~CubismId(){};
 
-        bool operator==(const CubismId &c) const;
-        bool operator!=(const CubismId &c) const;
+        CubismId &operator=(const CubismId &c)
+        {
+            if (this != &c)
+                _id = c._id;
+            return *this;
+        }
 
-        QString _id; ///< ID名
+        bool operator==(const CubismId &c) const
+        {
+            return (_id == c._id);
+        }
+
+        bool operator!=(const CubismId &c) const
+        {
+            return !(_id == c._id);
+        }
+
+        QString _id;
     };
 
     typedef const CubismId *CubismIdHandle;

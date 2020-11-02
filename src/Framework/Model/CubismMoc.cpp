@@ -11,69 +11,57 @@
 
 namespace Live2D
 {
-    namespace Cubism
+    namespace Cubism::Framework
     {
-        namespace Framework
+
+        CubismMoc *CubismMoc::Create(const QByteArray &buffer)
         {
+            void *alignedBuffer = CSM_MALLOC_ALLIGNED(buffer.size(), Core::csmAlignofMoc);
+            memcpy(alignedBuffer, buffer.data(), buffer.size());
 
-            CubismMoc *CubismMoc::Create(const QByteArray &buffer)
+            const auto moc = Core::csmReviveMocInPlace(alignedBuffer, buffer.size());
+            if (moc)
+                return CSM_NEW CubismMoc(moc);
+            return nullptr;
+        }
+
+        void CubismMoc::Delete(CubismMoc *moc)
+        {
+            CSM_DELETE_SELF(CubismMoc, moc);
+        }
+
+        CubismMoc::CubismMoc(Core::csmMoc *moc) : _moc(moc), _modelCount(0)
+        {
+        }
+
+        CubismMoc::~CubismMoc()
+        {
+            CSM_ASSERT(_modelCount == 0);
+            CSM_FREE_ALLIGNED(_moc);
+        }
+
+        CubismModel *CubismMoc::CreateModel()
+        {
+            const auto modelSize = Core::csmGetSizeofModel(_moc);
+
+            void *modelMemory = CSM_MALLOC_ALLIGNED(modelSize, Core::csmAlignofModel);
+            Core::csmModel *model = Core::csmInitializeModelInPlace(_moc, modelMemory, modelSize);
+
+            if (model)
             {
-                CubismMoc *cubismMoc = NULL;
-
-                void *alignedBuffer = CSM_MALLOC_ALLIGNED(buffer.size(), Core::csmAlignofMoc);
-                memcpy(alignedBuffer, buffer.data(), buffer.size());
-
-                Core::csmMoc *moc = Core::csmReviveMocInPlace(alignedBuffer, buffer.size());
-
-                if (moc)
-                {
-                    cubismMoc = CSM_NEW CubismMoc(moc);
-                }
-
-                return cubismMoc;
-            }
-
-            void CubismMoc::Delete(CubismMoc *moc)
-            {
-                CSM_DELETE_SELF(CubismMoc, moc);
-            }
-
-            CubismMoc::CubismMoc(Core::csmMoc *moc) : _moc(moc), _modelCount(0)
-            {
-            }
-
-            CubismMoc::~CubismMoc()
-            {
-                CSM_ASSERT(_modelCount == 0);
-
-                CSM_FREE_ALLIGNED(_moc);
-            }
-
-            CubismModel *CubismMoc::CreateModel()
-            {
-                CubismModel *cubismModel = NULL;
-                const csmUint32 modelSize = Core::csmGetSizeofModel(_moc);
-                void *modelMemory = CSM_MALLOC_ALLIGNED(modelSize, Core::csmAlignofModel);
-
-                Core::csmModel *model = Core::csmInitializeModelInPlace(_moc, modelMemory, modelSize);
-
-                if (model)
-                {
-                    cubismModel = CSM_NEW CubismModel(model);
-                    cubismModel->Initialize();
-
-                    ++_modelCount;
-                }
-
+                auto cubismModel = CSM_NEW CubismModel(model);
+                cubismModel->Initialize();
+                ++_modelCount;
                 return cubismModel;
             }
 
-            void CubismMoc::DeleteModel(CubismModel *model)
-            {
-                CSM_DELETE_SELF(CubismModel, model);
-                --_modelCount;
-            }
+            return nullptr;
+        }
 
-        } // namespace Framework
-    }     // namespace Cubism
+        void CubismMoc::DeleteModel(CubismModel *model)
+        {
+            CSM_DELETE_SELF(CubismModel, model);
+            --_modelCount;
+        }
+    } // namespace Cubism::Framework
 } // namespace Live2D

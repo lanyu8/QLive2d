@@ -51,53 +51,6 @@ namespace Live2D
     }     // namespace Cubism
 } // namespace Live2D
 
-#ifdef CSM_DEBUG_MEMORY_LEAKING
-
-// デバッグ用
-// メモリリークの検出や確保・解放の追跡を行う。
-
-void *operator new(Live2D::Cubism::Framework::csmSizeType size, Live2D::Cubism::Framework::CubismAllocationTag tag,
-                   const Live2D::Cubism::Framework::QString &fileName, Live2D::Cubism::Framework::csmInt32 lineNumber);
-void *operator new(Live2D::Cubism::Framework::csmSizeType size, Live2D::Cubism::Framework::csmUint32 alignment,
-                   Live2D::Cubism::Framework::CubismAllocationAlignedTag tag, const Live2D::Cubism::Framework::QString &fileName,
-                   Live2D::Cubism::Framework::csmInt32 lineNumber);
-void operator delete(void *address, Live2D::Cubism::Framework::CubismAllocationTag tag, const Live2D::Cubism::Framework::QString &fileName,
-                     Live2D::Cubism::Framework::csmInt32 lineNumber);
-void operator delete(void *address, Live2D::Cubism::Framework::CubismAllocationAlignedTag tag,
-                     const Live2D::Cubism::Framework::QString &fileName, Live2D::Cubism::Framework::csmInt32 lineNumber);
-
-template<typename T>
-void CsmDelete(T *address, const Live2D::Cubism::Framework::QString &fileName, Live2D::Cubism::Framework::csmInt32 lineNumber)
-{
-    if (!address)
-    {
-        return;
-    }
-
-    address->~T();
-
-    operator delete(reinterpret_cast<void *>(address), Live2D::Cubism::Framework::GlobalTag, fileName, lineNumber);
-}
-
-    #define CSM_NEW new (Live2D::Cubism::Framework::GlobalTag, __FILE__, __LINE__)
-    #define CSM_DELETE_SELF(type, obj)                                                                                                          \
-        do                                                                                                                                      \
-        {                                                                                                                                       \
-            if (!obj)                                                                                                                           \
-            {                                                                                                                                   \
-                break;                                                                                                                          \
-            }                                                                                                                                   \
-            obj->~type();                                                                                                                       \
-            operator delete(obj, Live2D::Cubism::Framework::GlobalTag, __FILE__, __LINE__);                                                     \
-        } while (0)
-    #define CSM_DELETE(obj) CsmDelete(obj, __FILE__, __LINE__)
-    #define CSM_MALLOC(size) Live2D::Cubism::Framework::CubismFramework::Allocate(size, __FILE__, __LINE__)
-    #define CSM_MALLOC_ALLIGNED(size, align) Live2D::Cubism::Framework::CubismFramework::AllocateAligned(size, align, __FILE__, __LINE__)
-    #define CSM_FREE(ptr) Live2D::Cubism::Framework::CubismFramework::Deallocate(ptr, __FILE__, __LINE__)
-    #define CSM_FREE_ALLIGNED(ptr) Live2D::Cubism::Framework::CubismFramework::DeallocateAligned(ptr, __FILE__, __LINE__)
-
-#else
-
 // リリース用
 // 何も追跡しない。
 
@@ -120,24 +73,22 @@ void CsmDelete(T *address)
     operator delete(reinterpret_cast<void *>(address), Live2D::Cubism::Framework::GlobalTag);
 }
 
-    #define CSM_NEW new (Live2D::Cubism::Framework::GlobalTag)
-    #define CSM_DELETE_SELF(type, obj)                                                                                                          \
-        do                                                                                                                                      \
+#define CSM_NEW new (Live2D::Cubism::Framework::GlobalTag)
+#define CSM_DELETE_SELF(type, obj)                                                                                                              \
+    do                                                                                                                                          \
+    {                                                                                                                                           \
+        if (!obj)                                                                                                                               \
         {                                                                                                                                       \
-            if (!obj)                                                                                                                           \
-            {                                                                                                                                   \
-                break;                                                                                                                          \
-            }                                                                                                                                   \
-            obj->~type();                                                                                                                       \
-            operator delete(obj, Live2D::Cubism::Framework::GlobalTag);                                                                         \
-        } while (0)
-    #define CSM_DELETE(obj) CsmDelete(obj)
-    #define CSM_MALLOC(size) Live2D::Cubism::Framework::CubismFramework::Allocate(size)
-    #define CSM_MALLOC_ALLIGNED(size, align) Live2D::Cubism::Framework::CubismFramework::AllocateAligned(size, align)
-    #define CSM_FREE(ptr) Live2D::Cubism::Framework::CubismFramework::Deallocate(ptr)
-    #define CSM_FREE_ALLIGNED(ptr) Live2D::Cubism::Framework::CubismFramework::DeallocateAligned(ptr)
-
-#endif
+            break;                                                                                                                              \
+        }                                                                                                                                       \
+        obj->~type();                                                                                                                           \
+        operator delete(obj, Live2D::Cubism::Framework::GlobalTag);                                                                             \
+    } while (0)
+#define CSM_DELETE(obj) CsmDelete(obj)
+#define CSM_MALLOC(size) Live2D::Cubism::Framework::CubismFramework::Allocate(size)
+#define CSM_MALLOC_ALLIGNED(size, align) Live2D::Cubism::Framework::CubismFramework::AllocateAligned(size, align)
+#define CSM_FREE(ptr) Live2D::Cubism::Framework::CubismFramework::Deallocate(ptr)
+#define CSM_FREE_ALLIGNED(ptr) Live2D::Cubism::Framework::CubismFramework::DeallocateAligned(ptr)
 
 #define CSM_PLACEMENT_NEW(addrs) new ((addrs))
 
@@ -149,18 +100,10 @@ void CsmDelete(T *address)
 //========================================================
 //  IDマネージャの前方宣言
 //========================================================
-namespace Live2D
+namespace Live2D::Cubism::Framework
 {
-    namespace Cubism
-    {
-        namespace Framework
-        {
-
-            class CubismIdManager;
-
-        }
-    } // namespace Cubism
-} // namespace Live2D
+    class CubismIdManager;
+}
 
 //========================================================
 //  コンパイラに関する設定
@@ -205,11 +148,6 @@ namespace Live2D
     {
         namespace Framework
         {
-
-            /**
-             * @brief Framework内で使う定数の宣言
-             *
-             */
             // Framework内で使う定数の宣言
             namespace Constant
             {
@@ -217,24 +155,12 @@ namespace Live2D
                 constexpr auto VertexStep = 2;
             } // namespace Constant
 
-            /**
-             * @brief Live2D Cubism Original Workflow SDKのエントリポイント<br>
-             *         利用開始時はCubismFramework::Initialize()を呼び、CubismFramework::Dispose()で終了する。
-             *
-             */
             class CubismFramework
             {
               public:
-                /*
-                 * @brief CubismFrameworkに設定するオプション要素を定義するクラス
-                 *
-                 */
                 class Option
                 {
                   public:
-                    /**
-                     * @brief   ログ出力のレベル
-                     */
                     enum LogLevel
                     {
                         LogLevel_Verbose = 0, ///<  詳細ログ
@@ -249,96 +175,21 @@ namespace Live2D
                     LogLevel LoggingLevel;            ///< ログ出力レベル設定
                 };
 
-                /**
-                 * @brief    Cubism FrameworkのAPIを使用可能にする。<br>
-                 *            APIを実行する前に必ずこの関数を実行すること。<br>
-                 *            引数に必ずメモリアロケータを渡してください。<br>
-                 *            一度準備が完了して以降は、再び実行しても内部処理がスキップされます。
-                 *
-                 * @param    allocator   ICubismAllocatorクラスのインスタンス
-                 * @param    option      Optionクラスのインスタンス
-                 *
-                 * @return   準備処理が完了したらtrueが返ります。
-                 */
                 static bool StartUp(ICubismAllocator *allocator, const Option *option = NULL);
-
-                /**
-                 * @brief    StartUp()で初期化したCubismFrameworkの各パラメータをクリアします。<br>
-                 *            Dispose()したCubismFrameworkを再利用する際に利用してください。<br>
-                 *
-                 */
                 static void CleanUp();
-
-                /**
-                 * @brief   Cubism FrameworkのAPIを使用する準備が完了したかどうか？
-                 *
-                 * @return  APIを使用する準備が完了していればtrueが返ります。
-                 */
                 static bool IsStarted();
-
-                /**
-                 * @brief  Cubism Framework内のリソースを初期化してモデルを表示可能な状態にします。<br>
-                 *         再度Initialize()するには先にDispose()を実行する必要があります。
-                 */
                 static void Initialize();
-
-                /**
-                 *@brief Cubism Framework内の全てのリソースを解放します。<br>
-                 *        ただし、外部で確保されたリソースについては解放しません。<br>
-                 *        外部で適切に破棄する必要があります。
-                 */
                 static void Dispose();
-
-                /**
-                 * @brief   Cubism Frameworkのリソース初期化が既に行われているかどうか？
-                 *
-                 * @return  リソース確保が完了していればtrueが返ります。
-                 */
                 static bool IsInitialized();
-
-                /**
-                 * @brief   Core APIにバインドしたログ関数を実行する
-                 *
-                 * @param message   ->  ログメッセージ
-                 */
                 static void CoreLogFunction(const char *message);
-
-                /**
-                 * @biref   現在のログ出力レベル設定の値を返す。
-                 *
-                 * @return  現在のログ出力レベル設定の値
-                 */
                 static Option::LogLevel GetLoggingLevel();
-
-                /**
-                 * @brief IDマネージャのインスタンスを取得する。
-                 *
-                 * @return CubismIdManagerクラスのインスタンス
-                 */
                 static CubismIdManager *GetIdManager();
-
-#ifdef CSM_DEBUG_MEMORY_LEAKING
-
-                static void *Allocate(csmSizeType size, const QString &fileName, csmInt32 lineNumber);
-                static void *AllocateAligned(csmSizeType size, csmUint32 alignment, const QString &fileName, csmInt32 lineNumber);
-                static void Deallocate(void *address, const QString &fileName, csmInt32 lineNumber);
-                static void DeallocateAligned(void *address, const QString &fileName, csmInt32 lineNumber);
-
-#else
-
                 static void *Allocate(csmSizeType size);
                 static void *AllocateAligned(csmSizeType size, csmUint32 alignment);
                 static void Deallocate(void *address);
                 static void DeallocateAligned(void *address);
 
-#endif
-
               private:
-                /**
-                 *@brief  コンストラクタ<br>
-                 *         静的クラスとして使用する<br>
-                 *         インスタンス化させない
-                 */
                 CubismFramework()
                 {
                 }

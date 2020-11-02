@@ -407,36 +407,36 @@ namespace Live2D
             {
                 _motionData = CSM_NEW CubismMotionData;
 
-                CubismMotionJson *json = CSM_NEW CubismMotionJson(buffer);
+                CubismMotionJson json(buffer);
 
-                _motionData->Duration = json->GetMotionDuration();
-                _motionData->Loop = json->IsMotionLoop();
-                _motionData->CurveCount = json->GetMotionCurveCount();
-                _motionData->Fps = json->GetMotionFps();
-                _motionData->EventCount = json->GetEventCount();
+                _motionData->Duration = json.GetMotionDuration();
+                _motionData->Loop = json.IsMotionLoop();
+                _motionData->CurveCount = json.GetMotionCurveCount();
+                _motionData->Fps = json.GetMotionFps();
+                _motionData->EventCount = json.GetEventCount();
 
-                if (json->IsExistMotionFadeInTime())
+                if (json.IsExistMotionFadeInTime())
                 {
-                    _fadeInSeconds = (json->GetMotionFadeInTime() < 0.0f) ? 1.0f : json->GetMotionFadeInTime();
+                    _fadeInSeconds = (json.GetMotionFadeInTime() < 0.0f) ? 1.0f : json.GetMotionFadeInTime();
                 }
                 else
                 {
                     _fadeInSeconds = 1.0f;
                 }
 
-                if (json->IsExistMotionFadeOutTime())
+                if (json.IsExistMotionFadeOutTime())
                 {
-                    _fadeOutSeconds = (json->GetMotionFadeOutTime() < 0.0f) ? 1.0f : json->GetMotionFadeOutTime();
+                    _fadeOutSeconds = (json.GetMotionFadeOutTime() < 0.0f) ? 1.0f : json.GetMotionFadeOutTime();
                 }
                 else
                 {
                     _fadeOutSeconds = 1.0f;
                 }
 
-                _motionData->Curves.resize(_motionData->CurveCount);              //, CubismMotionCurve(), true);
-                _motionData->Segments.resize(json->GetMotionTotalSegmentCount()); //, CubismMotionSegment(), true);
-                _motionData->Points.resize(json->GetMotionTotalPointCount());     //, CubismMotionPoint(), true);
-                _motionData->Events.resize(_motionData->EventCount);              //, CubismMotionEvent(), true);
+                _motionData->Curves.resize(_motionData->CurveCount);             //, CubismMotionCurve(), true);
+                _motionData->Segments.resize(json.GetMotionTotalSegmentCount()); //, CubismMotionSegment(), true);
+                _motionData->Points.resize(json.GetMotionTotalPointCount());     //, CubismMotionPoint(), true);
+                _motionData->Events.resize(_motionData->EventCount);             //, CubismMotionEvent(), true);
 
                 int totalPointCount = 0;
                 int totalSegmentCount = 0;
@@ -444,37 +444,37 @@ namespace Live2D
                 // Curves
                 for (int curveCount = 0; curveCount < _motionData->CurveCount; ++curveCount)
                 {
-                    if (json->GetMotionCurveTarget(curveCount) == TargetNameModel)
+                    if (json.GetMotionCurveTarget(curveCount) == TargetNameModel)
                     {
                         _motionData->Curves[curveCount].Type = CubismMotionCurveTarget_Model;
                     }
-                    else if (json->GetMotionCurveTarget(curveCount) == TargetNameParameter)
+                    else if (json.GetMotionCurveTarget(curveCount) == TargetNameParameter)
                     {
                         _motionData->Curves[curveCount].Type = CubismMotionCurveTarget_Parameter;
                     }
-                    else if (json->GetMotionCurveTarget(curveCount) == TargetNamePartOpacity)
+                    else if (json.GetMotionCurveTarget(curveCount) == TargetNamePartOpacity)
                     {
                         _motionData->Curves[curveCount].Type = CubismMotionCurveTarget_PartOpacity;
                     }
 
-                    _motionData->Curves[curveCount].Id = json->GetMotionCurveId(curveCount);
+                    _motionData->Curves[curveCount].Id = json.GetMotionCurveId(curveCount);
 
                     _motionData->Curves[curveCount].BaseSegmentIndex = totalSegmentCount;
 
                     _motionData->Curves[curveCount].FadeInTime =
-                        (json->IsExistMotionCurveFadeInTime(curveCount)) ? json->GetMotionCurveFadeInTime(curveCount) : -1.0f;
+                        (json.IsExistMotionCurveFadeInTime(curveCount)) ? json.GetMotionCurveFadeInTime(curveCount) : -1.0f;
                     _motionData->Curves[curveCount].FadeOutTime =
-                        (json->IsExistMotionCurveFadeOutTime(curveCount)) ? json->GetMotionCurveFadeOutTime(curveCount) : -1.0f;
+                        (json.IsExistMotionCurveFadeOutTime(curveCount)) ? json.GetMotionCurveFadeOutTime(curveCount) : -1.0f;
 
                     // Segments
-                    for (int segmentPosition = 0; segmentPosition < json->GetMotionCurveSegmentCount(curveCount);)
+                    for (int segmentPosition = 0; segmentPosition < json.GetMotionCurveSegmentCount(curveCount);)
                     {
                         if (segmentPosition == 0)
                         {
                             _motionData->Segments[totalSegmentCount].BasePointIndex = totalPointCount;
 
-                            _motionData->Points[totalPointCount].Time = json->GetMotionCurveSegment(curveCount, segmentPosition);
-                            _motionData->Points[totalPointCount].Value = json->GetMotionCurveSegment(curveCount, segmentPosition + 1);
+                            _motionData->Points[totalPointCount].Time = json.GetMotionCurveSegment(curveCount, segmentPosition);
+                            _motionData->Points[totalPointCount].Value = json.GetMotionCurveSegment(curveCount, segmentPosition + 1);
 
                             totalPointCount += 1;
                             segmentPosition += 2;
@@ -484,7 +484,7 @@ namespace Live2D
                             _motionData->Segments[totalSegmentCount].BasePointIndex = totalPointCount - 1;
                         }
 
-                        const int segment = static_cast<int>(json->GetMotionCurveSegment(curveCount, segmentPosition));
+                        const int segment = static_cast<int>(json.GetMotionCurveSegment(curveCount, segmentPosition));
 
                         switch (segment)
                         {
@@ -493,8 +493,8 @@ namespace Live2D
                                 _motionData->Segments[totalSegmentCount].SegmentType = CubismMotionSegmentType_Linear;
                                 _motionData->Segments[totalSegmentCount].Evaluate = LinearEvaluate;
 
-                                _motionData->Points[totalPointCount].Time = json->GetMotionCurveSegment(curveCount, (segmentPosition + 1));
-                                _motionData->Points[totalPointCount].Value = json->GetMotionCurveSegment(curveCount, (segmentPosition + 2));
+                                _motionData->Points[totalPointCount].Time = json.GetMotionCurveSegment(curveCount, (segmentPosition + 1));
+                                _motionData->Points[totalPointCount].Value = json.GetMotionCurveSegment(curveCount, (segmentPosition + 2));
 
                                 totalPointCount += 1;
                                 segmentPosition += 3;
@@ -506,14 +506,14 @@ namespace Live2D
                                 _motionData->Segments[totalSegmentCount].SegmentType = CubismMotionSegmentType_Bezier;
                                 _motionData->Segments[totalSegmentCount].Evaluate = BezierEvaluate;
 
-                                _motionData->Points[totalPointCount].Time = json->GetMotionCurveSegment(curveCount, (segmentPosition + 1));
-                                _motionData->Points[totalPointCount].Value = json->GetMotionCurveSegment(curveCount, (segmentPosition + 2));
+                                _motionData->Points[totalPointCount].Time = json.GetMotionCurveSegment(curveCount, (segmentPosition + 1));
+                                _motionData->Points[totalPointCount].Value = json.GetMotionCurveSegment(curveCount, (segmentPosition + 2));
 
-                                _motionData->Points[totalPointCount + 1].Time = json->GetMotionCurveSegment(curveCount, (segmentPosition + 3));
-                                _motionData->Points[totalPointCount + 1].Value = json->GetMotionCurveSegment(curveCount, (segmentPosition + 4));
+                                _motionData->Points[totalPointCount + 1].Time = json.GetMotionCurveSegment(curveCount, (segmentPosition + 3));
+                                _motionData->Points[totalPointCount + 1].Value = json.GetMotionCurveSegment(curveCount, (segmentPosition + 4));
 
-                                _motionData->Points[totalPointCount + 2].Time = json->GetMotionCurveSegment(curveCount, (segmentPosition + 5));
-                                _motionData->Points[totalPointCount + 2].Value = json->GetMotionCurveSegment(curveCount, (segmentPosition + 6));
+                                _motionData->Points[totalPointCount + 2].Time = json.GetMotionCurveSegment(curveCount, (segmentPosition + 5));
+                                _motionData->Points[totalPointCount + 2].Value = json.GetMotionCurveSegment(curveCount, (segmentPosition + 6));
 
                                 totalPointCount += 3;
                                 segmentPosition += 7;
@@ -525,8 +525,8 @@ namespace Live2D
                                 _motionData->Segments[totalSegmentCount].SegmentType = CubismMotionSegmentType_Stepped;
                                 _motionData->Segments[totalSegmentCount].Evaluate = SteppedEvaluate;
 
-                                _motionData->Points[totalPointCount].Time = json->GetMotionCurveSegment(curveCount, (segmentPosition + 1));
-                                _motionData->Points[totalPointCount].Value = json->GetMotionCurveSegment(curveCount, (segmentPosition + 2));
+                                _motionData->Points[totalPointCount].Time = json.GetMotionCurveSegment(curveCount, (segmentPosition + 1));
+                                _motionData->Points[totalPointCount].Value = json.GetMotionCurveSegment(curveCount, (segmentPosition + 2));
 
                                 totalPointCount += 1;
                                 segmentPosition += 3;
@@ -538,8 +538,8 @@ namespace Live2D
                                 _motionData->Segments[totalSegmentCount].SegmentType = CubismMotionSegmentType_InverseStepped;
                                 _motionData->Segments[totalSegmentCount].Evaluate = InverseSteppedEvaluate;
 
-                                _motionData->Points[totalPointCount].Time = json->GetMotionCurveSegment(curveCount, (segmentPosition + 1));
-                                _motionData->Points[totalPointCount].Value = json->GetMotionCurveSegment(curveCount, (segmentPosition + 2));
+                                _motionData->Points[totalPointCount].Time = json.GetMotionCurveSegment(curveCount, (segmentPosition + 1));
+                                _motionData->Points[totalPointCount].Value = json.GetMotionCurveSegment(curveCount, (segmentPosition + 2));
 
                                 totalPointCount += 1;
                                 segmentPosition += 3;
@@ -558,13 +558,11 @@ namespace Live2D
                     }
                 }
 
-                for (int userdatacount = 0; userdatacount < json->GetEventCount(); ++userdatacount)
+                for (int userdatacount = 0; userdatacount < json.GetEventCount(); ++userdatacount)
                 {
-                    _motionData->Events[userdatacount].FireTime = json->GetEventTime(userdatacount);
-                    _motionData->Events[userdatacount].Value = json->GetEventValue(userdatacount);
+                    _motionData->Events[userdatacount].FireTime = json.GetEventTime(userdatacount);
+                    _motionData->Events[userdatacount].Value = json.GetEventValue(userdatacount);
                 }
-
-                CSM_DELETE(json);
             }
 
             void CubismMotion::SetParameterFadeInTime(CubismIdHandle parameterId, csmFloat32 value)

@@ -11,65 +11,18 @@
 
 namespace Live2D
 {
-    namespace Cubism
+    namespace Cubism::Framework
     {
-        namespace Framework
+        class ICubismAllocator
         {
-
-            /**
-             * @brief メモリアロケーションを抽象化したクラス.
-             *
-             * メモリ確保・解放処理をプラットフォーム側で実装して
-             * フレームワークから呼び出すためのインターフェース。
-             *
-             */
-            class ICubismAllocator
+          public:
+            virtual ~ICubismAllocator()
             {
-              public:
-                /**
-                 * @brief デストラクタ
-                 *
-                 * デストラクタ。
-                 */
-                virtual ~ICubismAllocator()
-                {
-                }
-
-                /**
-                 * @brief アラインメント制約なしのヒープ・メモリーを確保します。
-                 *
-                 * @param[in]  size   確保するバイト数
-                 *
-                 * @return     成功すると割り当てられたメモリのアドレス。 そうでなければ '0'を返す。
-                 */
-                virtual void *Allocate(const csmSizeType size) = 0;
-
-                /**
-                 * @brief アラインメント制約なしのヒープ・メモリーを解放します。
-                 *
-                 * @param[in]  memory   解放するメモリのアドレス
-                 *
-                 */
-                virtual void Deallocate(void *memory) = 0;
-
-                /**
-                 * @brief アラインメント制約ありのヒープ・メモリーを確保します。
-                 *
-                 * @param[in]  size       確保するバイト数
-                 * @param[in]  alignment  メモリーブロックのアラインメント幅
-                 *
-                 * @return     成功すると割り当てられたメモリのアドレス。 そうでなければ '0'を返す。
-                 */
-                virtual void *AllocateAligned(const csmSizeType size, const csmUint32 alignment) = 0;
-
-                /**
-                 * @brief アラインメント制約ありのヒープ・メモリーを解放します。
-                 *
-                 * @param[in]  alignedMemory       解放するメモリのアドレス
-                 *
-                 */
-                virtual void DeallocateAligned(void *alignedMemory) = 0;
-            };
-        } // namespace Framework
-    }     // namespace Cubism
+            }
+            virtual void *Allocate(const csmSizeType size) = 0;
+            virtual void Deallocate(void *memory) = 0;
+            virtual void *AllocateAligned(const csmSizeType size, const csmUint32 alignment) = 0;
+            virtual void DeallocateAligned(void *alignedMemory) = 0;
+        };
+    } // namespace Cubism::Framework
 } // namespace Live2D

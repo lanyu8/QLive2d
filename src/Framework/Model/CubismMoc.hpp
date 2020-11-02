@@ -11,77 +11,26 @@
 
 namespace Live2D
 {
-    namespace Cubism
+    namespace Cubism::Framework
     {
-        namespace Framework
+        class CubismModel;
+        class CubismMoc
         {
+            friend class CubismModel;
 
-            class CubismModel;
+          public:
+            static CubismMoc *Create(const QByteArray &buffer);
+            static void Delete(CubismMoc *moc);
+            CubismModel *CreateModel();
+            void DeleteModel(CubismModel *model);
 
-            /**
-             * @brief Mocデータの管理
-             *
-             * Mocデータの管理を行うクラス。
-             */
-            class CubismMoc
-            {
-                friend class CubismModel;
+          private:
+            CubismMoc(Core::csmMoc *moc);
+            virtual ~CubismMoc();
 
-              public:
-                /**
-                 * @brief バッファからMocデータの作成
-                 *
-                 * バッファからMocファイルを読み取り、Mocデータを作成する。
-                 *
-                 * @param[in]   mocBytes    Mocファイルのバッファ
-                 * @param[in]   size        バッファのサイズ
-                 */
-                static CubismMoc *Create(const QByteArray &buffer);
+            Core::csmMoc *_moc; ///< Mocデータ
+            int _modelCount;    ///< Mocデータから作られたモデルの個数
+        };
 
-                /**
-                 * @brief Mocデータを削除
-                 *
-                 * Mocデータを削除する。
-                 */
-                static void Delete(CubismMoc *moc);
-
-                /**
-                 * @brief モデルを作成
-                 *
-                 * モデルを作成する。
-                 *
-                 * @return  Mocデータから作成されたモデル
-                 */
-                CubismModel *CreateModel();
-
-                /**
-                 * @brief モデルを削除
-                 *
-                 * モデルを削除する。
-                 *
-                 * @param[in]   model   対象のモデル
-                 */
-                void DeleteModel(CubismModel *model);
-
-              private:
-                /**
-                 * @brief コンストラクタ
-                 *
-                 * コンストラクタ。
-                 */
-                CubismMoc(Core::csmMoc *moc);
-
-                /**
-                 * @brief デストラクタ
-                 *
-                 * デストラクタ。
-                 */
-                virtual ~CubismMoc();
-
-                Core::csmMoc *_moc; ///< Mocデータ
-                int _modelCount;    ///< Mocデータから作られたモデルの個数
-            };
-
-        } // namespace Framework
-    }     // namespace Cubism
+    } // namespace Cubism::Framework
 } // namespace Live2D

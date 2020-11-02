@@ -31,7 +31,6 @@ SOURCES += \
     $$PWD/src/Framework/Effect/CubismBreath.cpp \
     $$PWD/src/Framework/Effect/CubismEyeBlink.cpp \
     $$PWD/src/Framework/Effect/CubismPose.cpp \
-    $$PWD/src/Framework/Id/CubismId.cpp \
     $$PWD/src/Framework/Id/CubismIdManager.cpp \
     $$PWD/src/Framework/Math/CubismMath.cpp \
     $$PWD/src/Framework/Math/CubismMatrix44.cpp \
@@ -110,7 +109,7 @@ HEADERS += \
     $$PWD/src/Framework/Type/CubismBasicType.hpp \
     $$PWD/src/Framework/Type/csmMap.hpp \
     $$PWD/src/Framework/Type/csmRectF.hpp \
-    $$PWD/src/Framework/Type/QVector.hpp \
+    $$PWD/src/Framework/Type/csmVector.hpp \
     $$PWD/src/Framework/Utils/CubismDebug.hpp \
     $$PWD/src/Framework/Utils/CubismJson.hpp \
     $$PWD/src/Framework/Utils/CubismString.hpp \

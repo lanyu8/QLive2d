@@ -5,13 +5,9 @@
  * that can be found at https://www.live2d.com/eula/live2d-proprietary-software-license-agreement_en.html.
  */
 
-#ifndef LIVE2D_CUBISM_CORE_H
-#define LIVE2D_CUBISM_CORE_H
-#include <QString>
-#if defined(__cplusplus)
+#pragma once
 extern "C"
 {
-#endif
 
 /* ------- *
  * DEFINES *
@@ -477,9 +473,4 @@ extern "C"
      * @param  model  Model containing flags.
      */
     csmApi void csmCallingConvention csmResetDrawableDynamicFlags(csmModel* model);
-
-#if defined(__cplusplus)
 }
-#endif
-
-#endif

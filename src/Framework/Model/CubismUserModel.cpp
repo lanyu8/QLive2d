@@ -93,6 +93,7 @@ namespace Live2D
             {
                 _modelUserData = CubismModelUserData::Create(buffer);
             }
+
             bool CubismUserModel::IsHit(CubismIdHandle drawableId, csmFloat32 pointX, csmFloat32 pointY)
             {
                 const int drawIndex = _model->GetDrawableIndex(drawableId);

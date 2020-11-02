@@ -257,7 +257,7 @@ namespace Live2D
                 const QString GetEventValue(int userDataIndex) const;
 
               private:
-                Utils::CubismJson _json; ///< motion3.jsonデータ
+                const Utils::CubismJson _json; ///< motion3.jsonデータ
             };
 
         } // namespace Framework
